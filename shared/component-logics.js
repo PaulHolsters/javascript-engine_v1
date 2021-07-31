@@ -18,8 +18,11 @@ class ComponentLogics extends HTMLElement {
     _url = ''
 
     _getFirstParent(elementType){
-
-        return ''
+        let parent = this.parentElement
+        while(parent !== null && parent.tagName !== elementType){
+            parent = parent.parentElement
+        }
+        return parent
     }
 
     _setLayoutState(state) {
@@ -193,8 +196,7 @@ class ComponentLogics extends HTMLElement {
     }
 
     async _getAll() {
-        const url = this._baseUrl + '/' + this._table + '.php'
-        return await fetch(url).then(
+        return await fetch(this._url).then(
             res => {
                 return res.json()
             }
@@ -218,12 +220,13 @@ class ComponentLogics extends HTMLElement {
     }
 
     _responseHandler(response, verb) {
+        console.log(response)
         switch (verb) {
             case 'getOne':
                 return Object.values(response)[1]
             case 'getAll':
-
-                break
+                console.log('returning result')
+                return Object.values(response)[1]
             case 'post':
 
                 break

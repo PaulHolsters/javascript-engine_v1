@@ -9,6 +9,7 @@
         <script src="shared/component-logics.js"></script>
         <script src="buttons/phj-button.js"></script>
         <script src="cards/phj-card.js"></script>
+        <script src="crud-components/phj-master.js"></script>
         <script src="data-transmitters/phj-id.js"></script>
         <script src="text-elements/phj-text.js"></script>
         <script src="forms/phj-text-input.js"></script>
@@ -21,7 +22,7 @@
             <!--                  specificaties-pagina                    -->
             <phj-content-item menu="Verkoop" sub-menu="Specificaties">
                 <phj-crud-template>
-                    <phj-master path="specificaties"
+                    <phj-master path="http://localhost:3000/specifications"
                                 title="Overzicht">
                         <!--
                                     dit is zonder een dropdown menu:
@@ -31,7 +32,7 @@
 
                          -->
                         <phj-button create="specificatie" icon="phj-create" glue="title"></phj-button>
-                        <phj-button icon="3dots" custom-styles="border:0;hover-background:light-gray">
+                        <phj-button icon="dots" custom-styles="border:0;hover-background:light-gray">
                                 <phj-select>
                                     <phj-option read>Details</phj-option>
                                     <phj-option update>Aanpassen</phj-option>
