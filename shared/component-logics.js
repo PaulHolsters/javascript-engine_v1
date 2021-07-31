@@ -10,8 +10,17 @@ class ComponentLogics extends HTMLElement {
     _actions
     _state
 
-    _table = 'articles'
-    _baseUrl = 'http://localhost:5000/phj-web-components-v1'
+    // the baseUrl variable should be used by the phj-content component, everything inside that component can be considered
+    // being part of that baseUrl
+        // however its possible to not use a baseurl and just go for a complete url structure
+    _baseUrl = ''
+    _path = ''
+    _url = ''
+
+    _getFirstParent(elementType){
+
+        return ''
+    }
 
     _setLayoutState(state) {
         this._currentLayoutState = state
@@ -263,7 +272,11 @@ class ComponentLogics extends HTMLElement {
                             const targets = document.querySelectorAll(value2)
                             for (let j = 0; j < targets.length; j++) {
                                 if (targets[j]._getState('value')  !== undefined) {
+                                    // copying the value property-value from the source to the targets, if it has such a property
                                     targets[j]._setState('value',elements[0]._getState('value') )
+                                    // after changing the state of this components attribute changed callback will make sure
+                                    // a rest call will get the data associated with that value, depending
+                                    // whether the component is configured that way which is the case for the card component
                                 }
                             }
                         }
