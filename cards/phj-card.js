@@ -78,7 +78,7 @@ class PhjCard extends ComponentLogics {
                         for (let i = 0; i < keys.length; i++) {
                             if (keys[i] === children[j].getAttribute('column').trim()) {
                                 // noinspection JSValidateTypes
-                                children[j].setText(values[i])
+                                children[j]._setState('text',values[i])
                                 break
                             }
                         }

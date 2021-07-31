@@ -9,6 +9,7 @@
         <script src="shared/component-logics.js"></script>
         <script src="buttons/phj-button.js"></script>
         <script src="cards/phj-card.js"></script>
+        <script src="crud-components/phj-master.js"></script>
         <script src="data-transmitters/phj-id.js"></script>
         <script src="text-elements/phj-text.js"></script>
         <script src="forms/phj-text-input.js"></script>
@@ -17,12 +18,11 @@
         <script src="forms/phj-radio-button.js"></script>
     </head>
     <body>
-        <phj-content>
+        <phj-content baseUrl="get:localhost:3000/">
             <!--                  specificaties-pagina                    -->
             <phj-content-item menu="Verkoop" sub-menu="Specificaties">
-                <phj-crud->
-                    <phj-master url="localhost:3000/specificaties"
-                                type="get"
+                <phj-crud-template>
+                    <phj-master path="http://localhost:3000/specifications"
                                 title="Overzicht">
                         <!--
                                     dit is zonder een dropdown menu:
@@ -32,7 +32,7 @@
 
                          -->
                         <phj-button create="specificatie" icon="phj-create" glue="title"></phj-button>
-                        <phj-button icon="3dots" custom-styles="border:0;hover-background:light-gray">
+                        <phj-button icon="dots" custom-styles="border:0;hover-background:light-gray">
                                 <phj-select>
                                     <phj-option read>Details</phj-option>
                                     <phj-option update>Aanpassen</phj-option>
@@ -41,7 +41,9 @@
                         </phj-button>
                     </phj-master>
                     <phj-action-panel title="Actievenster">
-                        <phj-form type="post" actions="create" title="Specificatie toevoegen">
+                        <!-- what type of request needs to be send will be given by phj-master which in turn got it as
+                        meta info from the first response when it got all the data when loading the page -->
+                        <phj-form actions="create" title="Specificatie toevoegen">
                             <phj-message-group>
                                 <phj-message type="success">Specificatie bewaard.</phj-message>
                                 <phj-message type="error">Er ging iets mis! Specificatie niet bewaard.</phj-message>
@@ -59,7 +61,7 @@
                                 <phj-button click="create:success=>201,error=>!201 reset">Bewaar</phj-button>
                             </phj-button-group>
                         </phj-form>
-                        <phj-form type="patch" actions="read,update" title="Specificatie wijzigen">
+                        <phj-form actions="read,update" title="Specificatie wijzigen">
                             <phj-message-group>
                                 <phj-message type="success">Specificatie gewijzigd.</phj-message>
                                 <phj-message type="error">Er ging iets mis! Specificatie niet gewijzigd.</phj-message>
@@ -78,7 +80,7 @@
                                 <phj-button click="update:success=>200,error=>!200 close">Bewaar</phj-button>
                             </phj-button-group>
                         </phj-form>
-                        <phj-form type="delete" actions="delete" title="Specificatie verwijderen">
+                        <phj-form actions="delete" title="Specificatie verwijderen">
                             <phj-message-group>
                                 <phj-message type="info">Ben je zeker dat je deze specificatie wenst te verwijderen?</phj-message>
                                 <phj-message type="success">Specificatie verwijderd.</phj-message>
@@ -90,7 +92,7 @@
                             </phj-button-group>
                         </phj-form>
                     </phj-action-panel>
-                </phj-crud->
+                </phj-crud-template>
             </phj-content-item>
             <!--                producten-pagina                            -->
             <phj-content-item menu="verkoop" sub-menu="Producten">

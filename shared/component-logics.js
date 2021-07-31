@@ -10,8 +10,20 @@ class ComponentLogics extends HTMLElement {
     _actions
     _state
 
-    _table = 'articles'
-    _baseUrl = 'http://localhost:5000/phj-web-components-v1'
+    // the baseUrl variable should be used by the phj-content component, everything inside that component can be considered
+    // being part of that baseUrl
+        // however its possible to not use a baseurl and just go for a complete url structure
+    _baseUrl = ''
+    _path = ''
+    _url = ''
+
+    _getFirstParent(elementType){
+        let parent = this.parentElement
+        while(parent !== null && parent.tagName !== elementType){
+            parent = parent.parentElement
+        }
+        return parent
+    }
 
     _setLayoutState(state) {
         this._currentLayoutState = state
@@ -184,8 +196,7 @@ class ComponentLogics extends HTMLElement {
     }
 
     async _getAll() {
-        const url = this._baseUrl + '/' + this._table + '.php'
-        return await fetch(url).then(
+        return await fetch(this._url).then(
             res => {
                 return res.json()
             }
@@ -209,12 +220,13 @@ class ComponentLogics extends HTMLElement {
     }
 
     _responseHandler(response, verb) {
+        console.log(response)
         switch (verb) {
             case 'getOne':
                 return Object.values(response)[1]
             case 'getAll':
-
-                break
+                console.log('returning result')
+                return Object.values(response)[1]
             case 'post':
 
                 break
@@ -263,7 +275,11 @@ class ComponentLogics extends HTMLElement {
                             const targets = document.querySelectorAll(value2)
                             for (let j = 0; j < targets.length; j++) {
                                 if (targets[j]._getState('value')  !== undefined) {
+                                    // copying the value property-value from the source to the targets, if it has such a property
                                     targets[j]._setState('value',elements[0]._getState('value') )
+                                    // after changing the state of this components attribute changed callback will make sure
+                                    // a rest call will get the data associated with that value, depending
+                                    // whether the component is configured that way which is the case for the card component
                                 }
                             }
                         }
