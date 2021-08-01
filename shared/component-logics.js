@@ -16,13 +16,25 @@ class ComponentLogics extends HTMLElement {
     _baseUrl = ''
     _path = ''
     _url = ''
+    _availableChildComponents
+    _childComponentListeners
 
     _getFirstParent(elementType){
         let parent = this.parentElement
-        while(parent !== null && parent.tagName !== elementType){
+        while(parent !== null && parent.tagName !== elementType.toUpperCase()){
             parent = parent.parentElement
         }
         return parent
+    }
+
+    _processEvent(event){
+        switch (event.name){
+            case 'component-created':
+                // notify interested child-components
+
+                break
+
+        }
     }
 
     _setLayoutState(state) {

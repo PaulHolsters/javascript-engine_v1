@@ -43,6 +43,7 @@ class PhjContent extends ComponentLogics {
         // get all data to feel the master table with
         if (this.hasAttribute('baseUrl')) {
             this._baseUrl = this.getAttribute('baseUrl')
+            console.log(this._baseUrl)
         }
         // set css of the webcomponent
         this._setLayoutState('default')

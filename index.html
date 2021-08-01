@@ -10,6 +10,8 @@
         <script src="buttons/phj-button.js"></script>
         <script src="cards/phj-card.js"></script>
         <script src="crud-components/phj-master.js"></script>
+        <script src="content/phj-content.js"></script>
+        <script src="templates/phj-crud-template.js"></script>
         <script src="data-transmitters/phj-id.js"></script>
         <script src="text-elements/phj-text.js"></script>
         <script src="forms/phj-text-input.js"></script>
@@ -22,8 +24,7 @@
             <!--                  specificaties-pagina                    -->
             <phj-content-item menu="Verkoop" sub-menu="Specificaties">
                 <phj-crud-template>
-                    <phj-master path="get:specifications"
-                                title="Overzicht">
+                    <phj-master slot="master" path="get:specifications" title="Overzicht">
                         <!--
                                     dit is zonder een dropdown content:
 
@@ -40,7 +41,7 @@
                                 </phj-select>
                         </phj-button>
                     </phj-master>
-                    <phj-action-panel title="Actievenster">
+                    <phj-action-pane slot="action-pane" title="Actievenster">
                         <!-- what type of request needs to be send will be given by phj-master which in turn got it as
                         meta info from the first response when it got all the data when loading the page -->
                         <phj-form actions="create" title="Specificatie toevoegen">
@@ -91,7 +92,7 @@
                                 <phj-button click="delete:info=>close,success=>200,error=>!200 close">Verwijder</phj-button>
                             </phj-button-group>
                         </phj-form>
-                    </phj-action-panel>
+                    </phj-action-pane>
                 </phj-crud-template>
             </phj-content-item>
             <!--                producten-pagina                            -->
