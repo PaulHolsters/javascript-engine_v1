@@ -18,14 +18,14 @@
         <script src="forms/phj-radio-button.js"></script>
     </head>
     <body>
-        <phj-content baseUrl="get:localhost:3000/">
+        <phj-content baseUrl="http://localhost:3000/">
             <!--                  specificaties-pagina                    -->
             <phj-content-item menu="Verkoop" sub-menu="Specificaties">
                 <phj-crud-template>
-                    <phj-master path="http://localhost:3000/specifications"
+                    <phj-master path="get:specifications"
                                 title="Overzicht">
                         <!--
-                                    dit is zonder een dropdown menu:
+                                    dit is zonder een dropdown content:
 
                                     <phj-button update="aanpassen"></phj-button>
                                     <phj-button delete="verwijderen"></phj-button>

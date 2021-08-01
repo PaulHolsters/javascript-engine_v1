@@ -220,13 +220,11 @@ class ComponentLogics extends HTMLElement {
     }
 
     _responseHandler(response, verb) {
-        console.log(response)
         switch (verb) {
             case 'getOne':
                 return Object.values(response)[1]
             case 'getAll':
-                console.log('returning result')
-                return Object.values(response)[1]
+                return response
             case 'post':
 
                 break

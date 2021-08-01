@@ -2,6 +2,7 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="541aa9e8-3035-4513-acb8-e23ab7e5a48a" name="Default Changelist" comment="">
+      <change afterPath="$PROJECT_DIR$/content/phj-content.js" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/crud-components/phj-master.js" beforeDir="false" afterPath="$PROJECT_DIR$/crud-components/phj-master.js" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/index.html" beforeDir="false" afterPath="$PROJECT_DIR$/index.html" afterDir="false" />
@@ -33,7 +34,7 @@
   <component name="PropertiesComponent">
     <property name="RunOnceActivity.OpenProjectViewOnStart" value="true" />
     <property name="WebServerToolWindowFactoryState" value="false" />
-    <property name="last_opened_file_path" value="$PROJECT_DIR$/crud-components" />
+    <property name="last_opened_file_path" value="$PROJECT_DIR$/content" />
     <property name="node.js.detected.package.eslint" value="true" />
     <property name="node.js.detected.package.tslint" value="true" />
     <property name="node.js.path.for.package.eslint" value="project" />
@@ -74,7 +75,8 @@
       <workItem from="1627729850608" duration="1182000" />
       <workItem from="1627732908422" duration="1385000" />
       <workItem from="1627738918917" duration="982000" />
-      <workItem from="1627739924928" duration="7467000" />
+      <workItem from="1627739924928" duration="7566000" />
+      <workItem from="1627793990646" duration="629000" />
     </task>
     <task id="LOCAL-00001" summary="Second commit for testing purposes">
       <created>1627739619455</created>
@@ -104,7 +106,14 @@
       <option name="project" value="LOCAL" />
       <updated>1627753375066</updated>
     </task>
-    <option name="localTasksCounter" value="5" />
+    <task id="LOCAL-00005" summary="connecting the api with the connectedcallback method of phj-master so the table can be constructed with the data in it and the right amount of columns 'n stuff">
+      <created>1627764883206</created>
+      <option name="number" value="00005" />
+      <option name="presentableId" value="LOCAL-00005" />
+      <option name="project" value="LOCAL" />
+      <updated>1627764883206</updated>
+    </task>
+    <option name="localTasksCounter" value="6" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -118,13 +127,14 @@
     <MESSAGE value="Third commit having a white screen in php storm why?" />
     <MESSAGE value="4e the commit restore the fault in my tag" />
     <MESSAGE value="start phj-master component" />
-    <option name="LAST_COMMIT_MESSAGE" value="start phj-master component" />
+    <MESSAGE value="connecting the api with the connectedcallback method of phj-master so the table can be constructed with the data in it and the right amount of columns 'n stuff" />
+    <option name="LAST_COMMIT_MESSAGE" value="connecting the api with the connectedcallback method of phj-master so the table can be constructed with the data in it and the right amount of columns 'n stuff" />
   </component>
   <component name="WindowStateProjectService">
-    <state x="585" y="88" key="CommitChangelistDialog2" timestamp="1627753374256">
+    <state x="585" y="88" key="CommitChangelistDialog2" timestamp="1627764882459">
       <screen x="0" y="0" width="1920" height="1040" />
     </state>
-    <state x="585" y="88" key="CommitChangelistDialog2/0.0.1920.1040@0.0.1920.1040" timestamp="1627753374256" />
+    <state x="585" y="88" key="CommitChangelistDialog2/0.0.1920.1040@0.0.1920.1040" timestamp="1627764882459" />
     <state x="184" y="86" key="DiffContextDialog" timestamp="1627729652791">
       <screen x="0" y="0" width="1920" height="1040" />
     </state>
@@ -141,9 +151,9 @@
       <screen x="0" y="0" width="1920" height="1040" />
     </state>
     <state x="461" y="165" key="SettingsEditor/0.0.1920.1040@0.0.1920.1040" timestamp="1627739971507" />
-    <state x="552" y="253" key="Vcs.Push.Dialog.v2" timestamp="1627753381795">
+    <state x="552" y="253" key="Vcs.Push.Dialog.v2" timestamp="1627764887519">
       <screen x="0" y="0" width="1920" height="1040" />
     </state>
-    <state x="552" y="253" key="Vcs.Push.Dialog.v2/0.0.1920.1040@0.0.1920.1040" timestamp="1627753381795" />
+    <state x="552" y="253" key="Vcs.Push.Dialog.v2/0.0.1920.1040@0.0.1920.1040" timestamp="1627764887519" />
   </component>
 </project>
