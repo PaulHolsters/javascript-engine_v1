@@ -59,6 +59,8 @@ class PhjMaster extends ComponentLogics {
             this._baseUrl = content._baseUrl
         }
         this._url = this._baseUrl + this._path
+        // todo do the necessary checks first before calling for data
+
         this._getAll().then(data => {
             // data consists of an array with the specifications as an object (see docs API) named "specifications"
             // and some extra data needed to construct this component
@@ -75,49 +77,37 @@ class PhjMaster extends ComponentLogics {
                             if(slot.assignedNodes()[0]){
                                 this._state.text = slot.assignedNodes()[0].textContent
             * */
-
             const content = this._getFirstParent('phj-crud-template')
             if (content) {
                 const slottedContent = content.shadowRoot.querySelectorAll('div > slot')
                 for (let i = 0;i<slottedContent.length;i++){
                     if(slottedContent[i].hasAttribute('name') && slottedContent[i].getAttribute('name')==='action-pane'){
-                        content._notifyMe({available:'phj-action-pane'}).then(
-                            ()=>{
-
-                            }
-                        ).catch(err=>{
-                            console.log(err)
-                        })
+                        if(!content._isAvailable('phj-action-pane')){
+                            // when the action-pane is created the built of the component will be continued
+                            content._registerListener(this,'phj-action-pane')
+                            data = null
+                        }
                     }
                 }
-                const pane = content.querySelectorAll('div > slot')
-                console.log(pane)
-                if(pane){
-
-                }
             }
-            // build html-string
-            let titleBar = ''
-            let head = ''
-            let body = '<div>'
-            for (let spec in data.specifications){
-                body += `<div>${spec.specification}</div><div>${spec.type}</div><div>${spec.price}</div>`
-                if(this._state.crud){
-
-                    body += `<div></div>`
-                }
-            }
-            let html =
-`
-<phj-container>
-            
-</phj-container>
-`
-
-            return html
+            return data
         }).then(
-            (html) => {
-                // set css of the webcomponent
+            (data) => {
+                let html = ''
+                if(data){
+                    // build html-string
+                    let titleBar = ''
+                    let head = ''
+                    let body = '<div>'
+                    for (let spec in data.specifications){
+                        body += `<div>${spec.specification}</div><div>${spec.type}</div><div>${spec.price}</div>`
+                        if(this._state.has_actions){
+                            // todo is het het icon of zijn het buttons?
+                            body += `<div></div>`
+                        }
+                    }
+                    html = head + body
+                }
                 this._setLayoutState('default')
                 // create the table with the data in it
                 this._setShadow(html)
@@ -129,8 +119,6 @@ class PhjMaster extends ComponentLogics {
         ).catch(err => {
             console.log(err)
         })
-
-
     }
 }
 

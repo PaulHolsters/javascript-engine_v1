@@ -1,6 +1,6 @@
 class ComponentLogics extends HTMLElement {
 
-    _possibleLayoutStates = ['disabled', 'enabled', 'displayed', 'hidden', 'visible', 'invisible','selected','deselected']
+    _possibleLayoutStates = ['disabled', 'enabled', 'displayed', 'hidden', 'visible', 'invisible', 'selected', 'deselected']
     _layoutStates
     _currentLayoutState
 
@@ -12,29 +12,41 @@ class ComponentLogics extends HTMLElement {
 
     // the baseUrl variable should be used by the phj-content component, everything inside that component can be considered
     // being part of that baseUrl
-        // however its possible to not use a baseurl and just go for a complete url structure
+    // however its possible to not use a baseurl and just go for a complete url structure
     _baseUrl = ''
     _path = ''
     _url = ''
-    _availableChildComponents
-    _childComponentListeners
+    _availableChildComponents = []
+    _registeredListeners = []
 
-    _getFirstParent(elementType){
+    _isAvailable(elementType) {
+
+    }
+
+    _getFirstParent(elementType) {
         let parent = this.parentElement
-        while(parent !== null && parent.tagName !== elementType.toUpperCase()){
+        while (parent !== null && parent.tagName !== elementType.toUpperCase()) {
             parent = parent.parentElement
         }
         return parent
     }
 
-    _processEvent(event){
-        switch (event.name){
+    _processEvent(event) {
+        switch (event.name) {
             case 'component-created':
-                // notify interested child-components
+                this._availableChildComponents.push(event.detail.component)
+                for (let i = 0;i<this._registeredListeners.length;i++){
+                    if(this._registeredListeners[i].component.tagName === event.detail.component.tagName){
+                        // emit event that will notify the listener
 
+                    }
+                }
                 break
-
         }
+    }
+
+    _registerListener(listener,element) {
+        this._registeredListeners.push({listener:listener,component:element.toUpperCase()})
     }
 
     _setLayoutState(state) {
@@ -59,7 +71,7 @@ class ComponentLogics extends HTMLElement {
             } else if (this.shadowRoot.querySelector('input').hasAttribute('disabled')) {
                 this.shadowRoot.querySelector('input').removeAttribute('disabled')
             }
-        } else if(this.shadowRoot.querySelector('textarea')){
+        } else if (this.shadowRoot.querySelector('textarea')) {
             if (state === 'disabled' && !this.shadowRoot.querySelector('textarea').hasAttribute('disabled')) {
                 this.shadowRoot.querySelector('textarea').setAttribute('disabled', 'true')
             } else if (this.shadowRoot.querySelector('textarea').hasAttribute('disabled')) {
@@ -72,27 +84,27 @@ class ComponentLogics extends HTMLElement {
         this.shadowRoot.innerHTML = this._css + this._html
     }
 
-    _getState(property){
-        if(this._state.hasOwnProperty(property)){
+    _getState(property) {
+        if (this._state.hasOwnProperty(property)) {
             return this._state[property]
         }
     }
 
-    _setState(property,value){
-        if(this._state.hasOwnProperty(property)){
-            switch (property){
+    _setState(property, value) {
+        if (this._state.hasOwnProperty(property)) {
+            switch (property) {
                 case 'value':
                     this._state.value = value
                     this.setAttribute('value', value)
                     break
                 case 'text':
-                    if (this.shadowRoot.querySelector('input[type="text"]')||this.shadowRoot.querySelector('input[type="number"]')) {
+                    if (this.shadowRoot.querySelector('input[type="text"]') || this.shadowRoot.querySelector('input[type="number"]')) {
                         this.shadowRoot.querySelector('input').value = value
                         this._state.text = value
-                    } else if(this.shadowRoot.querySelector('input[type="radio"]')) {
+                    } else if (this.shadowRoot.querySelector('input[type="radio"]')) {
                         this._state.text = value
                         this.shadowRoot.querySelector('#text').innerHTML = value
-                    } else if(this.shadowRoot.querySelector('textarea')){
+                    } else if (this.shadowRoot.querySelector('textarea')) {
                         this.shadowRoot.querySelector('textarea').innerText = value
                         this._state.text = value
                     } else {
@@ -166,20 +178,20 @@ class ComponentLogics extends HTMLElement {
                         this._state.text = this.getAttribute('text').trim()
                         this.shadowRoot.querySelector('#text').innerHTML = this._state.text
                         if (this.shadowRoot.querySelector('input')) {
-                            this.shadowRoot.querySelector('input').value=this._state.text
-                        } else if(this.shadowRoot.querySelector('textarea')){
-                            this.shadowRoot.querySelector('textarea').innerText=this._state.text
+                            this.shadowRoot.querySelector('input').value = this._state.text
+                        } else if (this.shadowRoot.querySelector('textarea')) {
+                            this.shadowRoot.querySelector('textarea').innerText = this._state.text
                         }
                     } else {
                         const slot = this.shadowRoot.querySelector('#text > slot')
                         slot.addEventListener('slotchange', () => {
-                            if(slot.assignedNodes()[0]){
+                            if (slot.assignedNodes()[0]) {
                                 this._state.text = slot.assignedNodes()[0].textContent
                                 if (this.shadowRoot.querySelector('input[type="text"]')
-                                    ||this.shadowRoot.querySelector('input[type="number"]')) {
-                                    this.shadowRoot.querySelector('input').value=this._state.text
-                                } else if(this.shadowRoot.querySelector('textarea')){
-                                    this.shadowRoot.querySelector('textarea').innerText=this._state.text
+                                    || this.shadowRoot.querySelector('input[type="number"]')) {
+                                    this.shadowRoot.querySelector('input').value = this._state.text
+                                } else if (this.shadowRoot.querySelector('textarea')) {
+                                    this.shadowRoot.querySelector('textarea').innerText = this._state.text
                                 }
                             }
                         })
@@ -275,8 +287,8 @@ class ComponentLogics extends HTMLElement {
                             // a component can have either a value or a text property, never both!
                             const targets = document.querySelectorAll(value2)
                             for (let j = 0; j < targets.length; j++) {
-                                if (targets[j]._getState('text')  !== undefined) {
-                                    targets[j]._setState('text',elements[0]._getState('text'))
+                                if (targets[j]._getState('text') !== undefined) {
+                                    targets[j]._setState('text', elements[0]._getState('text'))
                                 }
                             }
                         } else if (elements[0]._getState('value') !== undefined) {
@@ -284,9 +296,9 @@ class ComponentLogics extends HTMLElement {
                             // replace the value of every target if it has that property
                             const targets = document.querySelectorAll(value2)
                             for (let j = 0; j < targets.length; j++) {
-                                if (targets[j]._getState('value')  !== undefined) {
+                                if (targets[j]._getState('value') !== undefined) {
                                     // copying the value property-value from the source to the targets, if it has such a property
-                                    targets[j]._setState('value',elements[0]._getState('value') )
+                                    targets[j]._setState('value', elements[0]._getState('value'))
                                     // after changing the state of this components attribute changed callback will make sure
                                     // a rest call will get the data associated with that value, depending
                                     // whether the component is configured that way which is the case for the card component
@@ -307,7 +319,6 @@ class ComponentLogics extends HTMLElement {
                 break;
         }
     }
-
 
 
 }
