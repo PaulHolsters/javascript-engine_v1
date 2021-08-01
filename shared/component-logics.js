@@ -20,7 +20,7 @@ class ComponentLogics extends HTMLElement {
     _registeredListeners = []
 
     _isAvailable(elementType) {
-
+        return false
     }
 
     _getFirstParent(elementType) {
@@ -32,21 +32,28 @@ class ComponentLogics extends HTMLElement {
     }
 
     _processEvent(event) {
-        switch (event.name) {
-            case 'component-created':
-                this._availableChildComponents.push(event.detail.component)
-                for (let i = 0;i<this._registeredListeners.length;i++){
-                    if(this._registeredListeners[i].component.tagName === event.detail.component.tagName){
-                        // emit event that will notify the listener
-
+        console.log(event)
+        switch (event.type) {
+            case 'action-pane-created':
+                if (this.tagName.toLowerCase() === 'phj-crud-template' && Object.is(event.detail.component._getFirstParent('phj-crud-template'), this)) {
+                    this._availableChildComponents.push(event.detail.component)
+                    for (let i = 0; i < this._registeredListeners.length; i++) {
+                        if (this._registeredListeners[i].component === event.detail.component.tagName
+                            && Object.is(this._registeredListeners[i].listener._getFirstParent('phj-crud-template'), this)) {
+                            const newEvent = new Event('action-pane-created')
+                            this._registeredListeners[i].listener.addEventListener('action-pane-created', this._registeredListeners[i].listener._buildTable)
+                            this._registeredListeners[i].listener.dispatchEvent(newEvent)
+                        }
                     }
                 }
                 break
+            default:
+                console.log(event.type)
         }
     }
 
-    _registerListener(listener,element) {
-        this._registeredListeners.push({listener:listener,component:element.toUpperCase()})
+    _registerListener(listener, elementType) {
+        this._registeredListeners.push({listener: listener, component: elementType.toUpperCase()})
     }
 
     _setLayoutState(state) {

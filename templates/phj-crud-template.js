@@ -37,10 +37,8 @@ class PhjCrudTemplate extends ComponentLogics {
             <slot name="action-pane"></slot>
         </div>
         `)
-        console.log('adding template',this._html)
         // set innerhtml (could be seen as a render method maybe?)
         this._executeShadow()
-        console.log('template created',this.shadowRoot.querySelector('div > slot').getAttribute('name'))
         // set eventHandlers and handle attributes
         //this._setUpAttributes('path','title')
     }

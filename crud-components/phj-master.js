@@ -2,6 +2,7 @@ class PhjMaster extends ComponentLogics {
 
     constructor() {
         super();
+        this.addEventListener('action-pane-created', this._buildTable, false);
         this.attachShadow({mode: 'open'})
         // todo what states this component can be in: none as far as I can tell
         this._layoutStates = {
@@ -49,7 +50,9 @@ class PhjMaster extends ComponentLogics {
 
     }
 
-    connectedCallback() {
+    _buildTable(){
+        console.log('building')
+        this._state.has_actions = true
         // get all data to feel the master table with
         if (this.hasAttribute('path') && this.getAttribute('path').substr(0, 3) === 'get') {
             this._path = this.getAttribute('path').substring(4)
@@ -59,67 +62,44 @@ class PhjMaster extends ComponentLogics {
             this._baseUrl = content._baseUrl
         }
         this._url = this._baseUrl + this._path
-        // todo do the necessary checks first before calling for data
+        this._getAll().then(data=>{
+            console.log(data)
+            let body = '<div>'
+            for (let i = 0;i<data.length;i++){
+                body += `<div>${data[i].specification}</div><div>${data[i].type}</div><div>${data[i].price}</div>`
+                if(this._state.has_actions){
+                    // todo is het het icon of zijn het buttons?
+                    body += `<div>...</div>`
+                }
+            }
+            this.innerHTML = body
+            console.log(this.innerHTML)
+        }).catch()
+    }
 
+    connectedCallback() {
+        // check whether the table of this component needs an actions-column at the end
+        const crudTemplate = this._getFirstParent('phj-crud-template')
+        if (crudTemplate) {
+            const slottedContent = crudTemplate.shadowRoot.querySelectorAll('div > slot')
+            for (let i = 0;i<slottedContent.length;i++){
+                if(slottedContent[i].hasAttribute('name') && slottedContent[i].getAttribute('name')==='action-pane'){
+                    if(!crudTemplate._isAvailable('phj-action-pane')){
+                        crudTemplate._registerListener(this,'phj-action-pane')
+                        console.log('registered: ',this,'phj-action-pane')
+                        // when the action-pane is created the built of the component will be continue
+                        this._setLayoutState('default')
+                        // create the table with the data in it
+                        this._setShadow('<p>placeholder</p>')
 
-        this._getAll().then(data => {
-            // data consists of an array with the specifications as an object (see docs API) named "specifications"
-            // and some extra data needed to construct this component
-
-            // check whether an actions columns is required
-            // principle: if there is an action pane there has to be at least one action
-            // so first we check if the crud-template has an action pane
-            // then we check if the master component has buttons inside it with a read, update or delete attribute
-            // if so this component needs an actions column otherwise it doesn't
-
-            /*
-            *                         const slot = this.shadowRoot.querySelector('#text > slot')
-                        slot.addEventListener('slotchange', () => {
-                            if(slot.assignedNodes()[0]){
-                                this._state.text = slot.assignedNodes()[0].textContent
-            * */
-            const content = this._getFirstParent('phj-crud-template')
-            if (content) {
-                const slottedContent = content.shadowRoot.querySelectorAll('div > slot')
-                for (let i = 0;i<slottedContent.length;i++){
-                    if(slottedContent[i].hasAttribute('name') && slottedContent[i].getAttribute('name')==='action-pane'){
-                        if(!content._isAvailable('phj-action-pane')){
-                            // when the action-pane is created the built of the component will be continued
-                            content._registerListener(this,'phj-action-pane')
-                            data = null
-                        }
+                        // set innerhtml (could be seen as a render method maybe?)
+                        this._executeShadow()
+                        // set eventHandlers and handle attributes
+                        this._setUpAttributes('path','title')
                     }
                 }
             }
-            return data
-        }).then(
-            (data) => {
-                let html = ''
-                if(data){
-                    // build html-string
-                    let titleBar = ''
-                    let head = ''
-                    let body = '<div>'
-                    for (let spec in data.specifications){
-                        body += `<div>${spec.specification}</div><div>${spec.type}</div><div>${spec.price}</div>`
-                        if(this._state.has_actions){
-                            // todo is het het icon of zijn het buttons?
-                            body += `<div></div>`
-                        }
-                    }
-                    html = head + body
-                }
-                this._setLayoutState('default')
-                // create the table with the data in it
-                this._setShadow(html)
-                // set innerhtml (could be seen as a render method maybe?)
-                this._executeShadow()
-                // set eventHandlers and handle attributes
-                this._setUpAttributes('path','title')
-            }
-        ).catch(err => {
-            console.log(err)
-        })
+        }
     }
 }
 

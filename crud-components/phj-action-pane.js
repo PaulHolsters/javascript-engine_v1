@@ -35,9 +35,9 @@ class PhjActionPane extends ComponentLogics {
         // set innerhtml (could be seen as a render method maybe?)
         this._executeShadow()
         // notify other interested components that this component is created
-        const actionPaneReady = new CustomEvent('component-created', {bubbles: true, detail: {component:this}})
+        const actionPaneReady = new CustomEvent('action-pane-created',{bubbles:true,detail:{component:this}})
         const target = this._getFirstParent('phj-crud-template')
-        target.addEventListener('component-created', target._processEvent, false)
+        target.addEventListener('action-pane-created', target._processEvent, false)
         target.dispatchEvent(actionPaneReady)
         // set eventHandlers and handle attributes
         //this._setUpAttributes('path','title')

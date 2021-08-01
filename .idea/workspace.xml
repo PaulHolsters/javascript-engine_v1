@@ -2,7 +2,12 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="541aa9e8-3035-4513-acb8-e23ab7e5a48a" name="Default Changelist" comment="">
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/crud-components/phj-action-pane.js" beforeDir="false" afterPath="$PROJECT_DIR$/crud-components/phj-action-pane.js" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/crud-components/phj-master.js" beforeDir="false" afterPath="$PROJECT_DIR$/crud-components/phj-master.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/index.html" beforeDir="false" afterPath="$PROJECT_DIR$/index.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/shared/component-logics.js" beforeDir="false" afterPath="$PROJECT_DIR$/shared/component-logics.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/templates/phj-crud-template.js" beforeDir="false" afterPath="$PROJECT_DIR$/templates/phj-crud-template.js" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -72,7 +77,8 @@
       <workItem from="1627732908422" duration="1385000" />
       <workItem from="1627738918917" duration="982000" />
       <workItem from="1627739924928" duration="7566000" />
-      <workItem from="1627793990646" duration="19817000" />
+      <workItem from="1627793990646" duration="19849000" />
+      <workItem from="1627831718415" duration="10836000" />
     </task>
     <task id="LOCAL-00001" summary="Second commit for testing purposes">
       <created>1627739619455</created>
@@ -130,7 +136,14 @@
       <option name="project" value="LOCAL" />
       <updated>1627823751912</updated>
     </task>
-    <option name="localTasksCounter" value="9" />
+    <task id="LOCAL-00009" summary="creating table for the phj-master component&#10;+ start of notification system for availability of components&#10;PART3">
+      <created>1627825274723</created>
+      <option name="number" value="00009" />
+      <option name="presentableId" value="LOCAL-00009" />
+      <option name="project" value="LOCAL" />
+      <updated>1627825274723</updated>
+    </task>
+    <option name="localTasksCounter" value="10" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -148,17 +161,18 @@
     <MESSAGE value="created phj-content to use baseUrl property" />
     <MESSAGE value="creating table for the phj-master component&#10;+ start of notification system for availability of components" />
     <MESSAGE value="creating table for the phj-master component&#10;+ start of notification system for availability of components&#10;PART2" />
-    <option name="LAST_COMMIT_MESSAGE" value="creating table for the phj-master component&#10;+ start of notification system for availability of components&#10;PART2" />
+    <MESSAGE value="creating table for the phj-master component&#10;+ start of notification system for availability of components&#10;PART3" />
+    <option name="LAST_COMMIT_MESSAGE" value="creating table for the phj-master component&#10;+ start of notification system for availability of components&#10;PART3" />
   </component>
   <component name="WindowStateProjectService">
     <state x="586" y="198" key="#Inspections" timestamp="1627821810157">
       <screen x="0" y="0" width="1920" height="1040" />
     </state>
     <state x="586" y="198" key="#Inspections/0.0.1920.1040@0.0.1920.1040" timestamp="1627821810157" />
-    <state x="271" y="88" key="CommitChangelistDialog2" timestamp="1627823751077">
+    <state x="271" y="88" key="CommitChangelistDialog2" timestamp="1627825274078">
       <screen x="0" y="0" width="1920" height="1040" />
     </state>
-    <state x="271" y="88" key="CommitChangelistDialog2/0.0.1920.1040@0.0.1920.1040" timestamp="1627823751077" />
+    <state x="271" y="88" key="CommitChangelistDialog2/0.0.1920.1040@0.0.1920.1040" timestamp="1627825274078" />
     <state x="184" y="86" key="DiffContextDialog" timestamp="1627729652791">
       <screen x="0" y="0" width="1920" height="1040" />
     </state>
@@ -175,9 +189,9 @@
       <screen x="0" y="0" width="1920" height="1040" />
     </state>
     <state x="461" y="165" key="SettingsEditor/0.0.1920.1040@0.0.1920.1040" timestamp="1627739971507" />
-    <state x="552" y="253" key="Vcs.Push.Dialog.v2" timestamp="1627823755192">
+    <state x="552" y="253" key="Vcs.Push.Dialog.v2" timestamp="1627825279015">
       <screen x="0" y="0" width="1920" height="1040" />
     </state>
-    <state x="552" y="253" key="Vcs.Push.Dialog.v2/0.0.1920.1040@0.0.1920.1040" timestamp="1627823755192" />
+    <state x="552" y="253" key="Vcs.Push.Dialog.v2/0.0.1920.1040@0.0.1920.1040" timestamp="1627825279015" />
   </component>
 </project>
