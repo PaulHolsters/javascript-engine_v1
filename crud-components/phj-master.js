@@ -61,6 +61,7 @@ class PhjMaster extends ComponentLogics {
         this._url = this._baseUrl + this._path
         // todo do the necessary checks first before calling for data
 
+
         this._getAll().then(data => {
             // data consists of an array with the specifications as an object (see docs API) named "specifications"
             // and some extra data needed to construct this component
