@@ -1,4 +1,4 @@
-class PhjMaster extends ComponentLogics {
+class PhjContent extends ComponentLogics {
 
     constructor() {
         super();
@@ -41,20 +41,9 @@ class PhjMaster extends ComponentLogics {
 
     connectedCallback() {
         // get all data to feel the master table with
-        if (this.hasAttribute('path')) {
-            this._path = this.getAttribute('path')
+        if (this.hasAttribute('baseUrl')) {
+            this._baseUrl = this.getAttribute('baseUrl')
         }
-        const content = this._getFirstParent('phj-content')
-        if (content) {
-            this._baseUrl = content._baseUrl
-        }
-        this._url = this._baseUrl + this._path
-        this._getAll().then(res => {
-            console.log(res)
-        }).catch(err => {
-            console.log(err)
-        })
-
         // set css of the webcomponent
         this._setLayoutState('default')
         // create the table with the data in it
@@ -64,10 +53,10 @@ class PhjMaster extends ComponentLogics {
         // set innerhtml (could be seen as a render method maybe?)
         this._executeShadow()
         // set eventHandlers and handle attributes
-        this._setUpAttributes('url', 'actions', 'title')
+        this._setUpAttributes('baseUrl')
         // during the setup of the url attribute the restCall should be made
         // the innerHTML of the component should be re-rendered according to the response
     }
 }
 
-customElements.define('phj-master', PhjMaster)
+customElements.define('phj-content', PhjContent)
