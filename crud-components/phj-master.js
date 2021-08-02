@@ -46,12 +46,12 @@ class PhjMaster extends ComponentLogics {
             read_active: false,
             update_active: false,
             delete_active: false,
+            title:''
         }
 
     }
 
     _buildTable(){
-        console.log('building')
         this._state.has_actions = true
         // get all data to feel the master table with
         if (this.hasAttribute('path') && this.getAttribute('path').substr(0, 3) === 'get') {
@@ -62,18 +62,36 @@ class PhjMaster extends ComponentLogics {
             this._baseUrl = content._baseUrl
         }
         this._url = this._baseUrl + this._path
+        // todo let columns be created by counting the number of properties of the data object because this is not reusable
         this._getAll().then(data=>{
-            console.log(data)
+            let title = `<div>${this._state.title}</div>`
             let body = '<div>'
-            for (let i = 0;i<data.length;i++){
-                body += `<div>${data[i].specification}</div><div>${data[i].type}</div><div>${data[i].price}</div>`
-                if(this._state.has_actions){
-                    // todo is het het icon of zijn het buttons?
-                    body += `<div>...</div>`
+            for (let i = -1;i<data.length;i++){
+                if(i!==-1){
+                    body += `<div><div>${data[i].specification}</div><div>${data[i].type}</div><div>${data[i].price}</div></div>`
+                    if(this._state.has_actions){
+                        // todo is het het icon of zijn het buttons?
+                        body += `<div>...</div>`
+                    }
+                } else{
+                    // head
+                    body += `<div><div></div><div></div><div></div></div>`
+                    if(this._state.has_actions){
+                        // todo is het het icon of zijn het buttons?
+                        body += `<div></div>`
+                    }
                 }
+
             }
-            this.innerHTML = body
-            console.log(this.innerHTML)
+            body+='</div>'
+            // todo inject table into master
+            this._setLayoutState('default')
+            // create the table with the data in it
+            this._setShadow(title+body)
+
+            // set innerhtml (could be seen as a render method maybe?)
+            this._executeShadow()
+
         }).catch()
     }
 
@@ -87,15 +105,10 @@ class PhjMaster extends ComponentLogics {
                     if(!crudTemplate._isAvailable('phj-action-pane')){
                         crudTemplate._registerListener(this,'phj-action-pane')
                         console.log('registered: ',this,'phj-action-pane')
-                        // when the action-pane is created the built of the component will be continue
-                        this._setLayoutState('default')
-                        // create the table with the data in it
-                        this._setShadow('<p>placeholder</p>')
-
-                        // set innerhtml (could be seen as a render method maybe?)
-                        this._executeShadow()
                         // set eventHandlers and handle attributes
                         this._setUpAttributes('path','title')
+                        // when the action-pane is created the built of the component will be continue
+
                     }
                 }
             }

@@ -2,7 +2,9 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="541aa9e8-3035-4513-acb8-e23ab7e5a48a" name="Default Changelist" comment="">
+      <change afterPath="$PROJECT_DIR$/content/phj-content-item.js" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/content/phj-content.js" beforeDir="false" afterPath="$PROJECT_DIR$/content/phj-content.js" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/crud-components/phj-action-pane.js" beforeDir="false" afterPath="$PROJECT_DIR$/crud-components/phj-action-pane.js" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/crud-components/phj-master.js" beforeDir="false" afterPath="$PROJECT_DIR$/crud-components/phj-master.js" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/index.html" beforeDir="false" afterPath="$PROJECT_DIR$/index.html" afterDir="false" />
@@ -35,7 +37,7 @@
   <component name="PropertiesComponent">
     <property name="RunOnceActivity.OpenProjectViewOnStart" value="true" />
     <property name="WebServerToolWindowFactoryState" value="false" />
-    <property name="last_opened_file_path" value="$PROJECT_DIR$/crud-components" />
+    <property name="last_opened_file_path" value="$PROJECT_DIR$/content" />
     <property name="node.js.detected.package.eslint" value="true" />
     <property name="node.js.detected.package.tslint" value="true" />
     <property name="node.js.path.for.package.eslint" value="project" />
@@ -48,10 +50,10 @@
   </component>
   <component name="RecentsManager">
     <key name="CopyFile.RECENT_KEYS">
+      <recent name="D:\privé-projecten\vistaline\content" />
       <recent name="D:\privé-projecten\vistaline\crud-components" />
       <recent name="D:\privé-projecten\vistaline\templates" />
       <recent name="D:\privé-projecten\vistaline\box-elements" />
-      <recent name="D:\privé-projecten\vistaline\content" />
       <recent name="D:\privé-projecten\vistaline\text-elements" />
     </key>
   </component>
@@ -78,7 +80,8 @@
       <workItem from="1627738918917" duration="982000" />
       <workItem from="1627739924928" duration="7566000" />
       <workItem from="1627793990646" duration="19849000" />
-      <workItem from="1627831718415" duration="10836000" />
+      <workItem from="1627831718415" duration="11662000" />
+      <workItem from="1627924896776" duration="4921000" />
     </task>
     <task id="LOCAL-00001" summary="Second commit for testing purposes">
       <created>1627739619455</created>
@@ -143,7 +146,14 @@
       <option name="project" value="LOCAL" />
       <updated>1627825274723</updated>
     </task>
-    <option name="localTasksCounter" value="10" />
+    <task id="LOCAL-00010" summary="end notification system for availability of components&#10;start buildTable method (data is visible in devtools!)">
+      <created>1627847560067</created>
+      <option name="number" value="00010" />
+      <option name="presentableId" value="LOCAL-00010" />
+      <option name="project" value="LOCAL" />
+      <updated>1627847560067</updated>
+    </task>
+    <option name="localTasksCounter" value="11" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -162,17 +172,18 @@
     <MESSAGE value="creating table for the phj-master component&#10;+ start of notification system for availability of components" />
     <MESSAGE value="creating table for the phj-master component&#10;+ start of notification system for availability of components&#10;PART2" />
     <MESSAGE value="creating table for the phj-master component&#10;+ start of notification system for availability of components&#10;PART3" />
-    <option name="LAST_COMMIT_MESSAGE" value="creating table for the phj-master component&#10;+ start of notification system for availability of components&#10;PART3" />
+    <MESSAGE value="end notification system for availability of components&#10;start buildTable method (data is visible in devtools!)" />
+    <option name="LAST_COMMIT_MESSAGE" value="end notification system for availability of components&#10;start buildTable method (data is visible in devtools!)" />
   </component>
   <component name="WindowStateProjectService">
     <state x="586" y="198" key="#Inspections" timestamp="1627821810157">
       <screen x="0" y="0" width="1920" height="1040" />
     </state>
     <state x="586" y="198" key="#Inspections/0.0.1920.1040@0.0.1920.1040" timestamp="1627821810157" />
-    <state x="271" y="88" key="CommitChangelistDialog2" timestamp="1627825274078">
+    <state x="271" y="88" key="CommitChangelistDialog2" timestamp="1627847558891">
       <screen x="0" y="0" width="1920" height="1040" />
     </state>
-    <state x="271" y="88" key="CommitChangelistDialog2/0.0.1920.1040@0.0.1920.1040" timestamp="1627825274078" />
+    <state x="271" y="88" key="CommitChangelistDialog2/0.0.1920.1040@0.0.1920.1040" timestamp="1627847558891" />
     <state x="184" y="86" key="DiffContextDialog" timestamp="1627729652791">
       <screen x="0" y="0" width="1920" height="1040" />
     </state>
@@ -189,9 +200,9 @@
       <screen x="0" y="0" width="1920" height="1040" />
     </state>
     <state x="461" y="165" key="SettingsEditor/0.0.1920.1040@0.0.1920.1040" timestamp="1627739971507" />
-    <state x="552" y="253" key="Vcs.Push.Dialog.v2" timestamp="1627825279015">
+    <state x="552" y="253" key="Vcs.Push.Dialog.v2" timestamp="1627847564976">
       <screen x="0" y="0" width="1920" height="1040" />
     </state>
-    <state x="552" y="253" key="Vcs.Push.Dialog.v2/0.0.1920.1040@0.0.1920.1040" timestamp="1627825279015" />
+    <state x="552" y="253" key="Vcs.Push.Dialog.v2/0.0.1920.1040@0.0.1920.1040" timestamp="1627847564976" />
   </component>
 </project>

@@ -143,7 +143,9 @@ class ComponentLogics extends HTMLElement {
 
                     break
                 case 'title':
-
+                    if (this.hasAttribute('title')) {
+                        this._state.title = this.getAttribute('title')
+                    }
                     break
                 case 'click':
                     if (this.hasAttribute('click')) {

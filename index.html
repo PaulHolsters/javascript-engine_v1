@@ -26,6 +26,8 @@
             <phj-content-item menu="Verkoop" sub-menu="Specificaties">
                 <phj-crud-template>
                     <phj-master slot="master" path="get:specifications" title="Overzicht">
+                        <!-- todo make a table element first and then us it here!-->
+                        <!--todo make these buttons visible in the ui!-->
                         <!--
                                     dit is zonder een dropdown content:
 
@@ -33,8 +35,9 @@
                                     <phj-button delete="verwijderen"></phj-button>
 
                          -->
-                        <phj-button create="specificatie" icon="phj-create" glue="title"></phj-button>
-                        <phj-button icon="dots" custom-styles="border:0;hover-background:light-gray">
+                        <phj-table></phj-table>
+                        <phj-button icon="phj-create" glue="title" create>specificatie</phj-button>
+                        <phj-button icon="phj-dots" custom-styles="border:0;hover-background:light-gray">
                                 <phj-select>
                                     <phj-option read>Details</phj-option>
                                     <phj-option update>Aanpassen</phj-option>

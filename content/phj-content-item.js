@@ -1,8 +1,9 @@
-class PhjCrudTemplate extends ComponentLogics {
+class PhjContentItem extends ComponentLogics {
 
     constructor() {
         super();
         this.attachShadow({mode: 'open'})
+        // todo what states this component can be in: none as far as I can tell
         this._layoutStates = {
             default: {
                 layoutState: {
@@ -18,30 +19,29 @@ class PhjCrudTemplate extends ComponentLogics {
         }
 
         this._state = {
+            // contains only data for computation
 
         }
 
+
     }
-
-
 
     connectedCallback() {
         // set css of the webcomponent
         this._setLayoutState('default')
         // create the table with the data in it
-        // todo : make the slotted content visisble
         this._setShadow(`
         <div>
-            <slot name="master"></slot>
-            <slot name="detail"></slot>
-            <slot name="action-pane"></slot>
+            <slot></slot>
         </div>
         `)
         // set innerhtml (could be seen as a render method maybe?)
         this._executeShadow()
         // set eventHandlers and handle attributes
-        //this._setUpAttributes('path','title')
+        this._setUpAttributes('menu','sub-menu')
+        // during the setup of the url attribute the restCall should be made
+        // the innerHTML of the component should be re-rendered according to the response
     }
 }
 
-customElements.define('phj-crud-template', PhjCrudTemplate)
+customElements.define('phj-content-item', PhjContentItem)

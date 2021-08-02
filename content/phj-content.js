@@ -20,20 +20,7 @@ class PhjContent extends ComponentLogics {
 
         this._state = {
             // contains only data for computation
-            row_selected: false,
-            number_of_row_selected: null,
-            id_selected: null,
-            full_length: true,
-            menu_open: false,
-            number_of_visible_columns: null,
-            column_width: 'fixed',
-            number_of_visible_rows: null,
-            row_height: 'fixed',
-            scroll_X: false,
-            scroll_Y: false,
-            crud_active: false,
-            has_detail: false,
-            detail_active: false
+
         }
 
 
@@ -49,7 +36,9 @@ class PhjContent extends ComponentLogics {
         this._setLayoutState('default')
         // create the table with the data in it
         this._setShadow(`
-
+        <div>
+            <slot></slot>
+        </div>
         `)
         // set innerhtml (could be seen as a render method maybe?)
         this._executeShadow()
