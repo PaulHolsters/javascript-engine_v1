@@ -32,7 +32,7 @@ class PhjTitle extends ComponentLogics{
     connectedCallback() {
         // set css of the webcomponent
         this._setLayoutState('default')
-        // the slotted content can be used for a button
+        // the slotted content-elements can be used for a button
         this._setShadow(`
         <phj-box>
             <phj-text></phj-text><slot></slot>

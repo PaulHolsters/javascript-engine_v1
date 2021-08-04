@@ -10,7 +10,7 @@ class ComponentLogics extends HTMLElement {
     _actions
     _state
 
-    // the baseUrl variable should be used by the phj-content component, everything inside that component can be considered
+    // the baseUrl variable should be used by the phj-content-elements component, everything inside that component can be considered
     // being part of that baseUrl
     // however its possible to not use a baseurl and just go for a complete url structure
     _baseUrl = ''
@@ -134,7 +134,9 @@ class ComponentLogics extends HTMLElement {
         for (let i = 0; i < arguments.length; i++) {
             switch (arguments[i]) {
                 case 'url':
-
+                    if (this.hasAttribute('url')) {
+                        this._state.url = this.getAttribute('url')
+                    }
                     break
                 case 'type':
 

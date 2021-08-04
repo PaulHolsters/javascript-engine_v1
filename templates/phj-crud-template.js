@@ -29,7 +29,7 @@ class PhjCrudTemplate extends ComponentLogics {
         // set css of the webcomponent
         this._setLayoutState('default')
         // create the table with the data in it
-        // todo : make the slotted content visisble
+        // todo : make the slotted content-elements visisble
         this._setShadow(`
         <div>
             <slot name="master"></slot>

@@ -13,7 +13,7 @@
     <script src="table-elements/phj-table.js"></script>
     <script src="crud-components/phj-master.js"></script>
     <script src="crud-components/phj-action-pane.js"></script>
-    <script src="content/phj-content.js"></script>
+    <script src="content-elements/phj-content.js"></script>
     <script src="templates/phj-crud-template.js"></script>
     <script src="data-transmitters/phj-id.js"></script>
     <script src="text-elements/phj-text.js"></script>
@@ -23,7 +23,8 @@
     <script src="forms/phj-radio-button.js"></script>
 </head>
 <body>
-<phj-button>My button</phj-button>
+<phj-table url="get:http://localhost:3000/specifications" actions></phj-table>
+<!--<phj-button>My button</phj-button>
 <phj-box>
     <phj-text text="mynewtitle"></phj-text>
 </phj-box>
@@ -31,9 +32,9 @@
     Specificaties
     <phj-button icon="phj-create" create>specificatie</phj-button>
 </phj-title>
-<phj-content baseUrl="http://localhost:3000/">
-    <!--                  specificaties-pagina                    -->
-    <phj-table path="get:specifications" actions></phj-table>
+<phj-content style="height:90vh;background-color: darkgray" baseUrl="http://localhost:3000/">
+    &lt;!&ndash;                  specificaties-pagina                    &ndash;&gt;
+
     <phj-content-item menu="Verkoop" sub-menu="Specificaties">
         <phj-crud-template>
             <phj-title>
@@ -41,8 +42,8 @@
                 <phj-button icon="phj-create" create>specificatie</phj-button>
             </phj-title>
 
-            <!-- todo later : add filter and sort functionality to the table -->
-<!--            <phj-table path="get:specifications" actions>
+            &lt;!&ndash; todo later : add filter and sort functionality to the table &ndash;&gt;
+&lt;!&ndash;            <phj-table path="get:specifications" actions>
                 <phj-button icon="phj-dots" custom-styles="border:0;hover-background:light-gray">
                     <phj-select>
                         <phj-option read>Details</phj-option>
@@ -50,10 +51,10 @@
                         <phj-option delete>Verwijderen</phj-option>
                     </phj-select>
                 </phj-button>
-            </phj-table>-->
+            </phj-table>&ndash;&gt;
             <phj-action-pane slot="action-pane" title="Actievenster">
-                <!-- what type of request needs to be send will be given by phj-master which in turn got it as
-                meta info from the first response when it got all the data when loading the page -->
+                &lt;!&ndash; what type of request needs to be send will be given by phj-master which in turn got it as
+                meta info from the first response when it got all the data when loading the page &ndash;&gt;
                 <phj-form actions="create" title="Specificatie toevoegen">
                     <phj-message-group>
                         <phj-message type="success">Specificatie bewaard.</phj-message>
@@ -106,35 +107,35 @@
             </phj-action-pane>
         </phj-crud-template>
     </phj-content-item>
-    <!--                producten-pagina                            -->
+    &lt;!&ndash;                producten-pagina                            &ndash;&gt;
     <phj-content-item menu="verkoop" sub-menu="Producten">
 
     </phj-content-item>
-    <!--                klanten-pagina                              -->
+    &lt;!&ndash;                klanten-pagina                              &ndash;&gt;
     <phj-content-item menu="verkoop" sub-menu="Klanten">
 
     </phj-content-item>
-    <!--                offertes-pagina                             -->
+    &lt;!&ndash;                offertes-pagina                             &ndash;&gt;
     <phj-content-item menu="verkoop" sub-menu="Offertes">
 
     </phj-content-item>
-    <!--                facturen-pagina                             -->
+    &lt;!&ndash;                facturen-pagina                             &ndash;&gt;
     <phj-content-item menu="verkoop" sub-menu="Facturen">
 
     </phj-content-item>
-    <!--                fabrikanten-pagina                          -->
+    &lt;!&ndash;                fabrikanten-pagina                          &ndash;&gt;
     <phj-content-item menu="aankoop" sub-menu="Fabrikanten">
 
     </phj-content-item>
-    <!--                fabrieksdocumenten-pagina                   -->
+    &lt;!&ndash;                fabrieksdocumenten-pagina                   &ndash;&gt;
     <phj-content-item menu="aankoop" sub-menu="Fabrieksdocumenten">
 
     </phj-content-item>
-    <!--                financieel-overzicht-pagina         -->
+    &lt;!&ndash;                financieel-overzicht-pagina         &ndash;&gt;
     <phj-content-item menu="Financieel overzicht">
 
     </phj-content-item>
-</phj-content>
+</phj-content>-->
 </body>
 </html>
 
