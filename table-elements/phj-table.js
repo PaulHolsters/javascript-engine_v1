@@ -39,24 +39,26 @@ class PhjTable extends ComponentLogics {
         }
         this._url = this._baseUrl + this._path
         this._getAll().then(data=> {
-            // data format: {object with array-key:[{data-object}], number-of-data-objects-key:number, keys-key:[{index: key}],values-key:[{index:value}],model-name-key}
+            // data format: { listOfObjects:[{}], numberOfObjects:number, listOfProperties:[string], numberOfProperties:number, modelName:string}
             // als het een samengesteld model is, dan wordt hetzelfde format binnen herbruikt
-            let container = '<div>'
-            let body = '<div>'
-            for (let i = 0; i < data.NumberOfDataObjects; i++) {
-
-
-                    body += `<div><div>${data.listOfObjects[i].specification}</div><div>${data[i].type}</div><div>${data[i].price}</div></div>`
-                    if (this._state.has_actions) {
-                        // todo is het het icon of zijn het buttons?
-                        body += `<div>...</div>`
-                    }
-
-            }
+            //console.log(data)
             let head = '<div>'
-            container += '</div>'
+            for (let j = 0;j<data.numberOfProperties; j++){
+                head += `<div>${data.listOfProperties[j]}</div>`
+            }
+            head += '</div>'
+            let body = '<div>'
+            for (let i = 0; i < data.numberOfObjects; i++) {
+                let row = `<div>`
+                for (let j = 0;j<data.numberOfProperties; j++){
+                    row += `<div>${Object.values(data.listOfObjects[i])[j]}</div>`
+                }
+                row += `</div>`
+                body+=row
+            }
+            body +='</div>'
             this._setShadow(
-        body
+        `<div>${head}${body}</div>`
         )
             this._executeShadow()
             this._setUpAttributes('url', 'path', 'actions')

@@ -30,7 +30,12 @@ router.post('/', (req, res, next) => {
 router.get('/', (req, res, next) => {
     Specification.find().populate('specifications').exec().then(result => {
         // het is mogelijk dat result een lege array is omdat er nog geen specificaties zijn aangemaakt
-        res.status(200).json(result)
+        res.status(200).json({
+            listOfObjects:result,
+            numberOfObjects:result.length,
+            listOfProperties:['specification','type','price'],
+            numberOfProperties: 3
+        })
     }).catch(err => {
         res.status(500).json({
             error: err

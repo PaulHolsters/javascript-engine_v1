@@ -30,7 +30,7 @@ class PhjActionPane extends ComponentLogics {
         // create the table with the data in it
         // todo : work the structure out of this template
         this._setShadow(`
-        <div>actionpane in here?</div>
+        <div>forms start here</div>
         `)
         // set innerhtml (could be seen as a render method maybe?)
         this._executeShadow()

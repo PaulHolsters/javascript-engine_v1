@@ -33,6 +33,7 @@
 </phj-title>
 <phj-content baseUrl="http://localhost:3000/">
     <!--                  specificaties-pagina                    -->
+    <phj-table path="get:specifications" actions></phj-table>
     <phj-content-item menu="Verkoop" sub-menu="Specificaties">
         <phj-crud-template>
             <phj-title>
@@ -41,7 +42,7 @@
             </phj-title>
 
             <!-- todo later : add filter and sort functionality to the table -->
-            <phj-table path="get:specifications" actions>
+<!--            <phj-table path="get:specifications" actions>
                 <phj-button icon="phj-dots" custom-styles="border:0;hover-background:light-gray">
                     <phj-select>
                         <phj-option read>Details</phj-option>
@@ -49,7 +50,7 @@
                         <phj-option delete>Verwijderen</phj-option>
                     </phj-select>
                 </phj-button>
-            </phj-table>
+            </phj-table>-->
             <phj-action-pane slot="action-pane" title="Actievenster">
                 <!-- what type of request needs to be send will be given by phj-master which in turn got it as
                 meta info from the first response when it got all the data when loading the page -->
