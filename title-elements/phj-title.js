@@ -1,4 +1,4 @@
-class PhjText extends ComponentLogics{
+class PhjTitle extends ComponentLogics{
 
     constructor() {
         super();
@@ -10,33 +10,39 @@ class PhjText extends ComponentLogics{
                 },
                 css: `
 <style>
-    :host > div{
-    
-    }                              
+   :host{
+   
+   }
+   :host > phj-box{
+   
+   }
+   :host > phj-box > phj-text{
+   
+   }                
 </style>
 `
             }
         }
 
         this._state = {
-            text: '',
+            title: ''
         }
     }
 
     connectedCallback() {
         // set css of the webcomponent
         this._setLayoutState('default')
-        // set HTML of the webcomponent
+        // the slotted content can be used for a button
         this._setShadow(`
-        <div id="text">
-            <slot></slot>
-        </div>
+        <phj-box>
+            <phj-text></phj-text><slot></slot>
+        </phj-box>
         `)
         // set innerhtml
         this._executeShadow()
         // set eventHandlers and handle attributes
-        this._setUpAttributes('text','custom-styles')
+        this._setUpAttributes('title','custom-styles')
     }
 }
 
-customElements.define('phj-text',PhjText)
+customElements.define('phj-title',PhjTitle)

@@ -1,4 +1,4 @@
-class PhjText extends ComponentLogics{
+class PhjBox extends ComponentLogics{
 
     constructor() {
         super();
@@ -10,16 +10,16 @@ class PhjText extends ComponentLogics{
                 },
                 css: `
 <style>
-    :host > div{
-    
-    }                              
+  :host > div{
+
+  }                               
 </style>
 `
             }
         }
 
         this._state = {
-            text: '',
+            title: '',
         }
     }
 
@@ -28,15 +28,15 @@ class PhjText extends ComponentLogics{
         this._setLayoutState('default')
         // set HTML of the webcomponent
         this._setShadow(`
-        <div id="text">
+        <div>
             <slot></slot>
         </div>
         `)
         // set innerhtml
         this._executeShadow()
         // set eventHandlers and handle attributes
-        this._setUpAttributes('text','custom-styles')
+        this._setUpAttributes('custom-styles')
     }
 }
 
-customElements.define('phj-text',PhjText)
+customElements.define('phj-box',PhjBox)

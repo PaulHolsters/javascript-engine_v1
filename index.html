@@ -1,133 +1,139 @@
 <!doctype html>
 <html lang="en">
-    <head>
-        <meta charset="UTF-8">
-        <meta name="viewport"
-              content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
-        <meta http-equiv="X-UA-Compatible" content="ie=edge">
-        <title>Vistaline - administratief beheer</title>
-        <script src="shared/component-logics.js"></script>
-        <script src="buttons/phj-button.js"></script>
-        <script src="cards/phj-card.js"></script>
-        <script src="crud-components/phj-master.js"></script>
-        <script src="crud-components/phj-action-pane.js"></script>
-        <script src="content/phj-content.js"></script>
-        <script src="templates/phj-crud-template.js"></script>
-        <script src="data-transmitters/phj-id.js"></script>
-        <script src="text-elements/phj-text.js"></script>
-        <script src="forms/phj-text-input.js"></script>
-        <script src="forms/phj-number-input.js"></script>
-        <script src="forms/phj-textarea.js"></script>
-        <script src="forms/phj-radio-button.js"></script>
-    </head>
-    <body>
-        <phj-content baseUrl="http://localhost:3000/">
-            <!--                  specificaties-pagina                    -->
-            <phj-content-item menu="Verkoop" sub-menu="Specificaties">
-                <phj-crud-template>
-                    <phj-master slot="master" path="get:specifications" title="Overzicht">
-                        <!-- todo make a table element first and then us it here!-->
-                        <!--todo make these buttons visible in the ui!-->
-                        <!--
-                                    dit is zonder een dropdown content:
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Vistaline - administratief beheer</title>
+    <script src="shared/component-logics.js"></script>
+    <script src="box-elements/phj-box.js"></script>
+    <script src="buttons/phj-button.js"></script>
+    <script src="cards/phj-card.js"></script>
+    <script src="table-elements/phj-table.js"></script>
+    <script src="crud-components/phj-master.js"></script>
+    <script src="crud-components/phj-action-pane.js"></script>
+    <script src="content/phj-content.js"></script>
+    <script src="templates/phj-crud-template.js"></script>
+    <script src="data-transmitters/phj-id.js"></script>
+    <script src="text-elements/phj-text.js"></script>
+    <script src="forms/phj-text-input.js"></script>
+    <script src="forms/phj-number-input.js"></script>
+    <script src="forms/phj-textarea.js"></script>
+    <script src="forms/phj-radio-button.js"></script>
+</head>
+<body>
+<phj-button>My button</phj-button>
+<phj-box>
+    <phj-text text="mynewtitle"></phj-text>
+</phj-box>
+<phj-title>
+    Specificaties
+    <phj-button icon="phj-create" create>specificatie</phj-button>
+</phj-title>
+<phj-content baseUrl="http://localhost:3000/">
+    <!--                  specificaties-pagina                    -->
+    <phj-content-item menu="Verkoop" sub-menu="Specificaties">
+        <phj-crud-template>
+            <phj-title>
+                Specificaties
+                <phj-button icon="phj-create" create>specificatie</phj-button>
+            </phj-title>
 
-                                    <phj-button update="aanpassen"></phj-button>
-                                    <phj-button delete="verwijderen"></phj-button>
+            <!-- todo later : add filter and sort functionality to the table -->
+            <phj-table path="get:specifications" actions>
+                <phj-button icon="phj-dots" custom-styles="border:0;hover-background:light-gray">
+                    <phj-select>
+                        <phj-option read>Details</phj-option>
+                        <phj-option update>Aanpassen</phj-option>
+                        <phj-option delete>Verwijderen</phj-option>
+                    </phj-select>
+                </phj-button>
+            </phj-table>
+            <phj-action-pane slot="action-pane" title="Actievenster">
+                <!-- what type of request needs to be send will be given by phj-master which in turn got it as
+                meta info from the first response when it got all the data when loading the page -->
+                <phj-form actions="create" title="Specificatie toevoegen">
+                    <phj-message-group>
+                        <phj-message type="success">Specificatie bewaard.</phj-message>
+                        <phj-message type="error">Er ging iets mis! Specificatie niet bewaard.</phj-message>
+                    </phj-message-group>
+                    <phj-text-input label="Specififatie:" json="specification"></phj-text-input>
+                    <phj-select label="Type:" json="type">
+                        <phj-option selected>Basis</phj-option>
+                        <phj-option>Optie</phj-option>
+                        <phj-option>Extra</phj-option>
+                    </phj-select>
+                    <phj-number-input label="Prijs (excl.BTW):" money="euro" json="price"></phj-number-input>
+                    <phj-button-group>
+                        <phj-button click="close">Annuleer</phj-button>
+                        <phj-button click="reset">Reset</phj-button>
+                        <phj-button click="create:success=>201,error=>!201 reset">Bewaar</phj-button>
+                    </phj-button-group>
+                </phj-form>
+                <phj-form actions="read,update" title="Specificatie wijzigen">
+                    <phj-message-group>
+                        <phj-message type="success">Specificatie gewijzigd.</phj-message>
+                        <phj-message type="error">Er ging iets mis! Specificatie niet gewijzigd.</phj-message>
+                    </phj-message-group>
+                    <phj-text-input label="Specififatie:" json="specification"></phj-text-input>
+                    <phj-select label="Type:" json="type">
+                        <phj-option>Basis</phj-option>
+                        <phj-option>Optie</phj-option>
 
-                         -->
-                        <phj-table></phj-table>
-                        <phj-button icon="phj-create" glue="title" create>specificatie</phj-button>
-                        <phj-button icon="phj-dots" custom-styles="border:0;hover-background:light-gray">
-                                <phj-select>
-                                    <phj-option read>Details</phj-option>
-                                    <phj-option update>Aanpassen</phj-option>
-                                    <phj-option delete>Verwijderen</phj-option>
-                                </phj-select>
-                        </phj-button>
-                    </phj-master>
-                    <phj-action-pane slot="action-pane" title="Actievenster">
-                        <!-- what type of request needs to be send will be given by phj-master which in turn got it as
-                        meta info from the first response when it got all the data when loading the page -->
-                        <phj-form actions="create" title="Specificatie toevoegen">
-                            <phj-message-group>
-                                <phj-message type="success">Specificatie bewaard.</phj-message>
-                                <phj-message type="error">Er ging iets mis! Specificatie niet bewaard.</phj-message>
-                            </phj-message-group>
-                            <phj-text-input label="Specififatie:" json="specification"></phj-text-input>
-                            <phj-select label="Type:" json="type">
-                                <phj-option selected>Basis</phj-option>
-                                <phj-option>Optie</phj-option>
-                                <phj-option>Extra</phj-option>
-                            </phj-select>
-                            <phj-number-input label="Prijs (excl.BTW):" money="euro" json="price"></phj-number-input>
-                            <phj-button-group>
-                                <phj-button click="close">Annuleer</phj-button>
-                                <phj-button click="reset">Reset</phj-button>
-                                <phj-button click="create:success=>201,error=>!201 reset">Bewaar</phj-button>
-                            </phj-button-group>
-                        </phj-form>
-                        <phj-form actions="read,update" title="Specificatie wijzigen">
-                            <phj-message-group>
-                                <phj-message type="success">Specificatie gewijzigd.</phj-message>
-                                <phj-message type="error">Er ging iets mis! Specificatie niet gewijzigd.</phj-message>
-                            </phj-message-group>
-                            <phj-text-input label="Specififatie:" json="specification"></phj-text-input>
-                            <phj-select label="Type:" json="type">
-                                <phj-option>Basis</phj-option>
-                                <phj-option>Optie</phj-option>
+                        <phj-option>Extra</phj-option>
+                    </phj-select>
+                    <phj-number-input label="Prijs (excl.BTW):" money="euro" json="price"></phj-number-input>
+                    <phj-button-group>
+                        <phj-button click="close">Annuleer</phj-button>
+                        <phj-button click="reset">Reset</phj-button>
+                        <phj-button click="update:success=>200,error=>!200 close">Bewaar</phj-button>
+                    </phj-button-group>
+                </phj-form>
+                <phj-form actions="delete" title="Specificatie verwijderen">
+                    <phj-message-group>
+                        <phj-message type="info">Ben je zeker dat je deze specificatie wenst te verwijderen?
+                        </phj-message>
+                        <phj-message type="success">Specificatie verwijderd.</phj-message>
+                        <phj-message type="error">Er ging iets mis! Specificatie niet verwijderd.</phj-message>
+                    </phj-message-group>
+                    <phj-button-group>
+                        <phj-button click="close">Annuleer</phj-button>
+                        <phj-button click="delete:info=>close,success=>200,error=>!200 close">Verwijder</phj-button>
+                    </phj-button-group>
+                </phj-form>
+            </phj-action-pane>
+        </phj-crud-template>
+    </phj-content-item>
+    <!--                producten-pagina                            -->
+    <phj-content-item menu="verkoop" sub-menu="Producten">
 
-                                <phj-option>Extra</phj-option>
-                            </phj-select>
-                            <phj-number-input label="Prijs (excl.BTW):" money="euro" json="price"></phj-number-input>
-                            <phj-button-group>
-                                <phj-button click="close">Annuleer</phj-button>
-                                <phj-button click="reset">Reset</phj-button>
-                                <phj-button click="update:success=>200,error=>!200 close">Bewaar</phj-button>
-                            </phj-button-group>
-                        </phj-form>
-                        <phj-form actions="delete" title="Specificatie verwijderen">
-                            <phj-message-group>
-                                <phj-message type="info">Ben je zeker dat je deze specificatie wenst te verwijderen?</phj-message>
-                                <phj-message type="success">Specificatie verwijderd.</phj-message>
-                                <phj-message type="error">Er ging iets mis! Specificatie niet verwijderd.</phj-message>
-                            </phj-message-group>
-                            <phj-button-group>
-                                <phj-button click="close">Annuleer</phj-button>
-                                <phj-button click="delete:info=>close,success=>200,error=>!200 close">Verwijder</phj-button>
-                            </phj-button-group>
-                        </phj-form>
-                    </phj-action-pane>
-                </phj-crud-template>
-            </phj-content-item>
-            <!--                producten-pagina                            -->
-            <phj-content-item menu="verkoop" sub-menu="Producten">
+    </phj-content-item>
+    <!--                klanten-pagina                              -->
+    <phj-content-item menu="verkoop" sub-menu="Klanten">
 
-            </phj-content-item>
-            <!--                klanten-pagina                              -->
-            <phj-content-item menu="verkoop" sub-menu="Klanten">
+    </phj-content-item>
+    <!--                offertes-pagina                             -->
+    <phj-content-item menu="verkoop" sub-menu="Offertes">
 
-            </phj-content-item>
-            <!--                offertes-pagina                             -->
-            <phj-content-item menu="verkoop" sub-menu="Offertes">
+    </phj-content-item>
+    <!--                facturen-pagina                             -->
+    <phj-content-item menu="verkoop" sub-menu="Facturen">
 
-            </phj-content-item>
-            <!--                facturen-pagina                             -->
-            <phj-content-item menu="verkoop" sub-menu="Facturen">
+    </phj-content-item>
+    <!--                fabrikanten-pagina                          -->
+    <phj-content-item menu="aankoop" sub-menu="Fabrikanten">
 
-            </phj-content-item>
-            <!--                fabrikanten-pagina                          -->
-            <phj-content-item menu="aankoop" sub-menu="Fabrikanten">
+    </phj-content-item>
+    <!--                fabrieksdocumenten-pagina                   -->
+    <phj-content-item menu="aankoop" sub-menu="Fabrieksdocumenten">
 
-            </phj-content-item>
-            <!--                fabrieksdocumenten-pagina                   -->
-            <phj-content-item menu="aankoop" sub-menu="Fabrieksdocumenten">
+    </phj-content-item>
+    <!--                financieel-overzicht-pagina         -->
+    <phj-content-item menu="Financieel overzicht">
 
-            </phj-content-item>
-            <!--                financieel-overzicht-pagina         -->
-            <phj-content-item menu="Financieel overzicht">
-
-            </phj-content-item>
-        </phj-content>
-    </body>
+    </phj-content-item>
+</phj-content>
+</body>
 </html>
 
