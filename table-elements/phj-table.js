@@ -3,7 +3,6 @@ class PhjTable extends ComponentLogics {
     constructor() {
         super();
         this.attachShadow({mode: 'open'})
-        // todo : zorg ervoor dat een cell-header niet kleiner kan worden dan de breedte van de cell in dezelfde kolom
         this._layoutStates = {
             default: {
                 layoutState: {
@@ -12,37 +11,52 @@ class PhjTable extends ComponentLogics {
                 css:
                     `
     <style>
+
        #container{
+            border:2px solid #1e222b;
+            color:whitesmoke;
+            margin-right: auto;
+            margin-left: auto;
+            width: 60vw;
+            height:40vh;
+            margin-top: 50px;
             display: grid;
-            border:3px solid red;
-            height: 20vh;
+            grid-template-columns: 1fr;
+            overflow:auto;
        }
-       #head{
-            background-color: green;
-            display: flex;
-            justify-content: space-between;
-       }
-       #body{
-            background-color: blue;
-            display: grid;
-       }
-       .row{
-       display: flex;
-       }    
        .header-cell{
-       border:2px solid #2d2d04;
-       width: 100%;
-                     display: flex;
-                     align-items: center;
-                     justify-content: center;
-       }
+ background-color: royalblue;
+display: grid;
+height: fit-content;
+border-bottom: 1px solid black;
+border-top: 1px solid black;
+border-left:1px solid black;
+padding: 10px 5px;
+       } 
+       .header-cell>div{
+margin: auto;
+       } 
+              .header-cell>div>div{
+width: max-content;
+       } 
+ 
        .cell{
-              border:1px solid yellow;
-                     width: 100%;
-                     display: flex;
-                     align-items: center;
-                     justify-content: center;
-       }                          
+background-color: #606060;
+border-top: 1px solid black;
+border-left:1px solid black;
+padding-left: 5px;
+padding-right: 5px;
+display: grid;
+
+       }    
+              .cell>div{
+margin-top:auto;
+margin-bottom:auto;
+       } 
+                     .cell>div>div{
+width: max-content;
+
+       }                        
     </style>
 `
             }
@@ -50,6 +64,7 @@ class PhjTable extends ComponentLogics {
 
         this._state = {
             // contains only data for computation
+            has_actions: false
 
         }
 
@@ -74,32 +89,68 @@ class PhjTable extends ComponentLogics {
             this._url = this._baseUrl + this._path
         }
         this._getAll().then(data => {
-            console.log('hi', data)
             // data format: { listOfObjects:[{}], numberOfObjects:number, listOfProperties:[string], numberOfProperties:number, modelName:string}
             // als het een samengesteld model is, dan wordt hetzelfde format binnen herbruikt
-            let head = '<div id="container"><div id="head">'
+            let container = '<div id="container">'
+            let head =''
             for (let j = 0; j < data.numberOfProperties; j++) {
-                head += `<div class="header-cell">${data.listOfProperties[j]}</div>`
+                // the extra divs are necessary to make sure that the text inside the cell stays on one line
+                head += `<div class="header-cell"><div><div>${data.listOfProperties[j]}</div></div></div>`
             }
-            head += '</div>'
-            let body = '<div id="body">'
+            let body = ''
             for (let i = 0; i < data.numberOfObjects; i++) {
-                let row = `<div class="row">`
+                let row = ``
                 for (let j = 0; j < data.numberOfProperties; j++) {
-                    row += `<div class="cell">${Object.values(data.listOfObjects[i])[j]}</div>`
+                    // the extra divs are necessary to make sure that the text inside the cell stays on one line
+                    row += `<div class="cell"><div><div>${Object.values(data.listOfObjects[i])[j]}</div></div></div>`
                 }
-                row += `</div>`
                 body += row
             }
-            body += '</div></div>'
+            body += '</div>'
             this._setShadow(
-                `<div>${head}${body}</div>`
+                `<div>${container}${head}${body}</div>`
             )
             this._executeShadow()
             this._setUpAttributes('url', 'path', 'actions')
+            let columnStr = '1fr'
+            for (let i=1;i<data.numberOfProperties;i++){
+                columnStr+=' 1fr'
+            }
+            this.shadowRoot.querySelector('#container').style.gridTemplateColumns = columnStr
+            // tableHeight is a string '...px' with no spaces and a float as a number
+            let tableHeight = getComputedStyle(this.shadowRoot.querySelector('#container')).getPropertyValue('height')
+            tableHeight = Number(tableHeight.substr(0,tableHeight.length-2))
+            let headerHeight = getComputedStyle(this.shadowRoot.querySelector('#container>.header-cell')).getPropertyValue('height')
+            headerHeight = Number(headerHeight.substr(0,headerHeight.length-2))
+            const numberOfRows = data.numberOfObjects
+            const rowHeight = (tableHeight-headerHeight)/numberOfRows
+            let rowStr = ''
+            for (let i = 0; i < numberOfRows; i++) {
+                rowStr+=' 1fr'
+            }
+            const headerFraction = (headerHeight/rowHeight).toFixed(2)+'fr'
+            rowStr = headerFraction+rowStr
+            this.shadowRoot.querySelector('#container').style.gridTemplateRows = rowStr
+            const divs = this.shadowRoot.querySelectorAll('#container > .cell')
+            for (let i=0;i<divs.length;i++){
+                // math.floor geeft het rijnummer dat begint bij 0
+                if(Math.floor(i/data.numberOfProperties)%2===1){
+                    divs[i].style.backgroundColor = 'lightgray'
+                    divs[i].style.color = 'black'
+                }
+                // close the right border of each row
+                if(i%data.numberOfProperties===data.numberOfProperties-1){
+                    divs[i].style.borderRight = '1px solid black'
+                }
+                // close the bottom border of the last row
+                if(Math.floor(i/data.numberOfProperties)+1===numberOfRows){
+                    divs[i].style.borderBottom= '1px solid black'
+                }
+            }
+            // close the right border of the header
+            this.shadowRoot.querySelector('#container > div:nth-child('+ data.numberOfProperties +')').style.borderRight = '1px solid black'
         })
     }
-
 }
 
 customElements.define('phj-table', PhjTable)
