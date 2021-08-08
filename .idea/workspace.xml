@@ -3,6 +3,7 @@
   <component name="ChangeListManager">
     <list default="true" id="541aa9e8-3035-4513-acb8-e23ab7e5a48a" name="Default Changelist" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/shared/component-logics.js" beforeDir="false" afterPath="$PROJECT_DIR$/shared/component-logics.js" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/table-elements/phj-table.js" beforeDir="false" afterPath="$PROJECT_DIR$/table-elements/phj-table.js" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -82,7 +83,8 @@
       <workItem from="1628051420621" duration="4292000" />
       <workItem from="1628096151681" duration="8093000" />
       <workItem from="1628191646543" duration="1842000" />
-      <workItem from="1628324972023" duration="18333000" />
+      <workItem from="1628324972023" duration="19211000" />
+      <workItem from="1628405833369" duration="6305000" />
     </task>
     <task id="LOCAL-00001" summary="Second commit for testing purposes">
       <created>1627739619455</created>
@@ -182,7 +184,14 @@
       <option name="project" value="LOCAL" />
       <updated>1628108940004</updated>
     </task>
-    <option name="localTasksCounter" value="15" />
+    <task id="LOCAL-00015" summary="phj-table basics: done&#10;(colors, borders, alternating rows, responsiveness, all text on one line as a default)">
+      <created>1628368178307</created>
+      <option name="number" value="00015" />
+      <option name="presentableId" value="LOCAL-00015" />
+      <option name="project" value="LOCAL" />
+      <updated>1628368178307</updated>
+    </task>
+    <option name="localTasksCounter" value="16" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -206,17 +215,18 @@
     <MESSAGE value="creating several new elements of a more atomic level: phj-table, phj-box, phj-title&#10;start of creating a method to import any data with a certain format from a restAPI into a phj-table element automatically without much configuration needed in the html" />
     <MESSAGE value="phj-table structure (head + body) + data OK&#10;designing (html + css)  the table can start" />
     <MESSAGE value="flexibele layout phj-table mbv css grid en flexbox: deel 1" />
-    <option name="LAST_COMMIT_MESSAGE" value="flexibele layout phj-table mbv css grid en flexbox: deel 1" />
+    <MESSAGE value="phj-table basics: done&#10;(colors, borders, alternating rows, responsiveness, all text on one line as a default)" />
+    <option name="LAST_COMMIT_MESSAGE" value="phj-table basics: done&#10;(colors, borders, alternating rows, responsiveness, all text on one line as a default)" />
   </component>
   <component name="WindowStateProjectService">
     <state x="586" y="198" key="#Inspections" timestamp="1627821810157">
       <screen x="0" y="0" width="1920" height="1040" />
     </state>
     <state x="586" y="198" key="#Inspections/0.0.1920.1040@0.0.1920.1040" timestamp="1627821810157" />
-    <state x="207" y="88" key="CommitChangelistDialog2" timestamp="1628108938952">
+    <state x="207" y="88" key="CommitChangelistDialog2" timestamp="1628368177276">
       <screen x="0" y="0" width="1920" height="1040" />
     </state>
-    <state x="207" y="88" key="CommitChangelistDialog2/0.0.1920.1040@0.0.1920.1040" timestamp="1628108938952" />
+    <state x="207" y="88" key="CommitChangelistDialog2/0.0.1920.1040@0.0.1920.1040" timestamp="1628368177276" />
     <state x="184" y="86" key="DiffContextDialog" timestamp="1627729652791">
       <screen x="0" y="0" width="1920" height="1040" />
     </state>
@@ -233,9 +243,9 @@
       <screen x="0" y="0" width="1920" height="1040" />
     </state>
     <state x="461" y="165" key="SettingsEditor/0.0.1920.1040@0.0.1920.1040" timestamp="1627739971507" />
-    <state x="552" y="253" key="Vcs.Push.Dialog.v2" timestamp="1628108943074">
+    <state x="552" y="253" key="Vcs.Push.Dialog.v2" timestamp="1628368184993">
       <screen x="0" y="0" width="1920" height="1040" />
     </state>
-    <state x="552" y="253" key="Vcs.Push.Dialog.v2/0.0.1920.1040@0.0.1920.1040" timestamp="1628108943074" />
+    <state x="552" y="253" key="Vcs.Push.Dialog.v2/0.0.1920.1040@0.0.1920.1040" timestamp="1628368184993" />
   </component>
 </project>

@@ -142,7 +142,9 @@ class ComponentLogics extends HTMLElement {
 
                     break
                 case 'actions':
-
+                    if (this.hasAttribute('actions')) {
+                        this._state.has_actions = true
+                    }
                     break
                 case 'title':
                     if (this.hasAttribute('title')) {

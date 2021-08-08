@@ -65,16 +65,12 @@ width: max-content;
         this._state = {
             // contains only data for computation
             has_actions: false
-
         }
 
     }
 
     connectedCallback() {
         this._setLayoutState('default')
-        if (this.hasAttribute('actions')) {
-            this._state.has_actions = true
-        }
         // get all data to feel the master table with
         if (this.hasAttribute('path') && this.getAttribute('path').substr(0, 3) === 'get') {
             this._path = this.getAttribute('path').substring(4)
@@ -89,31 +85,64 @@ width: max-content;
             this._url = this._baseUrl + this._path
         }
         this._getAll().then(data => {
+            this._setUpAttributes('url', 'path', 'actions')
             // data format: { listOfObjects:[{}], numberOfObjects:number, listOfProperties:[string], numberOfProperties:number, modelName:string}
-            // als het een samengesteld model is, dan wordt hetzelfde format binnen herbruikt
             let container = '<div id="container">'
             let head =''
-            for (let j = 0; j < data.numberOfProperties; j++) {
-                // the extra divs are necessary to make sure that the text inside the cell stays on one line
-                head += `<div class="header-cell"><div><div>${data.listOfProperties[j]}</div></div></div>`
-            }
             let body = ''
-            for (let i = 0; i < data.numberOfObjects; i++) {
-                let row = ``
+            if(this._state.has_actions){
+                // set up a actions column so the table becomes an interactive one
+                for (let j = 0; j <= data.numberOfProperties; j++) {
+                    // the extra divs are necessary to make sure that the text inside the cell stays on one line
+
+                    // todo zet het juiste woord in de actie-kolom
+                    if(j!==0 && j%data.numberOfProperties===0){
+                        head += `<div class="header-cell"><div><div>Acties</div></div></div>`
+                    } else{
+                        head += `<div class="header-cell"><div><div>${data.listOfProperties[j]}</div></div></div>`
+                    }
+                }
+                for (let i = 0; i < data.numberOfObjects; i++) {
+                    let row = ``
+                    for (let j = 0; j <= data.numberOfProperties; j++) {
+                        // the extra divs are necessary to make sure that the text inside the cell stays on one line
+                        if(j!==0 && j%data.numberOfProperties===0){
+                            // todo zet het icon in de actie kolom
+                            // todo zet het dropdown menu in de actie kolom
+                            // todo maak dat de dropdown bij click info kan doorspelen op de geijkte manier
+                            row += `<div class="cell"><div><div>...</div></div></div>`
+                        } else{
+                            row += `<div class="cell"><div><div>${Object.values(data.listOfObjects[i])[j]}</div></div></div>`
+                        }
+                    }
+                    body += row
+                }
+                body += '</div>'
+            } else{
                 for (let j = 0; j < data.numberOfProperties; j++) {
                     // the extra divs are necessary to make sure that the text inside the cell stays on one line
-                    row += `<div class="cell"><div><div>${Object.values(data.listOfObjects[i])[j]}</div></div></div>`
+                    head += `<div class="header-cell"><div><div>${data.listOfProperties[j]}</div></div></div>`
                 }
-                body += row
+                for (let i = 0; i < data.numberOfObjects; i++) {
+                    let row = ``
+                    for (let j = 0; j < data.numberOfProperties; j++) {
+                        // the extra divs are necessary to make sure that the text inside the cell stays on one line
+                        row += `<div class="cell"><div><div>${Object.values(data.listOfObjects[i])[j]}</div></div></div>`
+                    }
+                    body += row
+                }
+                body += '</div>'
             }
-            body += '</div>'
             this._setShadow(
                 `<div>${container}${head}${body}</div>`
             )
             this._executeShadow()
-            this._setUpAttributes('url', 'path', 'actions')
+
             let columnStr = '1fr'
             for (let i=1;i<data.numberOfProperties;i++){
+                columnStr+=' 1fr'
+            }
+            if(this._state.has_actions){
                 columnStr+=' 1fr'
             }
             this.shadowRoot.querySelector('#container').style.gridTemplateColumns = columnStr
@@ -132,23 +161,50 @@ width: max-content;
             rowStr = headerFraction+rowStr
             this.shadowRoot.querySelector('#container').style.gridTemplateRows = rowStr
             const divs = this.shadowRoot.querySelectorAll('#container > .cell')
-            for (let i=0;i<divs.length;i++){
-                // math.floor geeft het rijnummer dat begint bij 0
-                if(Math.floor(i/data.numberOfProperties)%2===1){
-                    divs[i].style.backgroundColor = 'lightgray'
-                    divs[i].style.color = 'black'
+            let rowCount = 0
+            if(this._state.has_actions){
+                for (let i=0;i<divs.length;i++){
+                    // math.floor geeft het rijnummer dat begint bij 0
+                    // implements alternating rows and actions-column
+                    if((i+1)%(data.numberOfProperties+1)===0){
+                        rowCount++
+                        // actions-column
+                        divs[i].style.backgroundColor = 'white'
+                        divs[i].style.color = 'black'
+                    } else if(rowCount%2===1){
+                        divs[i].style.backgroundColor = 'lightgray'
+                        divs[i].style.color = 'black'
+                    }
+                    // close the right border of each row
+                    if((i+1)%(data.numberOfProperties+1)===0){
+                        divs[i].style.borderRight = '1px solid black'
+                    }
+                    // close the bottom border of the last row
+                    if(Math.floor(i/(data.numberOfProperties+1))+1===numberOfRows){
+                        divs[i].style.borderBottom= '1px solid black'
+                    }
                 }
-                // close the right border of each row
-                if(i%data.numberOfProperties===data.numberOfProperties-1){
-                    divs[i].style.borderRight = '1px solid black'
-                }
-                // close the bottom border of the last row
-                if(Math.floor(i/data.numberOfProperties)+1===numberOfRows){
-                    divs[i].style.borderBottom= '1px solid black'
+            } else{
+                for (let i=0;i<divs.length;i++){
+                    // math.floor geeft het rijnummer dat begint bij 0
+                    // implements alternating rows
+                    if(Math.floor(i/data.numberOfProperties)%2===1){
+                        divs[i].style.backgroundColor = 'lightgray'
+                        divs[i].style.color = 'black'
+                    }
+                    // close the right border of each row
+                    if(i%data.numberOfProperties===data.numberOfProperties-1){
+                        divs[i].style.borderRight = '1px solid black'
+                    }
+                    // close the bottom border of the last row
+                    if(Math.floor(i/data.numberOfProperties)+1===numberOfRows){
+                        divs[i].style.borderBottom= '1px solid black'
+                    }
                 }
             }
             // close the right border of the header
-            this.shadowRoot.querySelector('#container > div:nth-child('+ data.numberOfProperties +')').style.borderRight = '1px solid black'
+            this.shadowRoot.querySelector('#container > div:nth-child('+ (data.numberOfProperties+1) +')').style.borderRight = '1px solid black'
+
         })
     }
 }
