@@ -88,8 +88,6 @@ width: max-content;
         this._getAll().then(data => {
             this._setUpAttributes('url', 'path', 'actions')
             // data format: { listOfObjects:[{}], numberOfObjects:number, listOfProperties:[string], numberOfProperties:number, modelName:string}
-
-
             let container = '<div id="container">'
             let head =''
             let body = ''
@@ -203,7 +201,6 @@ width: max-content;
             }
             // close the right border of the header
             this.shadowRoot.querySelector('#container > div:nth-child('+ (data.numberOfProperties+1) +')').style.borderRight = '1px solid black'
-
         })
     }
 }

@@ -2,6 +2,18 @@ class Button extends ComponentLogics {
     constructor() {
         super();
         this.attachShadow({mode: 'open'})
+        // todo: implement these customStyles => when there is no specification the algorithm will assume it alters all available layoutStates
+        //  *********************************************************************************************************************************
+        //  border:0;
+        //  background:none;
+        //  hover-background:dark-gray;
+        //  color:black;
+        //  hover-color:white
+        // get a list of all states of the component
+        // change the states by accessing the _layoutStates property
+        // example:
+        // this._layoutStates.enabled.css = ALTER THE CSS STRING and then execute the state?
+
         this._layoutStates = {
             enabled: {
                 layoutState: {
@@ -70,7 +82,7 @@ class Button extends ComponentLogics {
         // set innerhtml
         this._executeShadow()
         // set eventHandlers and handle attributes
-        this._setUpAttributes('click', 'icon', 'text','update','delete','create','get','getAll')
+        this._setUpAttributes('click', 'icon', 'text','update','delete','create','get','getAll','custom-styles')
     }
 }
 

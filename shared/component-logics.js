@@ -19,10 +19,6 @@ class ComponentLogics extends HTMLElement {
     _availableChildComponents = []
     _registeredListeners = []
 
-    _isAvailable(elementType) {
-        return false
-    }
-
     _getFirstParent(elementType) {
         let parent = this.parentElement
         while (parent !== null && parent.tagName !== elementType.toUpperCase()) {
@@ -32,7 +28,6 @@ class ComponentLogics extends HTMLElement {
     }
 
     _processEvent(event) {
-        console.log(event)
         switch (event.type) {
             case 'action-pane-created':
                 if (this.tagName.toLowerCase() === 'phj-crud-template' && Object.is(event.detail.component._getFirstParent('phj-crud-template'), this)) {
@@ -48,7 +43,7 @@ class ComponentLogics extends HTMLElement {
                 }
                 break
             default:
-                console.log(event.type)
+                console.log('error',event.type)
         }
     }
 
@@ -57,12 +52,53 @@ class ComponentLogics extends HTMLElement {
     }
 
     _setLayoutState(state) {
+        // every layout is connected to a certain state of the component
+        // for a button for example it can be in a disabled or a enabled state
+        // this means that there is css for both states => it is important to understand
+        // that every state has it's own css; different states for now do not share styles!
+        // technically if a component has no state it will not have any styling either
+        // the css is stored in a variable _css => this variable is used in the next method
+        // executeLayoutState(state) to actually insert the css into the component
+        // todo create a way to share css in the case you want a custom style for whatever reason
+        // a start could be to create a state which is "custom" and create a function that makes it possible
+        // to join custom styles with existing layout States since a custom style should override the state
+        // because custom css is not intertwined with any particular state of the component
+        // for now every component is in exactly one state and one state only:
+        // that is because there is no need for joined css to make sure every possible state can be created
+        // for a custom style that luxury is gone.
+        // a custom style basically means that part of the stateLayout of possibly every STATE the component
+        // can be in, can change => a construction to partially change a layoutState would be the solution of
+        // our problem; for now let's assume that a custom style cannot be revoked once it's active
+        /**
+         * custom-styles="enabled[border:0;background:none;hover-background:dark-gray;color:black;hover-color:white]"
+         *
+         */
         this._currentLayoutState = state
         this._css = this._layoutStates[state].css
     }
 
-    _setShadow(html) {
-        this._html = html
+    _addCustomStyles(customStyles){
+        console.log('customcss',customStyles)
+        if(customStyles.split('[').length>1){
+            // in this case the customStyles target a specific layoutState
+
+        } else{
+            console.log('processing',customStyles)
+            // the customStyles have to be applied to every possible layoutState of the component
+            // the styles just have to be added in the end of every css string
+            //EXAMPLE of A custom style string =>  div{border:none;background:none;color:black}div:hover{background-color:dark-gray;color:white}
+            const cssPropsVals = []
+            for (let i=0;i<Object.keys(this._layoutStates).length;i++){
+                // todo adjust existing css not just attach the new one
+                const cssProps = this._layoutStates[Object.keys(this._layoutStates)[i].toString()].css.split(':')
+                for (let j=0;j<cssProps.length;j++){
+                    cssPropsVals.push(cssProps[j].split(';'))
+                }
+                console.log(cssPropsVals)
+                this._layoutStates[Object.keys(this._layoutStates)[i].toString()].css =
+                    `${this._layoutStates[Object.keys(this._layoutStates)[i].toString()].css.substr(-8)}${customStyles}</style>`
+            }
+        }
     }
 
     executeLayoutState(state) {
@@ -85,6 +121,9 @@ class ComponentLogics extends HTMLElement {
                 this.shadowRoot.querySelector('textarea').removeAttribute('disabled')
             }
         }
+    }
+    _setShadow(html) {
+        this._html = html
     }
 
     _executeShadow() {
@@ -136,6 +175,12 @@ class ComponentLogics extends HTMLElement {
                 case 'url':
                     if (this.hasAttribute('url')) {
                         this._state.url = this.getAttribute('url')
+                    }
+                    break
+                case 'custom-styles':
+                    if (this.hasAttribute('custom-styles')) {
+                        this._addCustomStyles(this.getAttribute('custom-styles'))
+                        this.executeLayoutState(this._currentLayoutState)
                     }
                     break
                 case 'type':

@@ -8,6 +8,7 @@
     <title>Vistaline - administratief beheer</title>
     <script src="shared/component-logics.js"></script>
     <script src="box-elements/phj-box.js"></script>
+    <script src="icons/phj-dots.js"></script>
     <script src="buttons/phj-button.js"></script>
     <script src="cards/phj-card.js"></script>
     <script src="table-elements/phj-table.js"></script>
@@ -23,14 +24,19 @@
     <script src="forms/phj-radio-button.js"></script>
 </head>
 <body>
-<phj-table url="get:http://localhost:3000/specifications" actions="ACTIES">
+<phj-table url="get:http://localhost:3000/specifications" actions="Acties">
     <phj-box>
-        <phj-button icon="phj-dots" click="phj-btn-group=>visible,this=>invisible" hover="phj-btn-group=>visible,this=>invisible"></phj-button>
-        <phj-btn-group click="phj-button(1)=>visible,this=>invisible" load="this=>invisible">
+        <phj-button icon="phj-dots"
+                    events="click/hover:phj-btn-group=>visible,this=>invisible"
+                    custom-styles="div{border:none;background:none;color:black}div:hover{background-color:darkgray;color:white}"
+        ></phj-button>
+<!--        <phj-btn-group
+                events="click/no-hover:phj-button(1)=>visible;click/no-hover/load:this=>invisible;"
+                custom-styles-group="div{border:0;background-color:none;hover-background-color:dark-gray;color:blue;hover-color:white}">
             <phj-button>Bekijken</phj-button>
             <phj-button>Aanpassen</phj-button>
             <phj-button>Verwijderen</phj-button>
-        </phj-btn-group>
+        </phj-btn-group>-->
     </phj-box>
 </phj-table>
 
