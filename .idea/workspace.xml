@@ -2,7 +2,10 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="541aa9e8-3035-4513-acb8-e23ab7e5a48a" name="Default Changelist" comment="">
+      <change afterPath="$PROJECT_DIR$/buttons/phj-btn-group.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/inspectionProfiles/Project_Default.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/inspectionProfiles/Project_Default.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/index.html" beforeDir="false" afterPath="$PROJECT_DIR$/index.html" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/shared/component-logics.js" beforeDir="false" afterPath="$PROJECT_DIR$/shared/component-logics.js" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/table-elements/phj-table.js" beforeDir="false" afterPath="$PROJECT_DIR$/table-elements/phj-table.js" afterDir="false" />
     </list>
@@ -32,7 +35,7 @@
   <component name="PropertiesComponent">
     <property name="RunOnceActivity.OpenProjectViewOnStart" value="true" />
     <property name="WebServerToolWindowFactoryState" value="false" />
-    <property name="last_opened_file_path" value="$PROJECT_DIR$/box-elements" />
+    <property name="last_opened_file_path" value="$PROJECT_DIR$/buttons" />
     <property name="node.js.detected.package.eslint" value="true" />
     <property name="node.js.detected.package.tslint" value="true" />
     <property name="node.js.path.for.package.eslint" value="project" />
@@ -44,15 +47,15 @@
     <property name="vue.rearranger.settings.migration" value="true" />
   </component>
   <component name="RecentsManager">
-    <key name="MoveFile.RECENT_KEYS">
-      <recent name="D:\privé-projecten\vistaline\title-elements" />
-    </key>
     <key name="CopyFile.RECENT_KEYS">
+      <recent name="D:\privé-projecten\vistaline\buttons" />
       <recent name="D:\privé-projecten\vistaline\box-elements" />
       <recent name="D:\privé-projecten\vistaline\table-elements" />
       <recent name="D:\privé-projecten\vistaline\content" />
       <recent name="D:\privé-projecten\vistaline\crud-components" />
-      <recent name="D:\privé-projecten\vistaline\templates" />
+    </key>
+    <key name="MoveFile.RECENT_KEYS">
+      <recent name="D:\privé-projecten\vistaline\title-elements" />
     </key>
   </component>
   <component name="SpellCheckerSettings" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" DefaultDictionary="application-level" UseSingleDictionary="true" transferred="true" />
@@ -84,7 +87,7 @@
       <workItem from="1628096151681" duration="8093000" />
       <workItem from="1628191646543" duration="1842000" />
       <workItem from="1628324972023" duration="19211000" />
-      <workItem from="1628405833369" duration="6305000" />
+      <workItem from="1628405833369" duration="10794000" />
     </task>
     <task id="LOCAL-00001" summary="Second commit for testing purposes">
       <created>1627739619455</created>
@@ -191,7 +194,14 @@
       <option name="project" value="LOCAL" />
       <updated>1628368178307</updated>
     </task>
-    <option name="localTasksCounter" value="16" />
+    <task id="LOCAL-00016" summary="phj-table actions-column/actions attribute implemented">
+      <created>1628417424695</created>
+      <option name="number" value="00016" />
+      <option name="presentableId" value="LOCAL-00016" />
+      <option name="project" value="LOCAL" />
+      <updated>1628417424695</updated>
+    </task>
+    <option name="localTasksCounter" value="17" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -216,17 +226,18 @@
     <MESSAGE value="phj-table structure (head + body) + data OK&#10;designing (html + css)  the table can start" />
     <MESSAGE value="flexibele layout phj-table mbv css grid en flexbox: deel 1" />
     <MESSAGE value="phj-table basics: done&#10;(colors, borders, alternating rows, responsiveness, all text on one line as a default)" />
-    <option name="LAST_COMMIT_MESSAGE" value="phj-table basics: done&#10;(colors, borders, alternating rows, responsiveness, all text on one line as a default)" />
+    <MESSAGE value="phj-table actions-column/actions attribute implemented" />
+    <option name="LAST_COMMIT_MESSAGE" value="phj-table actions-column/actions attribute implemented" />
   </component>
   <component name="WindowStateProjectService">
     <state x="586" y="198" key="#Inspections" timestamp="1627821810157">
       <screen x="0" y="0" width="1920" height="1040" />
     </state>
     <state x="586" y="198" key="#Inspections/0.0.1920.1040@0.0.1920.1040" timestamp="1627821810157" />
-    <state x="207" y="88" key="CommitChangelistDialog2" timestamp="1628368177276">
+    <state x="207" y="88" key="CommitChangelistDialog2" timestamp="1628417423604">
       <screen x="0" y="0" width="1920" height="1040" />
     </state>
-    <state x="207" y="88" key="CommitChangelistDialog2/0.0.1920.1040@0.0.1920.1040" timestamp="1628368177276" />
+    <state x="207" y="88" key="CommitChangelistDialog2/0.0.1920.1040@0.0.1920.1040" timestamp="1628417423604" />
     <state x="184" y="86" key="DiffContextDialog" timestamp="1627729652791">
       <screen x="0" y="0" width="1920" height="1040" />
     </state>
@@ -243,9 +254,9 @@
       <screen x="0" y="0" width="1920" height="1040" />
     </state>
     <state x="461" y="165" key="SettingsEditor/0.0.1920.1040@0.0.1920.1040" timestamp="1627739971507" />
-    <state x="552" y="253" key="Vcs.Push.Dialog.v2" timestamp="1628368184993">
+    <state x="552" y="253" key="Vcs.Push.Dialog.v2" timestamp="1628417429375">
       <screen x="0" y="0" width="1920" height="1040" />
     </state>
-    <state x="552" y="253" key="Vcs.Push.Dialog.v2/0.0.1920.1040@0.0.1920.1040" timestamp="1628368184993" />
+    <state x="552" y="253" key="Vcs.Push.Dialog.v2/0.0.1920.1040@0.0.1920.1040" timestamp="1628417429375" />
   </component>
 </project>

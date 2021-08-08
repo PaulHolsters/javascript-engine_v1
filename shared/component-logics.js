@@ -144,6 +144,7 @@ class ComponentLogics extends HTMLElement {
                 case 'actions':
                     if (this.hasAttribute('actions')) {
                         this._state.has_actions = true
+                        this._state.actions = this.getAttribute('actions')
                     }
                     break
                 case 'title':
@@ -155,6 +156,18 @@ class ComponentLogics extends HTMLElement {
                     if (this.hasAttribute('click')) {
                         this._actions = this.getAttribute('click').split(',')
                         this.addEventListener('click', this._eventHandler)
+                    }
+                    break;
+                case 'load':
+                    if (this.hasAttribute('load')) {
+                        this._actions = this.getAttribute('load').split(',')
+                        this.addEventListener('load', this._eventHandler)
+                    }
+                    break;
+                case 'hover':
+                    if (this.hasAttribute('hover')) {
+                        this._actions = this.getAttribute('hover').split(',')
+                        this.addEventListener('hover', this._eventHandler)
                     }
                     break;
                 case 'select':
@@ -278,6 +291,7 @@ class ComponentLogics extends HTMLElement {
         switch (event.type) {
             case 'click':
                 if (this._currentLayoutState === 'enabled') {
+                    // todo: make it possible to use this as a selector
                     for (let i = 0; i < this._actions.length; i++) {
                         // todo make it possible the use an index with your selectors
 
@@ -320,6 +334,12 @@ class ComponentLogics extends HTMLElement {
                         }
                     }
                 }
+                break;
+            case 'load':
+
+                break;
+            case 'hover':
+
                 break;
             case 'select':
 

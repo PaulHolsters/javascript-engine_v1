@@ -64,7 +64,8 @@ width: max-content;
 
         this._state = {
             // contains only data for computation
-            has_actions: false
+            has_actions: false,
+            actions: ''
         }
 
     }
@@ -87,17 +88,17 @@ width: max-content;
         this._getAll().then(data => {
             this._setUpAttributes('url', 'path', 'actions')
             // data format: { listOfObjects:[{}], numberOfObjects:number, listOfProperties:[string], numberOfProperties:number, modelName:string}
+
+
             let container = '<div id="container">'
             let head =''
             let body = ''
             if(this._state.has_actions){
                 // set up a actions column so the table becomes an interactive one
                 for (let j = 0; j <= data.numberOfProperties; j++) {
-                    // the extra divs are necessary to make sure that the text inside the cell stays on one line
-
-                    // todo zet het juiste woord in de actie-kolom
+                    // the extra divs are necessary to make sure that the text inside the cell stays on one line which is the default behavior
                     if(j!==0 && j%data.numberOfProperties===0){
-                        head += `<div class="header-cell"><div><div>Acties</div></div></div>`
+                        head += `<div class="header-cell"><div><div>${this._state.actions}</div></div></div>`
                     } else{
                         head += `<div class="header-cell"><div><div>${data.listOfProperties[j]}</div></div></div>`
                     }
@@ -107,9 +108,6 @@ width: max-content;
                     for (let j = 0; j <= data.numberOfProperties; j++) {
                         // the extra divs are necessary to make sure that the text inside the cell stays on one line
                         if(j!==0 && j%data.numberOfProperties===0){
-                            // todo zet het icon in de actie kolom
-                            // todo zet het dropdown menu in de actie kolom
-                            // todo maak dat de dropdown bij click info kan doorspelen op de geijkte manier
                             row += `<div class="cell"><div><div>...</div></div></div>`
                         } else{
                             row += `<div class="cell"><div><div>${Object.values(data.listOfObjects[i])[j]}</div></div></div>`
@@ -134,9 +132,10 @@ width: max-content;
                 body += '</div>'
             }
             this._setShadow(
-                `<div>${container}${head}${body}</div>`
+                `<slot></slot><div>${container}${head}${body}</div>`
             )
             this._executeShadow()
+            // todo get slotted content and replicate it in the process of building this table
 
             let columnStr = '1fr'
             for (let i=1;i<data.numberOfProperties;i++){

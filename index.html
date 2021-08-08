@@ -23,7 +23,17 @@
     <script src="forms/phj-radio-button.js"></script>
 </head>
 <body>
-<phj-table url="get:http://localhost:3000/specifications" actions></phj-table>
+<phj-table url="get:http://localhost:3000/specifications" actions="ACTIES">
+    <phj-box>
+        <phj-button icon="phj-dots" click="phj-btn-group=>visible,this=>invisible" hover="phj-btn-group=>visible,this=>invisible"></phj-button>
+        <phj-btn-group click="phj-button(1)=>visible,this=>invisible" load="this=>invisible">
+            <phj-button>Bekijken</phj-button>
+            <phj-button>Aanpassen</phj-button>
+            <phj-button>Verwijderen</phj-button>
+        </phj-btn-group>
+    </phj-box>
+</phj-table>
+
 <!--<phj-button>My button</phj-button>
 <phj-box>
     <phj-text text="mynewtitle"></phj-text>
