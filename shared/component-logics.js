@@ -77,8 +77,44 @@ class ComponentLogics extends HTMLElement {
         this._css = this._layoutStates[state].css
     }
 
+    _restructureCssString(cssStr){
+        const cssState = []
+        // purifying the string
+        cssStr = cssStr.replace('<style>','').replace('</style>','').replace(' ','')
+        // separating selectors from their bodies
+        let cssArr = cssStr.split('{')
+        let tempArr = []
+        for(let j=0;j<cssArr.length;j++){
+            tempArr.concat(cssArr[j].split('}'))
+        }
+        cssArr = tempArr
+        let objTemp = {}
+        let keyTemp = ''
+        for(let j=0;j<cssArr.length;j++){
+            if(j%2===0){
+                // selector
+                keyTemp = cssArr[j]
+                objTemp[keyTemp] = []
+            } else{
+                // body
+                const valueObjects = []
+                const cssValues = cssArr[j].split(';')
+                for (let k=0;k<cssValues.length;k++){
+                    const obj = {}
+                    const key = cssValues[k].split(':')[0]
+                    obj[key]= cssValues[k].split(':')[1]
+                    valueObjects.push(obj)
+                }
+                objTemp[keyTemp] = valueObjects
+                cssState.push(objTemp)
+                objTemp = {}
+                keyTemp = ''
+            }
+        }
+        return cssState
+    }
+
     _addCustomStyles(customStyles){
-        console.log('customcss',customStyles)
         if(customStyles.split('[').length>1){
             // in this case the customStyles target a specific layoutState
 
@@ -88,47 +124,54 @@ class ComponentLogics extends HTMLElement {
             //EXAMPLE of A custom style string =>  div{border:none;background:none;color:black}div:hover{background-color:dark-gray;color:white}
             for (let i=0;i<Object.keys(this._layoutStates).length;i++){
                 // datastructure cssState: [{selector:[{cssProp:cssval}]}]
-                const cssState = []
-                // step 1: putting the cureent css of the current layoutState in the array cssState
                 let cssStr = this._layoutStates[Object.keys(this._layoutStates)[i].toString()].css
-                // purifying the string
-                cssStr = cssStr.replace('<style>','').replace('</style>','').replace(' ','')
-                // separating selectors from their bodies
-                let cssArr = cssStr.split('{')
-                let tempArr = []
-                for(let j=0;j<cssArr.length;j++){
-                    tempArr.concat(cssArr[j].split('}'))
-                }
-                cssArr = tempArr
-                let objTemp = {}
-                let keyTemp = ''
-                for(let j=0;j<cssArr.length;j++){
-                    if(j%2===0){
-                        // selector
-                        keyTemp = cssArr[j]
-                        objTemp[keyTemp] = []
-                    } else{
-                        // body
-                        const valueObjects = []
-                        const cssValues = cssArr[j].split(';')
-                        for (let k=0;k<cssValues.length;k++){
-                            const obj = {}
-                            const key = cssValues[k].split(':')[0]
-                            obj[key]= cssValues[k].split(':')[1]
-                            valueObjects.push(obj)
+                cssStr = cssStr.replace('<style>','').replace('</style>','').replace(' ','').replace('\n','').replace('\t','').toString().trim()
+                customStyles = customStyles.replace(' ','').replace('\n','').replace('\t','').toString().trim()
+                //console.log('cssStr',cssStr)
+                // todo repeat this for every css-selector in cssStr:
+                //  per selector en in die volgorde ga je na of er een selector in customstyles zit
+                //  indien ja dan doe je onderstaand algoritme om de body horende bij de selector te wijzigen
+                //   indien nee dan ga je naar de volgende selector
+
+                // onderstaand proces is getest en werkt
+                let index1 = cssStr.indexOf('{')
+                let index2 = cssStr.indexOf('}')
+                let substring = cssStr.substring(index1+1,index2).toString().trim()
+                let selector = cssStr.substring(0,index1)
+                let index1Cst = customStyles.indexOf('{')
+                let index2Cst = customStyles.indexOf('}')
+                let substringCustom = customStyles.substring(index1Cst+1,index2Cst).toString().trim()
+                let  selectorCustom = customStyles.substring(0,index1Cst)
+                if(selector.toString()===selectorCustom.toString()){
+                    let stringTemp = substring
+                    let newCssBody = ''
+                    while(stringTemp.length>0){
+                        const key = stringTemp.substring(0,stringTemp.indexOf(':')).toString().trim()
+                        //console.log(substringCustom)
+                        if(substringCustom.search(key)!==-1){
+                            const startIndex = substringCustom.indexOf(key)
+                            //console.log(substringCustom,startIndex)
+                            if(substringCustom.indexOf(';',startIndex)===-1){
+                                newCssBody+=substringCustom.substr(startIndex)+';'
+                            } else{
+                                newCssBody+=substringCustom.substring(startIndex,substringCustom.indexOf(';',startIndex)+1)
+                            }
+                        } else{
+                            newCssBody+=stringTemp.substring(0,stringTemp.indexOf(';')+1)
                         }
-                        objTemp[keyTemp] = valueObjects
-                        cssState.push(objTemp)
-                        objTemp = {}
-                        keyTemp = ''
+                        if(stringTemp.indexOf(';')+1>=stringTemp.length){
+                            stringTemp = ''
+                        } else{
+                            stringTemp = stringTemp.substr(stringTemp.indexOf(';')+1)
+                        }
                     }
                 }
-                // cssState is ready to be queried
-                // step 2: replacing every css rule in cssState with a customrules if available, if not just add the custom style rule
-
+                // todo na dit proces moet je nog omgekeerd te werk gaan: wat niet in de body zat maar wel in de customstylestring
+                //   moet je gewoon toevoegen aan de (gewijzigde) body van de component
+                //    todo: de selectors van de customstyles die niet bestaan in de selectors van de component moeten ook gewoon toegevoegd worden
                 // step 3: create the new css string
-                this._layoutStates[Object.keys(this._layoutStates)[i].toString()].css =
-                    `${this._layoutStates[Object.keys(this._layoutStates)[i].toString()].css.substr(-8)}${customStyles}</style>`
+/*                this._layoutStates[Object.keys(this._layoutStates)[i].toString()].css =
+                    `${this._layoutStates[Object.keys(this._layoutStates)[i].toString()].css.substr(-8)}${customStyles}</style>`*/
             }
         }
     }

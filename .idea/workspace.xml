@@ -84,7 +84,8 @@
       <workItem from="1628191646543" duration="1842000" />
       <workItem from="1628324972023" duration="19211000" />
       <workItem from="1628405833369" duration="21088000" />
-      <workItem from="1628536397659" duration="2361000" />
+      <workItem from="1628536397659" duration="3399000" />
+      <workItem from="1628612684197" duration="7327000" />
     </task>
     <task id="LOCAL-00001" summary="Second commit for testing purposes">
       <created>1627739619455</created>
@@ -212,7 +213,14 @@
       <option name="project" value="LOCAL" />
       <updated>1628453716579</updated>
     </task>
-    <option name="localTasksCounter" value="19" />
+    <task id="LOCAL-00019" summary=" a custom-styles attribute that replaces parts of the layoutStates css so custom styles can be used with all custom components: step 1 of the process implemented not tested">
+      <created>1628538809156</created>
+      <option name="number" value="00019" />
+      <option name="presentableId" value="LOCAL-00019" />
+      <option name="project" value="LOCAL" />
+      <updated>1628538809156</updated>
+    </task>
+    <option name="localTasksCounter" value="20" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -240,17 +248,18 @@
     <MESSAGE value="phj-table actions-column/actions attribute implemented" />
     <MESSAGE value="phj-table creating actions buttons: part 1" />
     <MESSAGE value=" a custom-styles attribute that replaces parts of the layoutStates css so custom styles can be used with all custom components: part 1" />
-    <option name="LAST_COMMIT_MESSAGE" value=" a custom-styles attribute that replaces parts of the layoutStates css so custom styles can be used with all custom components: part 1" />
+    <MESSAGE value=" a custom-styles attribute that replaces parts of the layoutStates css so custom styles can be used with all custom components: step 1 of the process implemented not tested" />
+    <option name="LAST_COMMIT_MESSAGE" value=" a custom-styles attribute that replaces parts of the layoutStates css so custom styles can be used with all custom components: step 1 of the process implemented not tested" />
   </component>
   <component name="WindowStateProjectService">
     <state x="586" y="198" key="#Inspections" timestamp="1627821810157">
       <screen x="0" y="0" width="1920" height="1040" />
     </state>
     <state x="586" y="198" key="#Inspections/0.0.1920.1040@0.0.1920.1040" timestamp="1627821810157" />
-    <state x="207" y="88" key="CommitChangelistDialog2" timestamp="1628453715620">
+    <state x="207" y="88" key="CommitChangelistDialog2" timestamp="1628538808192">
       <screen x="0" y="0" width="1920" height="1040" />
     </state>
-    <state x="207" y="88" key="CommitChangelistDialog2/0.0.1920.1040@0.0.1920.1040" timestamp="1628453715620" />
+    <state x="207" y="88" key="CommitChangelistDialog2/0.0.1920.1040@0.0.1920.1040" timestamp="1628538808192" />
     <state x="184" y="86" key="DiffContextDialog" timestamp="1627729652791">
       <screen x="0" y="0" width="1920" height="1040" />
     </state>
@@ -267,9 +276,9 @@
       <screen x="0" y="0" width="1920" height="1040" />
     </state>
     <state x="461" y="165" key="SettingsEditor/0.0.1920.1040@0.0.1920.1040" timestamp="1627739971507" />
-    <state x="552" y="253" key="Vcs.Push.Dialog.v2" timestamp="1628453720131">
+    <state x="552" y="253" key="Vcs.Push.Dialog.v2" timestamp="1628538814053">
       <screen x="0" y="0" width="1920" height="1040" />
     </state>
-    <state x="552" y="253" key="Vcs.Push.Dialog.v2/0.0.1920.1040@0.0.1920.1040" timestamp="1628453720131" />
+    <state x="552" y="253" key="Vcs.Push.Dialog.v2/0.0.1920.1040@0.0.1920.1040" timestamp="1628538814053" />
   </component>
 </project>
