@@ -127,7 +127,11 @@ class ComponentLogics extends HTMLElement {
                 let cssStr = this._layoutStates[Object.keys(this._layoutStates)[i].toString()].css
                 cssStr = cssStr.replace('<style>','').replace('</style>','').replace(' ','').replace('\n','').replace('\t','').toString().trim()
                 customStyles = customStyles.replace(' ','').replace('\n','').replace('\t','').toString().trim()
-                //console.log('cssStr',cssStr)
+                // separate different selectors
+                let currentBody = cssStr.substring(0,cssStr.search('}')).toString().trim()
+                let currentSelector = cssStr.substring(0,cssStr.search('{')).toString().trim()
+                let nextStart = cssStr.search('}')+1
+
                 // todo repeat this for every css-selector in cssStr:
                 //  per selector en in die volgorde ga je na of er een selector in customstyles zit
                 //  indien ja dan doe je onderstaand algoritme om de body horende bij de selector te wijzigen
