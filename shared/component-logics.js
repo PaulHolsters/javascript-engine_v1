@@ -132,7 +132,7 @@ class ComponentLogics extends HTMLElement {
                 //  per selector en in die volgorde ga je na of er een selector in customstyles zit
                 //  indien ja dan doe je onderstaand algoritme om de body horende bij de selector te wijzigen
                 //   indien nee dan ga je naar de volgende selector
-
+                //    todo: de selectors van de customstyles die niet bestaan in de selectors van de component moeten ook gewoon toegevoegd worden
                 // onderstaand proces is getest en werkt
                 let index1 = cssStr.indexOf('{')
                 let index2 = cssStr.indexOf('}')
@@ -165,10 +165,37 @@ class ComponentLogics extends HTMLElement {
                             stringTemp = stringTemp.substr(stringTemp.indexOf(';')+1)
                         }
                     }
+                    // ga elke key af in customstring
+                    let keyAvailable = true
+                    let startIndex = 0
+                    while(keyAvailable){
+                        let key = substringCustom.substring(startIndex,substringCustom.indexOf(':',startIndex)).toString().trim()
+                        if(newCssBody.toString().trim().search(key+':')===-1){
+                            // add the style rule to the new css of the component
+                            if(substringCustom.indexOf(';',startIndex)!==-1){
+                                startIndex = substringCustom.indexOf(';',startIndex)+1
+                                if(startIndex>=substringCustom.length){
+                                    keyAvailable = false
+                                }
+                                newCssBody+=substringCustom.substring(startIndex,substringCustom.indexOf(';',startIndex)).toString().trim()
+                            } else{
+                                keyAvailable = false
+                                newCssBody+=substringCustom.substr(startIndex).toString().trim()
+                            }
+                        } else{
+                            // go the the next custom style rule
+                            if(substringCustom.indexOf(';',startIndex)!==-1){
+                                startIndex = substringCustom.indexOf(';',startIndex)+1
+                                if(startIndex>=substringCustom.length){
+                                    keyAvailable = false
+                                }
+                            } else{
+                                keyAvailable = false
+                            }
+                        }
+                    }
                 }
-                // todo na dit proces moet je nog omgekeerd te werk gaan: wat niet in de body zat maar wel in de customstylestring
-                //   moet je gewoon toevoegen aan de (gewijzigde) body van de component
-                //    todo: de selectors van de customstyles die niet bestaan in de selectors van de component moeten ook gewoon toegevoegd worden
+
                 // step 3: create the new css string
 /*                this._layoutStates[Object.keys(this._layoutStates)[i].toString()].css =
                     `${this._layoutStates[Object.keys(this._layoutStates)[i].toString()].css.substr(-8)}${customStyles}</style>`*/
