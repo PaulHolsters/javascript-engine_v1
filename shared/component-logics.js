@@ -78,6 +78,7 @@ class ComponentLogics extends HTMLElement {
     }
 
     _restructureCssString(cssStr){
+        // obsolete function
         const cssState = []
         // purifying the string
         cssStr = cssStr.replace('<style>','').replace('</style>','').replace(' ','')
@@ -115,38 +116,25 @@ class ComponentLogics extends HTMLElement {
     }
 
     _addCustomStyles(customStyles){
-        if(customStyles.split('[').length>1){
-            // in this case the customStyles target a specific layoutState
-
-        } else{
-            // the customStyles have to be applied to every possible layoutState of the component
-            // the styles just have to be added in the end of every css string
-            //EXAMPLE of A custom style string =>  div{border:none;background:none;color:black}div:hover{background-color:dark-gray;color:white}
-            for (let i=0;i<Object.keys(this._layoutStates).length;i++){
-                // datastructure cssState: [{selector:[{cssProp:cssval}]}]
-                let cssStr = this._layoutStates[Object.keys(this._layoutStates)[i].toString()].css
-                cssStr = cssStr.replace('<style>','').replace('</style>','').replace(' ','').replace('\n','').replace('\t','').toString().trim()
-                customStyles = customStyles.replace(' ','').replace('\n','').replace('\t','').toString().trim()
-                // separate different selectors
-                let currentBody = cssStr.substring(0,cssStr.search('}')).toString().trim()
-                let currentSelector = cssStr.substring(0,cssStr.search('{')).toString().trim()
-                let nextStart = cssStr.search('}')+1
-
-                // todo repeat this for every css-selector in cssStr:
-                //  per selector en in die volgorde ga je na of er een selector in customstyles zit
-                //  indien ja dan doe je onderstaand algoritme om de body horende bij de selector te wijzigen
-                //   indien nee dan ga je naar de volgende selector
-                //    todo: de selectors van de customstyles die niet bestaan in de selectors van de component moeten ook gewoon toegevoegd worden
-                // onderstaand proces is getest en werkt
-                let index1 = cssStr.indexOf('{')
-                let index2 = cssStr.indexOf('}')
-                let substring = cssStr.substring(index1+1,index2).toString().trim()
-                let selector = cssStr.substring(0,index1)
-                let index1Cst = customStyles.indexOf('{')
-                let index2Cst = customStyles.indexOf('}')
-                let substringCustom = customStyles.substring(index1Cst+1,index2Cst).toString().trim()
-                let  selectorCustom = customStyles.substring(0,index1Cst)
-                if(selector.toString()===selectorCustom.toString()){
+        const overrideCss=function(originalRules,customRules){
+            // function returns a new cssString that contains the old css rules with their values
+            // if the rules where not inside the correct selector in customRules
+            // and contains the old rules with new values if these rules where found in the
+            //correct selector of customRules and new rules that were found in the correct selector of customRules
+            // which were not found in the originalRules and all this per selector in originalRules
+            // it does all this per selector by using a custom function that returns this new cssString per given selector/body
+            // todo create function that extracts every selector and its body from a css string
+            const newCssBody = function(originalSelector,originalBody,customRules){
+                // returns a new body using the correct body by selector in customRules
+                // it uses the following custom function to get the right body from customRules
+                const getCustomRules = function(originalSelector,customRules){
+                    let customBody = ''
+                    return customBody
+                }
+                let substring = originalBody
+                let substringCustom = getCustomRules(originalSelector,customRules)
+                if(substringCustom){
+                    // deze 2 bodies mogen in interactie gaan met elkaar
                     let stringTemp = substring
                     let newCssBody = ''
                     while(stringTemp.length>0){
@@ -198,7 +186,58 @@ class ComponentLogics extends HTMLElement {
                             }
                         }
                     }
+                    return newCssBody
+                } else{
+                    // er zijn geen stijlregels voor deze selector d.w.z. de originele stijlregels blijven ongewijzigd gelden
+                    return originalBody
                 }
+            }
+/*            // onderstaande code wijzigt een originele cssBody horende bij 1 originele selector voor 1(!) customSelector en zijn customBody
+            let index1 = originalRules.indexOf('{')
+            let index2 = originalRules.indexOf('}')
+            let substring = originalRules.substring(index1+1,index2).toString().trim()
+            let selector = originalRules.substring(0,index1)
+            let index1Cst = customStyles.indexOf('{')
+            let index2Cst = customStyles.indexOf('}')
+            let substringCustom = customStyles.substring(index1Cst+1,index2Cst).toString().trim()
+            let  selectorCustom = customStyles.substring(0,index1Cst)
+            if(selector.toString()===selectorCustom.toString()){
+
+            } else{
+
+            }*/
+        }
+        if(customStyles.split('[').length>1){
+            // in this case the customStyles target a specific layoutState
+
+        } else{
+            // the customStyles have to be applied to every possible layoutState of the component
+            // the styles just have to be added in the end of every css string
+            //EXAMPLE of A custom style string =>  div{border:none;background:none;color:black}div:hover{background-color:dark-gray;color:white}
+            for (let i=0;i<Object.keys(this._layoutStates).length;i++){
+                // datastructure cssState: [{selector:[{cssProp:cssval}]}]
+                let cssStr = this._layoutStates[Object.keys(this._layoutStates)[i].toString()].css
+                cssStr = cssStr.replace('<style>','').replace('</style>','').replace(' ','').replace('\n','').replace('\t','').toString().trim()
+                customStyles = customStyles.replace(' ','').replace('\n','').replace('\t','').toString().trim()
+                // separate different selectors
+                let currentRules = cssStr.substring(0,cssStr.search('}')).toString().trim()
+                let currentSelector = cssStr.substring(0,cssStr.search('{')).toString().trim()
+                let newCss = ''
+                let pointer = cssStr.search('}')+1
+                do{
+                    // this function changes the parameters: pointer, cssStr
+                    newCss = overrideCss(pointer,cssStr,customStyles)
+                }
+                while(pointer<cssStr.length){
+                    // this function changes the parameters: pointer, cssStr
+                    newCss = overrideCss(pointer,cssStr,customStyles)
+                }
+                // todo repeat this for every css-selector in cssStr:
+                //  per selector en in die volgorde ga je na of er een selector in customstyles zit
+                //  indien ja dan doe je onderstaand algoritme om de body horende bij de selector te wijzigen
+                //   indien nee dan ga je naar de volgende selector
+                //    todo: de selectors van de customstyles die niet bestaan in de selectors van de component moeten ook gewoon toegevoegd worden
+
 
                 // step 3: create the new css string
 /*                this._layoutStates[Object.keys(this._layoutStates)[i].toString()].css =
