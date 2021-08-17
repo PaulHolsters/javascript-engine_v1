@@ -43,7 +43,7 @@ class ComponentLogics extends HTMLElement {
                 }
                 break
             default:
-                console.log('error',event.type)
+                console.log('error', event.type)
         }
     }
 
@@ -77,33 +77,33 @@ class ComponentLogics extends HTMLElement {
         this._css = this._layoutStates[state].css
     }
 
-    _restructureCssString(cssStr){
-        // obsolete function
+    _restructureCssString(cssStr) {
+        // return-value: {selector:[{cssRule:value}]}
         const cssState = []
         // purifying the string
-        cssStr = cssStr.replace('<style>','').replace('</style>','').replace(' ','')
+        cssStr = cssStr.replace('<style>', '').replace('</style>', '').replace(' ', '')
         // separating selectors from their bodies
         let cssArr = cssStr.split('{')
         let tempArr = []
-        for(let j=0;j<cssArr.length;j++){
+        for (let j = 0; j < cssArr.length; j++) {
             tempArr.concat(cssArr[j].split('}'))
         }
         cssArr = tempArr
         let objTemp = {}
         let keyTemp = ''
-        for(let j=0;j<cssArr.length;j++){
-            if(j%2===0){
+        for (let j = 0; j < cssArr.length; j++) {
+            if (j % 2 === 0) {
                 // selector
                 keyTemp = cssArr[j]
                 objTemp[keyTemp] = []
-            } else{
+            } else {
                 // body
                 const valueObjects = []
                 const cssValues = cssArr[j].split(';')
-                for (let k=0;k<cssValues.length;k++){
+                for (let k = 0; k < cssValues.length; k++) {
                     const obj = {}
                     const key = cssValues[k].split(':')[0]
-                    obj[key]= cssValues[k].split(':')[1]
+                    obj[key] = cssValues[k].split(':')[1]
                     valueObjects.push(obj)
                 }
                 objTemp[keyTemp] = valueObjects
@@ -115,133 +115,135 @@ class ComponentLogics extends HTMLElement {
         return cssState
     }
 
-    _addCustomStyles(customStyles){
-        const overrideCss=function(originalRules,customRules){
+    _addCustomStyles(customStyles) {
+        const overrideCss = function (originalRules, newRules) {
             // function returns a new cssString that contains the old css rules with their values
             // if the rules where not inside the correct selector in customRules
             // and contains the old rules with new values if these rules where found in the
-            //correct selector of customRules and new rules that were found in the correct selector of customRules
-            // which were not found in the originalRules and all this per selector in originalRules
-            // it does all this per selector by using a custom function that returns this new cssString per given selector/body
-            // todo create function that extracts every selector and its body from a css string
-            const newCssBody = function(originalSelector,originalBody,customRules){
-                // returns a new body using the correct body by selector in customRules
-                // it uses the following custom function to get the right body from customRules
-                const getCustomRules = function(originalSelector,customRules){
-                    let customBody = ''
-                    return customBody
+            // correct selector of customRules and new rules that were found in the correct selector of customRules
+            // which were not found in the originalRules
+            let substring = originalRules.toString().trim()
+            let substringCustom = newRules.toString().trim()
+            let stringTemp = substring
+            let newCssBody = ''
+            while (stringTemp.length > 0) {
+                // we gaan elke css regel af in de orginele body en zien of er ene is in custom css die moet overriden
+                const key = stringTemp.substring(0, stringTemp.indexOf(':')).toString().trim()
+                if (substringCustom.search(key) !== -1) {
+                    // custom css bepaalt nu de regel
+                    const startIndex = substringCustom.indexOf(key)
+                    if (substringCustom.indexOf(';', startIndex) === -1) {
+                        newCssBody += substringCustom.substr(startIndex) + ';'
+                    } else {
+                        newCssBody += substringCustom.substring(startIndex, substringCustom.indexOf(';', startIndex) + 1)
+                    }
+                } else {
+                    // the same css rule is not in the custom ones
+                    newCssBody += stringTemp.substring(0, stringTemp.indexOf(';') + 1)
                 }
-                let substring = originalBody
-                let substringCustom = getCustomRules(originalSelector,customRules)
-                if(substringCustom){
-                    // deze 2 bodies mogen in interactie gaan met elkaar
-                    let stringTemp = substring
-                    let newCssBody = ''
-                    while(stringTemp.length>0){
-                        const key = stringTemp.substring(0,stringTemp.indexOf(':')).toString().trim()
-                        //console.log(substringCustom)
-                        if(substringCustom.search(key)!==-1){
-                            const startIndex = substringCustom.indexOf(key)
-                            //console.log(substringCustom,startIndex)
-                            if(substringCustom.indexOf(';',startIndex)===-1){
-                                newCssBody+=substringCustom.substr(startIndex)+';'
-                            } else{
-                                newCssBody+=substringCustom.substring(startIndex,substringCustom.indexOf(';',startIndex)+1)
-                            }
-                        } else{
-                            newCssBody+=stringTemp.substring(0,stringTemp.indexOf(';')+1)
-                        }
-                        if(stringTemp.indexOf(';')+1>=stringTemp.length){
-                            stringTemp = ''
-                        } else{
-                            stringTemp = stringTemp.substr(stringTemp.indexOf(';')+1)
-                        }
-                    }
-                    // ga elke key af in customstring
-                    let keyAvailable = true
-                    let startIndex = 0
-                    while(keyAvailable){
-                        let key = substringCustom.substring(startIndex,substringCustom.indexOf(':',startIndex)).toString().trim()
-                        if(newCssBody.toString().trim().search(key+':')===-1){
-                            // add the style rule to the new css of the component
-                            if(substringCustom.indexOf(';',startIndex)!==-1){
-                                startIndex = substringCustom.indexOf(';',startIndex)+1
-                                if(startIndex>=substringCustom.length){
-                                    keyAvailable = false
-                                }
-                                newCssBody+=substringCustom.substring(startIndex,substringCustom.indexOf(';',startIndex)).toString().trim()
-                            } else{
-                                keyAvailable = false
-                                newCssBody+=substringCustom.substr(startIndex).toString().trim()
-                            }
-                        } else{
-                            // go the the next custom style rule
-                            if(substringCustom.indexOf(';',startIndex)!==-1){
-                                startIndex = substringCustom.indexOf(';',startIndex)+1
-                                if(startIndex>=substringCustom.length){
-                                    keyAvailable = false
-                                }
-                            } else{
-                                keyAvailable = false
-                            }
-                        }
-                    }
-                    return newCssBody
-                } else{
-                    // er zijn geen stijlregels voor deze selector d.w.z. de originele stijlregels blijven ongewijzigd gelden
-                    return originalBody
+                // determine whether the loop has to end or not by cutting a piece from stringTemp that has already been processed
+                if (stringTemp.indexOf(';') + 1 >= stringTemp.length || stringTemp.indexOf(';')===-1 ) {
+                    stringTemp = ''
+                } else {
+                    stringTemp = stringTemp.substr(stringTemp.indexOf(';') + 1)
                 }
             }
-/*            // onderstaande code wijzigt een originele cssBody horende bij 1 originele selector voor 1(!) customSelector en zijn customBody
-            let index1 = originalRules.indexOf('{')
-            let index2 = originalRules.indexOf('}')
-            let substring = originalRules.substring(index1+1,index2).toString().trim()
-            let selector = originalRules.substring(0,index1)
-            let index1Cst = customStyles.indexOf('{')
-            let index2Cst = customStyles.indexOf('}')
-            let substringCustom = customStyles.substring(index1Cst+1,index2Cst).toString().trim()
-            let  selectorCustom = customStyles.substring(0,index1Cst)
-            if(selector.toString()===selectorCustom.toString()){
 
-            } else{
-
-            }*/
+            // op dit punt zijn alle regels die ook in de custom styles zijn, overgenomen en diegene die niet in customstyles zijn
+            // zijn gebleven
+            // nu gaan we diegene die in customstyles staan maar niet in de originele er ook bijzetten
+            let keyAvailable = true
+            // we gaan nu over de customstyle string vanaf 0 tot het einde
+            let startIndex = 0
+            while (keyAvailable) {
+                let key = substringCustom.substring(startIndex, substringCustom.indexOf(':', startIndex)).toString().trim()
+                // bug : color: is a new rule but if background-color: exists in the original one these will not equal to -1
+                // while it should
+                if (newCssBody.toString().trim().search(key + ':') === -1
+                ||(newCssBody.toString().trim().search('-'+key + ':') !== -1
+                    &&(newCssBody.indexOf(key+':',newCssBody.indexOf('-'+key+':')+2)===-1)
+                    )) {
+                    // de regel in customstyles bestaat niet in de originele en moet dus overgenomen worden
+                    // add the style rule to the new css of the component
+                    if (substringCustom.indexOf(';', startIndex) !== -1) {
+                        newCssBody += substringCustom.substring(startIndex, substringCustom.indexOf(';', startIndex)+1).toString().trim()
+                        startIndex = substringCustom.indexOf(';', startIndex) + 1
+                        if (startIndex >= substringCustom.length) {
+                            keyAvailable = false
+                        }
+                    } else {
+                        keyAvailable = false
+                        newCssBody += substringCustom.substr(startIndex).toString().trim()
+                    }
+                } else {
+                    // zuiver key: is al aanwezig
+                    // go the the next custom style rule
+                    if (substringCustom.indexOf(';', startIndex) !== -1) {
+                        // er is inderdaad nog een volgende stijlregel
+                        startIndex = substringCustom.indexOf(';', startIndex) + 1
+                        if (startIndex >= substringCustom.length) {
+                            keyAvailable = false
+                        }
+                    } else {
+                        keyAvailable = false
+                    }
+                }
+            }
+            return newCssBody
         }
-        if(customStyles.split('[').length>1){
+        const extractSelector = function (pointer, cssStr) {
+            return cssStr.toString().trim().substring(pointer, cssStr.toString().trim().indexOf('{', pointer))
+        }
+        const extractRules = function (selector, cssStr) {
+            const selectorString = selector.toString().trim()
+            const cssString = cssStr.toString().trim()
+            if (cssString.indexOf(selectorString) !== -1) {
+                const start = cssString.indexOf('{', cssString.indexOf(selectorString)) + 1
+                return cssString.substring(start, cssString.indexOf('}', start))
+            } else {
+                return null
+            }
+        }
+        if (customStyles.split('[').length > 1) {
             // in this case the customStyles target a specific layoutState
 
-        } else{
+        } else {
             // the customStyles have to be applied to every possible layoutState of the component
-            // the styles just have to be added in the end of every css string
-            //EXAMPLE of A custom style string =>  div{border:none;background:none;color:black}div:hover{background-color:dark-gray;color:white}
-            for (let i=0;i<Object.keys(this._layoutStates).length;i++){
-                // datastructure cssState: [{selector:[{cssProp:cssval}]}]
+            //EXAMPLE of A custom style string =>  div{border:none;background:none;color:black}div:hover{background-color:darkgray;color:white}
+            for (let i = 0; i < Object.keys(this._layoutStates).length; i++) {
+                // cssStr has possibly different selectors
                 let cssStr = this._layoutStates[Object.keys(this._layoutStates)[i].toString()].css
-                cssStr = cssStr.replace('<style>','').replace('</style>','').replace(' ','').replace('\n','').replace('\t','').toString().trim()
-                customStyles = customStyles.replace(' ','').replace('\n','').replace('\t','').toString().trim()
-                // separate different selectors
-                let currentRules = cssStr.substring(0,cssStr.search('}')).toString().trim()
-                let currentSelector = cssStr.substring(0,cssStr.search('{')).toString().trim()
-                let newCss = ''
-                let pointer = cssStr.search('}')+1
-                do{
-                    // this function changes the parameters: pointer, cssStr
-                    newCss = overrideCss(pointer,cssStr,customStyles)
+                cssStr = cssStr.replace('<style>', '').replace('</style>', '').replace(' ', '').replace('\n', '').replace('\t', '').toString().trim()
+                // for every selector customStyles has to be evaluated
+                customStyles = customStyles.replace(' ', '').replace('\n', '').replace('\t', '').toString().trim()
+                // in the end we get a new cssStr for the current layoutState where the <style> tag has be reattached to again
+                let newCssStr = ''
+                // for every selector in cssStr we attach a new body to newCssStr together with the selector
+                // we use a pointer that points to the selector in cssStr that has to be processed
+                let pointer = 0
+                while (pointer < cssStr.length && pointer >= 0) {
+                    // repeat the part from the do-block
+                    // get the next selector
+                    const originalSelector = extractSelector(pointer, cssStr)
+                    // get the body (=cssRules) that belongs to this selector
+                    const originalRules = extractRules(originalSelector, cssStr)
+                    // get the body (=cssRules) that belong to the same selector but inside customStyles: if empty then the originalRules can stay
+                    const newRules = extractRules(originalSelector, customStyles)
+                    // create newCssRules that take the newRules into account
+                    let newCssRules = ''
+                    if (newRules) {
+                        newCssRules = overrideCss(originalRules, newRules)
+                    } else {
+                        newCssRules = originalRules
+                    }
+                    newCssStr += originalSelector + '{' + newCssRules + '}'
+                    // the pointer has to shift to the next selector
+                    // if there is no next selector pointer has to be a negative number
+                    // to prevent the while loop from running
+                    pointer = cssStr.indexOf('}', pointer) + 1
                 }
-                while(pointer<cssStr.length){
-                    // this function changes the parameters: pointer, cssStr
-                    newCss = overrideCss(pointer,cssStr,customStyles)
-                }
-                // todo repeat this for every css-selector in cssStr:
-                //  per selector en in die volgorde ga je na of er een selector in customstyles zit
-                //  indien ja dan doe je onderstaand algoritme om de body horende bij de selector te wijzigen
-                //   indien nee dan ga je naar de volgende selector
-                //    todo: de selectors van de customstyles die niet bestaan in de selectors van de component moeten ook gewoon toegevoegd worden
-
-
-                // step 3: create the new css string
-/*                this._layoutStates[Object.keys(this._layoutStates)[i].toString()].css =
-                    `${this._layoutStates[Object.keys(this._layoutStates)[i].toString()].css.substr(-8)}${customStyles}</style>`*/
+                // finish up the new style for this layoutState
+                this._layoutStates[Object.keys(this._layoutStates)[i].toString()].css = '<style>' + newCssStr + '</style>'
             }
         }
     }
@@ -267,6 +269,7 @@ class ComponentLogics extends HTMLElement {
             }
         }
     }
+
     _setShadow(html) {
         this._html = html
     }
