@@ -61,7 +61,7 @@ class PhjTextInput extends ComponentLogics {
         // set innerhtml
         this._executeShadow()
         // set eventHandlers and handle attributes
-        this._setUpAttributes('text','events')
+        this._setUpAttributes('text','events','connect')
     }
 }
 customElements.define('phj-text-input',PhjTextInput)

@@ -1,12 +1,12 @@
-class PhjBox extends ComponentLogics{
+class PhjBox extends ComponentLogics {
 
     constructor() {
         super();
         this.attachShadow({mode: 'open'})
         this._layoutStates = {
-            default: {
+            visible: {
                 layoutState: {
-                    default: true
+                    visible: true
                 },
                 css: `
 <style>
@@ -15,17 +15,29 @@ class PhjBox extends ComponentLogics{
   }                               
 </style>
 `
+            },
+            invisible: {
+                layoutState: {
+                    visible: false
+                },
+                css: `
+<style>
+  :host{
+       display: none; 
+  }                               
+</style>
+`
             }
         }
 
         this._state = {
-            title: '',
+            title: ''
         }
     }
 
-    connectedCallback() {
+    async connectedCallback() {
         // set css of the webcomponent
-        this._setLayoutState('default')
+        this._setLayoutState('visible')
         // set HTML of the webcomponent
         this._setShadow(`
         <div>
@@ -35,8 +47,14 @@ class PhjBox extends ComponentLogics{
         // set innerhtml
         this._executeShadow()
         // set eventHandlers and handle attributes
-        this._setUpAttributes('custom-styles','events')
+        await this._setUpAttributes('custom-styles', 'events')
+        this._events.forEach(el => {
+            if (el.hasOwnProperty('load') && el.load.length > 0) {
+                const loadEvent = new Event('component-loaded')
+                this.dispatchEvent(loadEvent)
+            }
+        })
     }
 }
 
-customElements.define('phj-box',PhjBox)
+customElements.define('phj-box', PhjBox)

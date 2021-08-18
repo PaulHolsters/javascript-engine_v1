@@ -111,7 +111,7 @@
       <workItem from="1628703401454" duration="1436000" />
       <workItem from="1629139263687" duration="621000" />
       <workItem from="1629184661534" duration="24520000" />
-      <workItem from="1629281317197" duration="5216000" />
+      <workItem from="1629281317197" duration="21310000" />
     </task>
     <task id="LOCAL-00001" summary="Second commit for testing purposes">
       <created>1627739619455</created>
@@ -267,7 +267,14 @@
       <option name="project" value="LOCAL" />
       <updated>1629228188835</updated>
     </task>
-    <option name="localTasksCounter" value="23" />
+    <task id="LOCAL-00023" summary="set up of rewrite of the _eventHandler function:&#10;a list of todo's&#10;contemplating about: this as a selector, selecting an element by a number between brackets, the load event that gets triggered as soon the component is the entire page is loaded but without the user needing to add javascript to do this">
+      <created>1629288791546</created>
+      <option name="number" value="00023" />
+      <option name="presentableId" value="LOCAL-00023" />
+      <option name="project" value="LOCAL" />
+      <updated>1629288791546</updated>
+    </task>
+    <option name="localTasksCounter" value="24" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -299,17 +306,18 @@
     <MESSAGE value=" a custom-styles attribute that replaces parts of the layoutStates css so custom styles can be used with all custom components: opnieuw begonnen: algoritme voor het vervangen van styles in de component door styles van het custom-styles attribuut = ok" />
     <MESSAGE value=" a custom-styles: creating custom functions that deal with a particular step in the process of overriding the necessary styles rules or adding new ones" />
     <MESSAGE value="custom-styles attribute ready to be used" />
-    <option name="LAST_COMMIT_MESSAGE" value="custom-styles attribute ready to be used" />
+    <MESSAGE value="set up of rewrite of the _eventHandler function:&#10;a list of todo's&#10;contemplating about: this as a selector, selecting an element by a number between brackets, the load event that gets triggered as soon the component is the entire page is loaded but without the user needing to add javascript to do this" />
+    <option name="LAST_COMMIT_MESSAGE" value="set up of rewrite of the _eventHandler function:&#10;a list of todo's&#10;contemplating about: this as a selector, selecting an element by a number between brackets, the load event that gets triggered as soon the component is the entire page is loaded but without the user needing to add javascript to do this" />
   </component>
   <component name="WindowStateProjectService">
     <state x="586" y="198" key="#Inspections" timestamp="1627821810157">
       <screen x="0" y="0" width="1920" height="1040" />
     </state>
     <state x="586" y="198" key="#Inspections/0.0.1920.1040@0.0.1920.1040" timestamp="1627821810157" />
-    <state x="0" y="88" key="CommitChangelistDialog2" timestamp="1629228187770">
+    <state x="0" y="88" key="CommitChangelistDialog2" timestamp="1629288789482">
       <screen x="0" y="0" width="1920" height="1040" />
     </state>
-    <state x="0" y="88" key="CommitChangelistDialog2/0.0.1920.1040@0.0.1920.1040" timestamp="1629228187770" />
+    <state x="0" y="88" key="CommitChangelistDialog2/0.0.1920.1040@0.0.1920.1040" timestamp="1629288789482" />
     <state x="184" y="86" key="DiffContextDialog" timestamp="1627729652791">
       <screen x="0" y="0" width="1920" height="1040" />
     </state>
@@ -326,10 +334,10 @@
       <screen x="0" y="0" width="1920" height="1040" />
     </state>
     <state x="461" y="165" key="SettingsEditor/0.0.1920.1040@0.0.1920.1040" timestamp="1627739971507" />
-    <state x="552" y="253" key="Vcs.Push.Dialog.v2" timestamp="1629228194476">
+    <state x="552" y="253" key="Vcs.Push.Dialog.v2" timestamp="1629288798199">
       <screen x="0" y="0" width="1920" height="1040" />
     </state>
-    <state x="552" y="253" key="Vcs.Push.Dialog.v2/0.0.1920.1040@0.0.1920.1040" timestamp="1629228194476" />
+    <state x="552" y="253" key="Vcs.Push.Dialog.v2/0.0.1920.1040@0.0.1920.1040" timestamp="1629288798199" />
     <state x="667" y="76" width="585" height="888" key="find.popup" timestamp="1629196980383">
       <screen x="0" y="0" width="1920" height="1040" />
     </state>

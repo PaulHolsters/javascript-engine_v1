@@ -106,7 +106,7 @@ class PhjMaster extends ComponentLogics {
                         crudTemplate._registerListener(this,'phj-action-pane')
                         console.log('registered: ',this,'phj-action-pane')
                         // set eventHandlers and handle attributes
-                        this._setUpAttributes('path','title','events')
+                        this._setUpAttributes('path','title','events','connect')
                         // when the action-pane is created the built of the component will be continue
 
                     }

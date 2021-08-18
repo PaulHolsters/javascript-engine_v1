@@ -40,7 +40,7 @@ class PhjActionPane extends ComponentLogics {
         target.addEventListener('action-pane-created', target._processEvent, false)
         target.dispatchEvent(actionPaneReady)
         // set eventHandlers and handle attributes
-        //this._setUpAttributes('path','title','events')
+        //this._setUpAttributes('path','title','events','connect')
     }
 }
 

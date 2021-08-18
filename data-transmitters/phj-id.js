@@ -9,7 +9,7 @@ class PhjId extends ComponentLogics{
 
     connectedCallback() {
         // set eventHandlers and handle attributes
-        this._setUpAttributes('value','events')
+        this._setUpAttributes('value','events','connect')
     }
 
 }

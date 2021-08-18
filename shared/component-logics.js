@@ -7,7 +7,7 @@ class ComponentLogics extends HTMLElement {
     _html
     _css
 
-    _actions
+    _events = [{click:[]},{hover:[]},{hoverAway:[]},{change:[]},{select:[]},{load:[]},{check:[]}]
     _state
 
     // the baseUrl variable should be used by the phj-content-elements component, everything inside that component can be considered
@@ -309,7 +309,7 @@ class ComponentLogics extends HTMLElement {
                     break
                 case 'row_selected':
                     break
-                case 'number_of_row_selected':
+                case 'number_of_rows_selected':
                     break
                 case 'id_selected':
                     break
@@ -446,9 +446,7 @@ class ComponentLogics extends HTMLElement {
         }
     }
 
-    _eventHandler(eventStr) {
-        // todo extract all events and process them one by one and also get the correct actions that have to happen upon the triggering of the event
-        // todo this._actions = this.getAttribute('click').split(',')
+    _eventHandler(eventProcess) {
         // typical format of an event-string:
         // event1/event2/../eventN:actions
         // typical format of actions:
@@ -463,78 +461,128 @@ class ComponentLogics extends HTMLElement {
         // this is the format for this situation:
         // event1/event2/../eventN:actions;event1/event2/../eventN:actions
         // it follows the same pattern but separated by a semi-colon
-
-        // todo setting up all necessary eventListeners
-        const event = ''
-        // todo make it possible the use an index with your selectors
-        // todo: make it possible to use this as a selector
-        const selector1 = this._actions[i].split('=>')[0].trim()
-        const elements = document.querySelectorAll(selector1)
-        const value2 = this._actions[i].split('=>')[1].trim()
-        // todo make sure the following code only gets executed when an event has actulally happened (and not when only the listeners need to be set up)
-        switch (event) {
-            case 'click':
-                if (this._currentLayoutState === 'enabled') {
-                    for (let i = 0; i < this._actions.length; i++) {
-                        if (this._possibleLayoutStates.includes(value2)) {
-                            // the action is about changing the state of the components gathered in selector1
-                            // change the state of the targeted elements upon the click
-                            for (let j = 0; j < elements.length; j++) {
-                                elements[j].executeLayoutState(value2)
+        if(typeof eventProcess === 'string'){
+            // storing the events for this component
+            const events = eventProcess.split(';')
+            console.log(events)
+            for (let i=0;i<events.length;i++){
+                const eventNames = events[i].split(':')[0].split('/')
+                console.log(eventNames)
+                const actions = events[i].split(':')[1].split(',')
+                console.log(actions)
+                eventNames.forEach(name=>{
+                    actions.forEach(action=>{
+                        this._events.forEach(evt => {
+                            if (evt.hasOwnProperty(name.toString())) {
+                                evt[name.toString()].push(action)
                             }
-                        } else if (elements[0]._getState('text') !== undefined) {
-                            // the action is about setting the state.text attribute of all components targeted in value2
-                            // get text of the source (only one source!) and
-                            // replace the text of every target if it has a text property
-                            // a component can have either a value or a text property, NEVER BOTH!
-                            const targets = document.querySelectorAll(value2)
-                            for (let j = 0; j < targets.length; j++) {
-                                if (targets[j]._getState('text') !== undefined) {
-                                    targets[j]._setState('text', elements[0]._getState('text'))
-                                }
-                            }
-                        } else if (elements[0]._getState('value') !== undefined) {
-                            // the action is about setting the state.value attribute of all components targeted in value2
-                            // get value of the source (only one source!) and
-                            // replace the value of every target if it has that property
-                            const targets = document.querySelectorAll(value2)
-                            for (let j = 0; j < targets.length; j++) {
-                                if (targets[j]._getState('value') !== undefined) {
-                                    // copying the value property-value from the source to the targets, if it has such a property
-                                    targets[j]._setState('value', elements[0]._getState('value'))
-                                    // after changing the state of this components attribute changed callback will make sure
-                                    // a rest call will get the data associated with that value, depending
-                                    // whether the component is configured that way which is the case for the card component
-                                }
-                            }
-                        } else{
-                            // todo: when clicking is about making a request to the server or something else?
-                            // todo: add CRUD functionality
-                            // create -> get form info, create a body and send it using the _create method
-                            // update -> get form info, create a body and send it using the _update method
-                            // delete -> get form info, create a body and send it using the _delete method
-                        }
+                        })
+                    })
+                })
+            }
+            // setting up all necessary eventListeners for this component
+            this._events.forEach(evt=>{
+                // event is an object with the eventName as a key and an array with actions that need to happen upon the happening of the event
+                if(evt[Object.keys(evt)[0].toString()].length > 0){
+                    switch (Object.keys(evt)[0].toString()){
+                        case 'click':
+                            this.addEventListener('click',this._eventHandler)
+                            break
+                        case 'load':
+                            // a custom event, because the built-in load event works on the window object only (so it appears)
+                            // this event gets fired as soon as the element is available and all initialisation is done
+                            console.log('load?')
+                            this.addEventListener('component-loaded', this._eventHandler)
+                            break
+                        case 'hover':
+                            // todo how to trigger this on the right time?
+                            this.addEventListener('component-hovered-over', this._eventHandler)
+                            break
+                        case 'hover-away':
+                            // todo how to trigger this on the right time?
+                            this.addEventListener('component-hovered-away-from', this._eventHandler)
+                            break
                     }
                 }
-                break;
-            case 'load':
+            })
+        } else{
+            // handling the actions that need to be performed through a function
+            // that is called from within the switch that handles a particular event
+            const processAction = (action)=>{
+                const source = action.split('=>')[0].trim()
+                let sourceElements
+                if(source==='this'){
+                    let arrOfElements = [this.tagName]
+                    let current = this
+                    while(current.tagName !== 'BODY'){
+                        current = current.parentElement
+                        arrOfElements.push(current.tagName)
+                    }
+                    let selectorString = ''
+                    arrOfElements = arrOfElements.reverse()
+                    arrOfElements.forEach(pathEl=>{
+                        if(selectorString.length>0){
+                            selectorString += ' > ' + pathEl.toLowerCase()
+                        } else{
+                            selectorString += pathEl.toLowerCase()
+                        }
+                    })
+                    sourceElements = document.querySelectorAll(selectorString)
+                } else{
+                    sourceElements = document.querySelectorAll(source)
+                }
+                const target = action.split('=>')[1].trim()
+                if(this._possibleLayoutStates.includes(target)){
+                    sourceElements.forEach(srcEl=>{
+                        console.log(srcEl)
+                        srcEl.executeLayoutState(target)
+                    })
+                } else if(sourceElements[0]._getState('text') !== undefined){
+                    const targetElements = document.querySelectorAll(target)
+                    targetElements.forEach(trgtEl=>{
+                        if(trgtEl._getState('text') !== undefined){
+                            trgtEl._setState('text', sourceElements[0]._getState('text'))
+                        }
+                    })
+                } else if(sourceElements[0]._getState('value') !== undefined){
+                    const targetElements = document.querySelectorAll(target)
+                    targetElements.forEach(trgtEl=>{
+                        if(trgtEl._getState('value') !== undefined){
+                            trgtEl._setState('value', sourceElements[0]._getState('value'))
+                        }
+                    })
+                } else{
 
-                break;
-            case 'hover':
+                }
+            }
+            switch (eventProcess.type) {
+                case 'click':
+                    if (this._currentLayoutState === 'enabled') {
+                        this._events.forEach(el => {
+                            if (el.hasOwnProperty('click') && el.click.length > 0) {
+                                el.click.forEach(action=>{
+                                    processAction(action)
+                                })
+                            }
+                        })
+                    }
+                    break
+                case 'component-loaded':
+                    this._events.forEach(el => {
+                        if (el.hasOwnProperty('load') && el.load.length > 0) {
+                            el.load.forEach(action=>{
+                                processAction(action)
+                            })
+                        }
+                    })
+                    break
+                case 'component-hovered-over':
 
-                break;
-            case 'hover-away':
+                    break
+                case 'component-hovered-away-from':
 
-                break;
-            case 'select':
-
-                break;
-            case 'change':
-
-                break;
-            case 'check':
-
-                break;
+                    break
+            }
         }
     }
 }

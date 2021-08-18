@@ -43,7 +43,7 @@ class PhjContent extends ComponentLogics {
         // set innerhtml (could be seen as a render method maybe?)
         this._executeShadow()
         // set eventHandlers and handle attributes
-        this._setUpAttributes('baseUrl','events')
+        this._setUpAttributes('baseUrl','events','connect')
         // during the setup of the url attribute the restCall should be made
         // the innerHTML of the component should be re-rendered according to the response
     }
