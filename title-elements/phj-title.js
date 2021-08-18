@@ -41,7 +41,7 @@ class PhjTitle extends ComponentLogics{
         // set innerhtml
         this._executeShadow()
         // set eventHandlers and handle attributes
-        this._setUpAttributes('title','custom-styles')
+        this._setUpAttributes('title','custom-styles','events')
     }
 }
 

@@ -53,7 +53,7 @@ class PhjRadioButton extends ComponentLogics {
         // set innerhtml
         this._executeShadow()
         // set eventHandlers and handle attributes
-        this._setUpAttributes('text','value','selected')
+        this._setUpAttributes('text','value','selected','events')
     }
 }
 customElements.define('phj-radio-button',PhjRadioButton)

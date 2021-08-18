@@ -331,9 +331,6 @@ class ComponentLogics extends HTMLElement {
                         this.executeLayoutState(this._currentLayoutState)
                     }
                     break
-                case 'type':
-
-                    break
                 case 'actions':
                     if (this.hasAttribute('actions')) {
                         this._state.has_actions = true
@@ -345,40 +342,9 @@ class ComponentLogics extends HTMLElement {
                         this._state.title = this.getAttribute('title')
                     }
                     break
-                case 'click':
-                    if (this.hasAttribute('click')) {
-                        this._actions = this.getAttribute('click').split(',')
-                        this.addEventListener('click', this._eventHandler)
-                    }
-                    break;
-                case 'load':
-                    if (this.hasAttribute('load')) {
-                        this._actions = this.getAttribute('load').split(',')
-                        this.addEventListener('load', this._eventHandler)
-                    }
-                    break;
-                case 'hover':
-                    if (this.hasAttribute('hover')) {
-                        this._actions = this.getAttribute('hover').split(',')
-                        this.addEventListener('hover', this._eventHandler)
-                    }
-                    break;
-                case 'select':
-                    if (this.hasAttribute('select')) {
-                        // todo do stuff
-                        this.addEventListener('select', this._eventHandler)
-                    }
-                    break;
-                case 'change':
-                    if (this.hasAttribute('change')) {
-                        // todo do stuff
-                        this.addEventListener('change', this._eventHandler)
-                    }
-                    break;
-                case 'check':
-                    if (this.hasAttribute('check')) {
-                        // todo do stuff
-                        this.addEventListener('check', this._eventHandler)
+                case 'events':
+                    if (this.hasAttribute('events')) {
+                        this._eventHandler(this.getAttribute('events'))
                     }
                     break;
                 case 'icon':
@@ -480,31 +446,47 @@ class ComponentLogics extends HTMLElement {
         }
     }
 
-    _eventHandler(event) {
-        switch (event.type) {
+    _eventHandler(eventStr) {
+        // todo extract all events and process them one by one and also get the correct actions that have to happen upon the triggering of the event
+        // todo this._actions = this.getAttribute('click').split(',')
+        // typical format of an event-string:
+        // event1/event2/../eventN:actions
+        // typical format of actions:
+        // action1,action2,...,actionN
+        // an action can be of format: selector=>state where selector is a way to select to target element and state is the new state to put the target into
+        // or can have the format: source => target in which case a VALUE or TEXT will be transferred from the source to the target upon which the target then automatically reacts
+        // for instance by getting data from the server or showing the transferred text data in the UI of the target component
+        // every action needs to be put in the actions array at initialization because it are these actions which will subsequently looked over to handle
+        // this means that the _actions array has already to be set up for eventHandler to work properly
+        // different events can result in the same actions
+        // it is also possible that different events have different actions (one or more)
+        // this is the format for this situation:
+        // event1/event2/../eventN:actions;event1/event2/../eventN:actions
+        // it follows the same pattern but separated by a semi-colon
+
+        // todo setting up all necessary eventListeners
+        const event = ''
+        // todo make it possible the use an index with your selectors
+        // todo: make it possible to use this as a selector
+        const selector1 = this._actions[i].split('=>')[0].trim()
+        const elements = document.querySelectorAll(selector1)
+        const value2 = this._actions[i].split('=>')[1].trim()
+        // todo make sure the following code only gets executed when an event has actulally happened (and not when only the listeners need to be set up)
+        switch (event) {
             case 'click':
                 if (this._currentLayoutState === 'enabled') {
-                    // todo: make it possible to use this as a selector
                     for (let i = 0; i < this._actions.length; i++) {
-                        // todo make it possible the use an index with your selectors
-
-                        // todo: add CRUD functionality
-                        // todo: change the code below since it assumes incorrectly that clicking is all about layout changes
-                        // create -> get form info, create a body and send it using the _create method
-                        // update -> get form info, create a body and send it using the _update method
-                        // delete -> get form info, create a body and send it using the _delete method
-                        const selector1 = this._actions[i].split('=>')[0].trim()
-                        const elements = document.querySelectorAll(selector1)
-                        const value2 = this._actions[i].split('=>')[1].trim()
                         if (this._possibleLayoutStates.includes(value2)) {
+                            // the action is about changing the state of the components gathered in selector1
                             // change the state of the targeted elements upon the click
                             for (let j = 0; j < elements.length; j++) {
                                 elements[j].executeLayoutState(value2)
                             }
                         } else if (elements[0]._getState('text') !== undefined) {
+                            // the action is about setting the state.text attribute of all components targeted in value2
                             // get text of the source (only one source!) and
                             // replace the text of every target if it has a text property
-                            // a component can have either a value or a text property, never both!
+                            // a component can have either a value or a text property, NEVER BOTH!
                             const targets = document.querySelectorAll(value2)
                             for (let j = 0; j < targets.length; j++) {
                                 if (targets[j]._getState('text') !== undefined) {
@@ -512,6 +494,7 @@ class ComponentLogics extends HTMLElement {
                                 }
                             }
                         } else if (elements[0]._getState('value') !== undefined) {
+                            // the action is about setting the state.value attribute of all components targeted in value2
                             // get value of the source (only one source!) and
                             // replace the value of every target if it has that property
                             const targets = document.querySelectorAll(value2)
@@ -524,6 +507,12 @@ class ComponentLogics extends HTMLElement {
                                     // whether the component is configured that way which is the case for the card component
                                 }
                             }
+                        } else{
+                            // todo: when clicking is about making a request to the server or something else?
+                            // todo: add CRUD functionality
+                            // create -> get form info, create a body and send it using the _create method
+                            // update -> get form info, create a body and send it using the _update method
+                            // delete -> get form info, create a body and send it using the _delete method
                         }
                     }
                 }
@@ -532,6 +521,9 @@ class ComponentLogics extends HTMLElement {
 
                 break;
             case 'hover':
+
+                break;
+            case 'hover-away':
 
                 break;
             case 'select':
@@ -545,6 +537,4 @@ class ComponentLogics extends HTMLElement {
                 break;
         }
     }
-
-
 }

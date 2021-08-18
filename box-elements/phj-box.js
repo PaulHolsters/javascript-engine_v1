@@ -35,7 +35,7 @@ class PhjBox extends ComponentLogics{
         // set innerhtml
         this._executeShadow()
         // set eventHandlers and handle attributes
-        this._setUpAttributes('custom-styles')
+        this._setUpAttributes('custom-styles','events')
     }
 }
 

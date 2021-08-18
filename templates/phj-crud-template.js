@@ -40,7 +40,7 @@ class PhjCrudTemplate extends ComponentLogics {
         // set innerhtml (could be seen as a render method maybe?)
         this._executeShadow()
         // set eventHandlers and handle attributes
-        //this._setUpAttributes('path','title')
+        //this._setUpAttributes('path','title','events')
     }
 }
 

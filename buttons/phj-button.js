@@ -82,7 +82,7 @@ class Button extends ComponentLogics {
         // set innerhtml
         this._executeShadow()
         // set eventHandlers and handle attributes
-        this._setUpAttributes('click', 'icon', 'text','update','delete','create','get','getAll','custom-styles')
+        this._setUpAttributes('icon', 'text','update','delete','create','get','getAll','custom-styles','events')
     }
 }
 

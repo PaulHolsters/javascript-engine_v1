@@ -61,7 +61,7 @@ class PhjTextarea extends ComponentLogics {
         // set innerhtml
         this._executeShadow()
         // set eventHandlers and handle attributes
-        this._setUpAttributes('text')
+        this._setUpAttributes('text','events')
     }
 }
 customElements.define('phj-textarea',PhjTextarea)

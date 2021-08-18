@@ -35,7 +35,7 @@ class PhjText extends ComponentLogics{
         // set innerhtml
         this._executeShadow()
         // set eventHandlers and handle attributes
-        this._setUpAttributes('text','custom-styles')
+        this._setUpAttributes('text','custom-styles','events')
     }
 }
 
