@@ -447,6 +447,8 @@ class ComponentLogics extends HTMLElement {
     }
 
     _eventHandler(eventProcess) {
+        console.log('eventhandler triggered')
+        console.log(eventProcess)
         // typical format of an event-string:
         // event1/event2/../eventN:actions
         // typical format of actions:
@@ -464,12 +466,9 @@ class ComponentLogics extends HTMLElement {
         if(typeof eventProcess === 'string'){
             // storing the events for this component
             const events = eventProcess.split(';')
-            console.log(events)
             for (let i=0;i<events.length;i++){
                 const eventNames = events[i].split(':')[0].split('/')
-                console.log(eventNames)
                 const actions = events[i].split(':')[1].split(',')
-                console.log(actions)
                 eventNames.forEach(name=>{
                     actions.forEach(action=>{
                         this._events.forEach(evt => {
@@ -491,7 +490,6 @@ class ComponentLogics extends HTMLElement {
                         case 'load':
                             // a custom event, because the built-in load event works on the window object only (so it appears)
                             // this event gets fired as soon as the element is available and all initialisation is done
-                            console.log('load?')
                             this.addEventListener('component-loaded', this._eventHandler)
                             break
                         case 'hover':
@@ -509,7 +507,7 @@ class ComponentLogics extends HTMLElement {
             // handling the actions that need to be performed through a function
             // that is called from within the switch that handles a particular event
             const processAction = (action)=>{
-                const source = action.split('=>')[0].trim()
+                const source = action.split('=>')[0].toString().trim()
                 let sourceElements
                 if(source==='this'){
                     let arrOfElements = [this.tagName]
@@ -528,13 +526,29 @@ class ComponentLogics extends HTMLElement {
                         }
                     })
                     sourceElements = document.querySelectorAll(selectorString)
-                } else{
+                }else if(source.indexOf('(')!==-1){
+                    // todo get every substring (n) in source and replace it with nth-of-type(n)
+                    let index = 0
+                    let result = ''
+                    while(index+1 < source.length || index === 0){
+                        if(source.indexOf('(',index)!==-1){
+                            const firstPart = source.substring(index,source.indexOf('('))
+                            const partToAdd = ':nth-of-type'
+                            const lastPart = source.substr(source.indexOf('('))
+                            result = firstPart+partToAdd+lastPart
+                            index = result.indexOf(')')+1
+                        } else{
+                            index = source.length
+                        }
+                    }
+                    sourceElements = document.querySelectorAll(result)
+                }
+                else{
                     sourceElements = document.querySelectorAll(source)
                 }
                 const target = action.split('=>')[1].trim()
                 if(this._possibleLayoutStates.includes(target)){
                     sourceElements.forEach(srcEl=>{
-                        console.log(srcEl)
                         srcEl.executeLayoutState(target)
                     })
                 } else if(sourceElements[0]._getState('text') !== undefined){
@@ -557,11 +571,11 @@ class ComponentLogics extends HTMLElement {
             }
             switch (eventProcess.type) {
                 case 'click':
-                    if (this._currentLayoutState === 'enabled') {
+                    if (this._currentLayoutState === 'enabled' || this._currentLayoutState === 'visible' ) {
                         this._events.forEach(el => {
                             if (el.hasOwnProperty('click') && el.click.length > 0) {
-                                el.click.forEach(action=>{
-                                    processAction(action)
+                                el.click.forEach(act=>{
+                                    processAction(act)
                                 })
                             }
                         })

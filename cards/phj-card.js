@@ -54,7 +54,7 @@ class PhjCard extends ComponentLogics {
         // set innerhtml
         this._executeShadow()
         // set eventHandlers and handle attributes
-        this._setUpAttributes('value','events','connect')
+        this._setUpAttributes('value','events')
     }
 
     attributeChangedCallback(name, oldValue, newValue) {

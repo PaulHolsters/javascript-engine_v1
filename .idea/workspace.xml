@@ -6,24 +6,11 @@
   <component name="ChangeListManager">
     <list default="true" id="541aa9e8-3035-4513-acb8-e23ab7e5a48a" name="Default Changelist" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/box-elements/phj-box.js" beforeDir="false" afterPath="$PROJECT_DIR$/box-elements/phj-box.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/buttons/phj-btn-group.js" beforeDir="false" afterPath="$PROJECT_DIR$/buttons/phj-btn-group.js" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/buttons/phj-button.js" beforeDir="false" afterPath="$PROJECT_DIR$/buttons/phj-button.js" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/cards/phj-card.js" beforeDir="false" afterPath="$PROJECT_DIR$/cards/phj-card.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/content-elements/phj-content-item.js" beforeDir="false" afterPath="$PROJECT_DIR$/content-elements/phj-content-item.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/content-elements/phj-content.js" beforeDir="false" afterPath="$PROJECT_DIR$/content-elements/phj-content.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/crud-components/phj-action-pane.js" beforeDir="false" afterPath="$PROJECT_DIR$/crud-components/phj-action-pane.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/crud-components/phj-master.js" beforeDir="false" afterPath="$PROJECT_DIR$/crud-components/phj-master.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/data-transmitters/phj-id.js" beforeDir="false" afterPath="$PROJECT_DIR$/data-transmitters/phj-id.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/forms/phj-number-input.js" beforeDir="false" afterPath="$PROJECT_DIR$/forms/phj-number-input.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/forms/phj-radio-button.js" beforeDir="false" afterPath="$PROJECT_DIR$/forms/phj-radio-button.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/forms/phj-text-input.js" beforeDir="false" afterPath="$PROJECT_DIR$/forms/phj-text-input.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/forms/phj-textarea.js" beforeDir="false" afterPath="$PROJECT_DIR$/forms/phj-textarea.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/forms/phj-form.js" beforeDir="false" afterPath="$PROJECT_DIR$/forms/phj-form.js" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/index.html" beforeDir="false" afterPath="$PROJECT_DIR$/index.html" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/shared/component-logics.js" beforeDir="false" afterPath="$PROJECT_DIR$/shared/component-logics.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/templates/phj-crud-template.js" beforeDir="false" afterPath="$PROJECT_DIR$/templates/phj-crud-template.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/text-elements/phj-text.js" beforeDir="false" afterPath="$PROJECT_DIR$/text-elements/phj-text.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/title-elements/phj-title.js" beforeDir="false" afterPath="$PROJECT_DIR$/title-elements/phj-title.js" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -111,7 +98,8 @@
       <workItem from="1628703401454" duration="1436000" />
       <workItem from="1629139263687" duration="621000" />
       <workItem from="1629184661534" duration="24520000" />
-      <workItem from="1629281317197" duration="21310000" />
+      <workItem from="1629281317197" duration="22158000" />
+      <workItem from="1629368359489" duration="6963000" />
     </task>
     <task id="LOCAL-00001" summary="Second commit for testing purposes">
       <created>1627739619455</created>
@@ -274,7 +262,14 @@
       <option name="project" value="LOCAL" />
       <updated>1629288791546</updated>
     </task>
-    <option name="localTasksCounter" value="24" />
+    <task id="LOCAL-00024" summary="handling events:&#10;done = this selector, handling load event; handling click event;&#10;layoutStates:&#10;done = invisible elements">
+      <created>1629325708502</created>
+      <option name="number" value="00024" />
+      <option name="presentableId" value="LOCAL-00024" />
+      <option name="project" value="LOCAL" />
+      <updated>1629325708502</updated>
+    </task>
+    <option name="localTasksCounter" value="25" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -307,17 +302,18 @@
     <MESSAGE value=" a custom-styles: creating custom functions that deal with a particular step in the process of overriding the necessary styles rules or adding new ones" />
     <MESSAGE value="custom-styles attribute ready to be used" />
     <MESSAGE value="set up of rewrite of the _eventHandler function:&#10;a list of todo's&#10;contemplating about: this as a selector, selecting an element by a number between brackets, the load event that gets triggered as soon the component is the entire page is loaded but without the user needing to add javascript to do this" />
-    <option name="LAST_COMMIT_MESSAGE" value="set up of rewrite of the _eventHandler function:&#10;a list of todo's&#10;contemplating about: this as a selector, selecting an element by a number between brackets, the load event that gets triggered as soon the component is the entire page is loaded but without the user needing to add javascript to do this" />
+    <MESSAGE value="handling events:&#10;done = this selector, handling load event; handling click event;&#10;layoutStates:&#10;done = invisible elements" />
+    <option name="LAST_COMMIT_MESSAGE" value="handling events:&#10;done = this selector, handling load event; handling click event;&#10;layoutStates:&#10;done = invisible elements" />
   </component>
   <component name="WindowStateProjectService">
     <state x="586" y="198" key="#Inspections" timestamp="1627821810157">
       <screen x="0" y="0" width="1920" height="1040" />
     </state>
     <state x="586" y="198" key="#Inspections/0.0.1920.1040@0.0.1920.1040" timestamp="1627821810157" />
-    <state x="0" y="88" key="CommitChangelistDialog2" timestamp="1629288789482">
+    <state x="0" y="88" key="CommitChangelistDialog2" timestamp="1629325706852">
       <screen x="0" y="0" width="1920" height="1040" />
     </state>
-    <state x="0" y="88" key="CommitChangelistDialog2/0.0.1920.1040@0.0.1920.1040" timestamp="1629288789482" />
+    <state x="0" y="88" key="CommitChangelistDialog2/0.0.1920.1040@0.0.1920.1040" timestamp="1629325706852" />
     <state x="184" y="86" key="DiffContextDialog" timestamp="1627729652791">
       <screen x="0" y="0" width="1920" height="1040" />
     </state>
@@ -334,10 +330,10 @@
       <screen x="0" y="0" width="1920" height="1040" />
     </state>
     <state x="461" y="165" key="SettingsEditor/0.0.1920.1040@0.0.1920.1040" timestamp="1627739971507" />
-    <state x="552" y="253" key="Vcs.Push.Dialog.v2" timestamp="1629288798199">
+    <state x="552" y="253" key="Vcs.Push.Dialog.v2" timestamp="1629325712400">
       <screen x="0" y="0" width="1920" height="1040" />
     </state>
-    <state x="552" y="253" key="Vcs.Push.Dialog.v2/0.0.1920.1040@0.0.1920.1040" timestamp="1629288798199" />
+    <state x="552" y="253" key="Vcs.Push.Dialog.v2/0.0.1920.1040@0.0.1920.1040" timestamp="1629325712400" />
     <state x="667" y="76" width="585" height="888" key="find.popup" timestamp="1629196980383">
       <screen x="0" y="0" width="1920" height="1040" />
     </state>

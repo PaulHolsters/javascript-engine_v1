@@ -18,6 +18,7 @@
     <script src="templates/phj-crud-template.js"></script>
     <script src="data-transmitters/phj-id.js"></script>
     <script src="text-elements/phj-text.js"></script>
+    <script src="forms/phj-form.js"></script>
     <script src="forms/phj-text-input.js"></script>
     <script src="forms/phj-number-input.js"></script>
     <script src="forms/phj-textarea.js"></script>
@@ -32,28 +33,28 @@ div{
 <phj-table url="get:http://localhost:3000/specifications" actions="Acties">
     <phj-box>
         <phj-button icon="phj-dots"
-                    events="click/hover:phj-box:nth-of-type(2)=>visible,this=>invisible"
+                    events="click/hover:phj-box(1)>phj-box=>visible,this=>invisible"
                     custom-styles="div{border:none;background:none;color:black}div:hover{background-color:darkgray;color:white}"
         ></phj-button>
         <phj-box events="load:this=>invisible">
             <phj-button
-                    events="click:phj-form:nth-of-type(1)=>visible"
+                    events="click:phj-form(1)=>visible,phj-box(1)>phj-box=>invisible,phj-button(1)=>visible"
                     custom-styles="div{border:none;background:none;color:blue;text-decoration:underline;}div:hover{color:darkblue;text-decoration:none;}">Bekijken
             </phj-button>
-            <phj-button events="click:phj-form:nth-of-type(1)=>visible"
+            <phj-button events="click:phj-form(1)=>visible,phj-box(1)>phj-box=>invisible,phj-button(1)=>visible"
                         custom-styles="div{border:none;background:none;color:blue;text-decoration:underline;}div:hover{color:darkblue;text-decoration:none;}">Aanpassen
             </phj-button>
-            <phj-button events="click:phj-form:nth-of-type(2)=>visible"
+            <phj-button events="click:phj-form(2)=>visible,phj-box(1)>phj-box=>invisible,phj-button(1)=>visible"
                         custom-styles="div{border:none;background:none;color:blue;text-decoration:underline;}div:hover{color:darkblue;text-decoration:none;}">Verwijderen
             </phj-button>
         </phj-box>
     </phj-box>
 </phj-table>
 <phj-form events="load:this=>invisible" url="patch:http://localhost:3000/specifications">
-
+    <p>form1 patch and read</p>
 </phj-form>
 <phj-form events="load:this=>invisible" url="delete:http://localhost:3000/specifications">
-
+    <p>form2 delete</p>
 </phj-form>
 
 <!--<phj-button>My button</phj-button>
