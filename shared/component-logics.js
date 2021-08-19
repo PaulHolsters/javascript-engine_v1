@@ -447,8 +447,6 @@ class ComponentLogics extends HTMLElement {
     }
 
     _eventHandler(eventProcess) {
-        console.log('eventhandler triggered')
-        console.log(eventProcess)
         // typical format of an event-string:
         // event1/event2/../eventN:actions
         // typical format of actions:
@@ -512,9 +510,11 @@ class ComponentLogics extends HTMLElement {
                 if(source==='this'){
                     let arrOfElements = [this.tagName]
                     let current = this
-                    while(current.tagName !== 'BODY'){
+                    while(current && current.tagName !== 'BODY'){
                         current = current.parentElement
-                        arrOfElements.push(current.tagName)
+                        if(current){
+                            arrOfElements.push(current.tagName)
+                        }
                     }
                     let selectorString = ''
                     arrOfElements = arrOfElements.reverse()
@@ -525,9 +525,14 @@ class ComponentLogics extends HTMLElement {
                             selectorString += pathEl.toLowerCase()
                         }
                     })
-                    sourceElements = document.querySelectorAll(selectorString)
+                    console.log(selectorString)
+                    if(selectorString.indexOf('body')===-1){
+                        sourceElements = [this]
+                        console.log(sourceElements) // phj-button when clicked which is ok
+                    } else{
+                        sourceElements = document.querySelectorAll(selectorString)
+                    }
                 }else if(source.indexOf('(')!==-1){
-                    // todo get every substring (n) in source and replace it with nth-of-type(n)
                     let index = 0
                     let result = ''
                     while(index+1 < source.length || index === 0){
@@ -541,15 +546,17 @@ class ComponentLogics extends HTMLElement {
                             index = source.length
                         }
                     }
+                    // todo fix bug: doesn't work in a slotted context
                     sourceElements = document.querySelectorAll(result)
                 }
                 else{
+                    // todo fix bug: doesn't work in a slotted context
                     sourceElements = document.querySelectorAll(source)
                 }
                 const target = action.split('=>')[1].trim()
                 if(this._possibleLayoutStates.includes(target)){
                     sourceElements.forEach(srcEl=>{
-                        srcEl.executeLayoutState(target)
+                        srcEl.executeLayoutState(target) // phj-button will be set invisible which does happen correctly
                     })
                 } else if(sourceElements[0]._getState('text') !== undefined){
                     const targetElements = document.querySelectorAll(target)
@@ -572,9 +579,11 @@ class ComponentLogics extends HTMLElement {
             switch (eventProcess.type) {
                 case 'click':
                     if (this._currentLayoutState === 'enabled' || this._currentLayoutState === 'visible' ) {
+                        console.log(this._events)
                         this._events.forEach(el => {
                             if (el.hasOwnProperty('click') && el.click.length > 0) {
                                 el.click.forEach(act=>{
+                                    console.log(act)
                                     processAction(act)
                                 })
                             }

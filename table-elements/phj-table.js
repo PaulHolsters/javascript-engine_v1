@@ -61,13 +61,12 @@ width: max-content;
 `
             }
         }
-
+// todo pas max-content shit aan voor de actions kolom=>dat moet min-content zijn
         this._state = {
             // contains only data for computation
             has_actions: false,
             actions: ''
         }
-
     }
 
     connectedCallback() {
@@ -85,6 +84,10 @@ width: max-content;
             }
             this._url = this._baseUrl + this._path
         }
+        this._setShadow(
+            `<slot></slot>`
+        )
+        this._executeShadow()
         this._getAll().then(data => {
             this._setUpAttributes('url', 'path', 'actions')
             // data format: { listOfObjects:[{}], numberOfObjects:number, listOfProperties:[string], numberOfProperties:number, modelName:string}
@@ -92,6 +95,7 @@ width: max-content;
             let head =''
             let body = ''
             if(this._state.has_actions){
+                const comboBox = this.shadowRoot.querySelector('slot').assignedNodes()[0].nextElementSibling
                 // set up a actions column so the table becomes an interactive one
                 for (let j = 0; j <= data.numberOfProperties; j++) {
                     // the extra divs are necessary to make sure that the text inside the cell stays on one line which is the default behavior
@@ -106,7 +110,7 @@ width: max-content;
                     for (let j = 0; j <= data.numberOfProperties; j++) {
                         // the extra divs are necessary to make sure that the text inside the cell stays on one line
                         if(j!==0 && j%data.numberOfProperties===0){
-                            row += `<div class="cell"><div><div>...</div></div></div>`
+                            row += `<div class="cell"><div>${comboBox.outerHTML}</div></div>`
                         } else{
                             row += `<div class="cell"><div><div>${Object.values(data.listOfObjects[i])[j]}</div></div></div>`
                         }
@@ -129,12 +133,11 @@ width: max-content;
                 }
                 body += '</div>'
             }
+            let table = `<div>${container}${head}${body}</div>`
             this._setShadow(
-                `<slot></slot><div>${container}${head}${body}</div>`
+                `${table}`
             )
             this._executeShadow()
-            // todo get slotted content and replicate it in the process of building this table
-
             let columnStr = '1fr'
             for (let i=1;i<data.numberOfProperties;i++){
                 columnStr+=' 1fr'
@@ -201,6 +204,7 @@ width: max-content;
             }
             // close the right border of the header
             this.shadowRoot.querySelector('#container > div:nth-child('+ (data.numberOfProperties+1) +')').style.borderRight = '1px solid black'
+
         })
     }
 }
