@@ -33,7 +33,7 @@ div{
 <phj-table url="get:http://localhost:3000/specifications" actions="Acties">
     <phj-box>
         <phj-button icon="phj-dots"
-                    events="click/hover:this=>invisible"
+                    events="click/hover:this=>invisible,phj-box(1)>phj-box(1)=>visible"
                     custom-styles="div{border:none;background:none;color:black}div:hover{background-color:darkgray;color:white}"
         ></phj-button>
         <phj-box events="load:this=>invisible">

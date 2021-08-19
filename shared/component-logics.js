@@ -525,29 +525,33 @@ class ComponentLogics extends HTMLElement {
                             selectorString += pathEl.toLowerCase()
                         }
                     })
-                    console.log(selectorString)
                     if(selectorString.indexOf('body')===-1){
                         sourceElements = [this]
-                        console.log(sourceElements) // phj-button when clicked which is ok
                     } else{
                         sourceElements = document.querySelectorAll(selectorString)
                     }
                 }else if(source.indexOf('(')!==-1){
                     let index = 0
-                    let result = ''
-                    while(index+1 < source.length || index === 0){
-                        if(source.indexOf('(',index)!==-1){
-                            const firstPart = source.substring(index,source.indexOf('('))
-                            const partToAdd = ':nth-of-type'
-                            const lastPart = source.substr(source.indexOf('('))
-                            result = firstPart+partToAdd+lastPart
-                            index = result.indexOf(')')+1
-                        } else{
-                            index = source.length
-                        }
+                    let startString = source
+                    while(startString.indexOf('(',index)!==-1){
+                        const firstPart = startString.substring(0,startString.indexOf('(',index))
+                        const lastPart = startString.substr(startString.indexOf(')',index)+1)
+                        const replacement = ':nth-of-type('+ startString.substring(startString.indexOf('(',index)+1,startString.indexOf(')',index)) +')'
+                        startString = firstPart+replacement+lastPart
+                        index = firstPart.length + replacement.length
                     }
-                    // todo fix bug: doesn't work in a slotted context
-                    sourceElements = document.querySelectorAll(result)
+                    // todo differentiate between a slotted en not slotted element
+                    let slottedContent = false
+                    if(slottedContent){
+                        // todo start grabbing from the upper element that is still accessible
+                        let root = this
+                        while(root.parentElement){
+                            root = root.parentElement
+                        }
+                        sourceElements = root.querySelector(startString)
+                    } else{
+                        sourceElements = document.querySelectorAll(startString)
+                    }
                 }
                 else{
                     // todo fix bug: doesn't work in a slotted context
