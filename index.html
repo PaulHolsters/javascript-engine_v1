@@ -30,21 +30,22 @@ div{
 }
 </style>
 <body>
+<!-- todo extend the selector vocabulary with this.parent selector and a previousSiblingSelector: this.previous and make it possible to combine and chain them -->
 <phj-table url="get:http://localhost:3000/specifications" actions="Acties">
     <phj-box>
         <phj-button icon="phj-dots"
-                    events="click/hover:this=>invisible,phj-box(1)>phj-box(1)=>visible"
+                    events="click/hover:this=>invisible,this.next=>visible"
                     custom-styles="div{border:none;background:none;color:black}div:hover{background-color:darkgray;color:white}"
         ></phj-button>
         <phj-box events="load:this=>invisible">
             <phj-button
-                    events="click:phj-form(1)=>visible,phj-box(1)>phj-box=>invisible,phj-button(1)=>visible"
+                    events="click:phj-form(1)=>visible,this.parent=>invisible,this.parent.previous=>visible"
                     custom-styles="div{border:none;background:none;color:blue;text-decoration:underline;}div:hover{color:darkblue;text-decoration:none;}">Bekijken
             </phj-button>
-            <phj-button events="click:phj-form(1)=>visible,phj-box(1)>phj-box=>invisible,phj-button(1)=>visible"
+            <phj-button events="click:phj-form(1)=>visible,this.parent=>invisible,this.parent.previous=>visible"
                         custom-styles="div{border:none;background:none;color:blue;text-decoration:underline;}div:hover{color:darkblue;text-decoration:none;}">Aanpassen
             </phj-button>
-            <phj-button events="click:phj-form(2)=>visible,phj-box(1)>phj-box=>invisible,phj-button(1)=>visible"
+            <phj-button events="click:phj-form(2)=>visible,this.parent=>invisible,this.parent.previous=>visible"
                         custom-styles="div{border:none;background:none;color:blue;text-decoration:underline;}div:hover{color:darkblue;text-decoration:none;}">Verwijderen
             </phj-button>
         </phj-box>

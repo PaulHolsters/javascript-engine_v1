@@ -505,8 +505,16 @@ class ComponentLogics extends HTMLElement {
             // handling the actions that need to be performed through a function
             // that is called from within the switch that handles a particular event
             const processAction = (action)=>{
+                const setSelectorString = (source)=>{
+                    return ''
+                }
+                const setSource = (selectorString)=>{
+                    return []
+                }
                 const source = action.split('=>')[0].toString().trim()
                 let sourceElements
+                // todo 1 rewrite source so more selectors are possible = new selectorString
+                // todo 2 create algorithm that fills in sourceElements
                 if(source==='this'){
                     let arrOfElements = [this.tagName]
                     let current = this
@@ -530,7 +538,9 @@ class ComponentLogics extends HTMLElement {
                     } else{
                         sourceElements = document.querySelectorAll(selectorString)
                     }
-                }else if(source.indexOf('(')!==-1){
+                } else if(source.indexOf('this.parent')!==-1||source.indexOf('this.child')!==-1||source.indexOf('this.next')!==-1||source.indexOf('this.previous')!==-1){
+
+                } else if(source.indexOf('(')!==-1){
                     let index = 0
                     let startString = source
                     while(startString.indexOf('(',index)!==-1){
@@ -540,27 +550,27 @@ class ComponentLogics extends HTMLElement {
                         startString = firstPart+replacement+lastPart
                         index = firstPart.length + replacement.length
                     }
-                    // todo differentiate between a slotted en not slotted element
-                    let slottedContent = false
-                    if(slottedContent){
-                        // todo start grabbing from the upper element that is still accessible
+                    let current = this
+                    while(current && current.tagName !== 'BODY'){
+                        current = current.parentElement
+                    }
+                    if(!current){
                         let root = this
                         while(root.parentElement){
                             root = root.parentElement
                         }
-                        sourceElements = root.querySelector(startString)
+                        sourceElements = root.querySelectorAll(startString)
                     } else{
                         sourceElements = document.querySelectorAll(startString)
                     }
                 }
                 else{
-                    // todo fix bug: doesn't work in a slotted context
                     sourceElements = document.querySelectorAll(source)
                 }
                 const target = action.split('=>')[1].trim()
                 if(this._possibleLayoutStates.includes(target)){
                     sourceElements.forEach(srcEl=>{
-                        srcEl.executeLayoutState(target) // phj-button will be set invisible which does happen correctly
+                        srcEl.executeLayoutState(target)
                     })
                 } else if(sourceElements[0]._getState('text') !== undefined){
                     const targetElements = document.querySelectorAll(target)
