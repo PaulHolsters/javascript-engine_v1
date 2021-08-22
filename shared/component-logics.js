@@ -557,7 +557,13 @@ class ComponentLogics extends HTMLElement {
                             return document.querySelectorAll(selectorString)
                         }
                     } else if(source.indexOf('this.parent')!==-1||source.indexOf('this.child')!==-1||source.indexOf('this.next')!==-1||source.indexOf('this.previous')!==-1){
-
+                        let rootElement = source.split(' ')[0].replace('next','nextElementSibling')
+                            .replace('parent','parentElement').replace('previous','previousElementSibling')
+                        const root = eval(rootElement)
+                        if(source.split(' ').length>1){
+                            return root.querySelectorAll(source.split(' ')[1])
+                        }
+                        return [root]
                     }
                     else{
                         return document.querySelectorAll(source)
