@@ -505,68 +505,67 @@ class ComponentLogics extends HTMLElement {
             // handling the actions that need to be performed through a function
             // that is called from within the switch that handles a particular event
             const processAction = (action)=>{
-                const setSelectorString = (source)=>{
-                    return ''
-                }
-                const setSource = (selectorString)=>{
-                    return []
+                const setSource = (source)=>{
+                    // step 1 replace (n) with nth of type
+                    if(source.indexOf('(')!==-1) {
+                        let index = 0
+                        let startString = source
+                        while (startString.indexOf('(', index) !== -1) {
+                            const firstPart = startString.substring(0, startString.indexOf('(', index))
+                            const lastPart = startString.substr(startString.indexOf(')', index) + 1)
+                            const replacement = ':nth-of-type(' + startString.substring(startString.indexOf('(', index) + 1, startString.indexOf(')', index)) + ')'
+                            startString = firstPart + replacement + lastPart
+                            index = firstPart.length + replacement.length
+                        }
+/*                        let current = this
+                        while (current && current.tagName !== 'BODY') {
+                            current = current.parentElement
+                        }*/
+/*                        if (!current) {
+                            let root = this
+                            while (root.parentElement) {
+                                root = root.parentElement
+                            }
+                            sourceElements = root.querySelectorAll(startString)
+                        } else {
+                            sourceElements = document.querySelectorAll(startString)
+                        }*/
+                        source = startString
+                    }
+                    // step 2: handle this;this.parent etc. or a normal selector
+                    if(source==='this'){
+                        let arrOfElements = [this.tagName]
+                        let current = this
+                        while(current && current.tagName !== 'BODY'){
+                            current = current.parentElement
+                            if(current){
+                                arrOfElements.push(current.tagName)
+                            }
+                        }
+                        let selectorString = ''
+                        arrOfElements = arrOfElements.reverse()
+                        arrOfElements.forEach(pathEl=>{
+                            if(selectorString.length>0){
+                                selectorString += ' > ' + pathEl.toLowerCase()
+                            } else{
+                                selectorString += pathEl.toLowerCase()
+                            }
+                        })
+                        if(selectorString.indexOf('body')===-1){
+                            return [this]
+                        } else{
+                            return document.querySelectorAll(selectorString)
+                        }
+                    } else if(source.indexOf('this.parent')!==-1||source.indexOf('this.child')!==-1||source.indexOf('this.next')!==-1||source.indexOf('this.previous')!==-1){
+
+                    }
+                    else{
+                        return document.querySelectorAll(source)
+                    }
                 }
                 const source = action.split('=>')[0].toString().trim()
-                let sourceElements
-                // todo 1 rewrite source so more selectors are possible = new selectorString
-                // todo 2 create algorithm that fills in sourceElements
-                if(source==='this'){
-                    let arrOfElements = [this.tagName]
-                    let current = this
-                    while(current && current.tagName !== 'BODY'){
-                        current = current.parentElement
-                        if(current){
-                            arrOfElements.push(current.tagName)
-                        }
-                    }
-                    let selectorString = ''
-                    arrOfElements = arrOfElements.reverse()
-                    arrOfElements.forEach(pathEl=>{
-                        if(selectorString.length>0){
-                            selectorString += ' > ' + pathEl.toLowerCase()
-                        } else{
-                            selectorString += pathEl.toLowerCase()
-                        }
-                    })
-                    if(selectorString.indexOf('body')===-1){
-                        sourceElements = [this]
-                    } else{
-                        sourceElements = document.querySelectorAll(selectorString)
-                    }
-                } else if(source.indexOf('this.parent')!==-1||source.indexOf('this.child')!==-1||source.indexOf('this.next')!==-1||source.indexOf('this.previous')!==-1){
+                const sourceElements = setSource(source)
 
-                } else if(source.indexOf('(')!==-1){
-                    let index = 0
-                    let startString = source
-                    while(startString.indexOf('(',index)!==-1){
-                        const firstPart = startString.substring(0,startString.indexOf('(',index))
-                        const lastPart = startString.substr(startString.indexOf(')',index)+1)
-                        const replacement = ':nth-of-type('+ startString.substring(startString.indexOf('(',index)+1,startString.indexOf(')',index)) +')'
-                        startString = firstPart+replacement+lastPart
-                        index = firstPart.length + replacement.length
-                    }
-                    let current = this
-                    while(current && current.tagName !== 'BODY'){
-                        current = current.parentElement
-                    }
-                    if(!current){
-                        let root = this
-                        while(root.parentElement){
-                            root = root.parentElement
-                        }
-                        sourceElements = root.querySelectorAll(startString)
-                    } else{
-                        sourceElements = document.querySelectorAll(startString)
-                    }
-                }
-                else{
-                    sourceElements = document.querySelectorAll(source)
-                }
                 const target = action.split('=>')[1].trim()
                 if(this._possibleLayoutStates.includes(target)){
                     sourceElements.forEach(srcEl=>{
