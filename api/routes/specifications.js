@@ -28,11 +28,27 @@ router.post('/', (req, res, next) => {
 
 // deze route geeft alle specificaties terug, ongeacht het type (standard, option, extra)
 router.get('/', (req, res, next) => {
-    Specification.find().populate('specifications').exec().then(result => {
+    Specification.find().select('specification type price _id').populate('specifications').exec().then(result => {
         // het is mogelijk dat result een lege array is omdat er nog geen specificaties zijn aangemaakt
+        const listOfObjects = result.map(spec=>{
+            if(spec.price === undefined){
+                return {
+                    specification:spec.specification,
+                    type:spec.type,
+                    price:'n.v.t.',
+                    id:spec._id
+                }
+            }
+            return {
+                specification:spec.specification,
+                type:spec.type,
+                price:spec.price,
+                id:spec._id
+            }
+        })
         res.status(200).json({
-            listOfObjects:result,
-            numberOfObjects:result.length,
+            listOfObjects:listOfObjects,
+            numberOfObjects:listOfObjects.length,
             listOfProperties:['specification','type','price'],
             numberOfProperties: 3
         })

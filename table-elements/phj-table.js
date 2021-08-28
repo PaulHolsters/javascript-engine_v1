@@ -96,6 +96,9 @@ width: max-content;
             let body = ''
             if(this._state.has_actions){
                 const comboBox = this.shadowRoot.querySelector('slot').assignedNodes()[0].nextElementSibling
+                console.log(comboBox)
+                console.log(data)
+                console.log('hi')
                 // set up a actions column so the table becomes an interactive one
                 for (let j = 0; j <= data.numberOfProperties; j++) {
                     // the extra divs are necessary to make sure that the text inside the cell stays on one line which is the default behavior
@@ -110,7 +113,9 @@ width: max-content;
                     for (let j = 0; j <= data.numberOfProperties; j++) {
                         // the extra divs are necessary to make sure that the text inside the cell stays on one line
                         if(j!==0 && j%data.numberOfProperties===0){
-                            row += `<div class="cell"><div>${comboBox.outerHTML}</div></div>`
+                            // todo pass the id of the object to either the button you click
+                            //  for action or some id-transmitter you put in the combobox component
+                            row += `<div class="cell"><div>${comboBox.outerHTML}<phj-id value="${Object.values(data.listOfObjects[i])[j].toString().trim()}"></phj-id></div></div>`
                         } else{
                             row += `<div class="cell"><div><div>${Object.values(data.listOfObjects[i])[j]}</div></div></div>`
                         }

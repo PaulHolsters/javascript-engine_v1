@@ -4,18 +4,10 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="541aa9e8-3035-4513-acb8-e23ab7e5a48a" name="Default Changelist" comment="refactoring">
+    <list default="true" id="541aa9e8-3035-4513-acb8-e23ab7e5a48a" name="Default Changelist" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/api/node_modules/.bin/nodemon" beforeDir="false" afterPath="$PROJECT_DIR$/api/node_modules/.bin/nodemon" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/api/node_modules/graceful-fs/README.md" beforeDir="false" afterPath="$PROJECT_DIR$/api/node_modules/graceful-fs/README.md" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/api/node_modules/graceful-fs/graceful-fs.js" beforeDir="false" afterPath="$PROJECT_DIR$/api/node_modules/graceful-fs/graceful-fs.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/api/node_modules/graceful-fs/package.json" beforeDir="false" afterPath="$PROJECT_DIR$/api/node_modules/graceful-fs/package.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/api/node_modules/nodemon/.eslintrc.json" beforeDir="false" afterPath="$PROJECT_DIR$/api/node_modules/nodemon/.eslintrc.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/api/node_modules/nodemon/bin/nodemon.js" beforeDir="false" afterPath="$PROJECT_DIR$/api/node_modules/nodemon/bin/nodemon.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/api/node_modules/nodemon/bin/postinstall.js" beforeDir="false" afterPath="$PROJECT_DIR$/api/node_modules/nodemon/bin/postinstall.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/api/node_modules/nodemon/package.json" beforeDir="false" afterPath="$PROJECT_DIR$/api/node_modules/nodemon/package.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/api/package-lock.json" beforeDir="false" afterPath="$PROJECT_DIR$/api/package-lock.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/shared/component-logics.js" beforeDir="false" afterPath="$PROJECT_DIR$/shared/component-logics.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/api/routes/specifications.js" beforeDir="false" afterPath="$PROJECT_DIR$/api/routes/specifications.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/table-elements/phj-table.js" beforeDir="false" afterPath="$PROJECT_DIR$/table-elements/phj-table.js" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -101,6 +93,15 @@
       <workItem from="1628612684197" duration="8085000" />
       <workItem from="1628655565422" duration="3567000" />
       <workItem from="1628703401454" duration="1436000" />
+      <workItem from="1629139263687" duration="621000" />
+      <workItem from="1629184661534" duration="24520000" />
+      <workItem from="1629281317197" duration="22158000" />
+      <workItem from="1629368359489" duration="17097000" />
+      <workItem from="1629401920308" duration="3020000" />
+      <workItem from="1629432429922" duration="3215000" />
+      <workItem from="1630003067420" duration="2148000" />
+      <workItem from="1630091904695" duration="1454000" />
+      <workItem from="1630141661822" duration="2400000" />
     </task>
     <task id="LOCAL-00001" summary="Second commit for testing purposes">
       <created>1627739619455</created>
@@ -242,37 +243,65 @@
       <option name="project" value="LOCAL" />
       <updated>1628624580740</updated>
     </task>
-    <task id="LOCAL-00021" summary="refactoring">
-      <created>1629605168894</created>
+    <task id="LOCAL-00021" summary=" a custom-styles: creating custom functions that deal with a particular step in the process of overriding the necessary styles rules or adding new ones">
+      <created>1628833070770</created>
       <option name="number" value="00021" />
       <option name="presentableId" value="LOCAL-00021" />
       <option name="project" value="LOCAL" />
-      <updated>1629605168894</updated>
+      <updated>1628833070770</updated>
     </task>
-    <option name="localTasksCounter" value="22" />
+    <task id="LOCAL-00022" summary="custom-styles attribute ready to be used">
+      <created>1629228188835</created>
+      <option name="number" value="00022" />
+      <option name="presentableId" value="LOCAL-00022" />
+      <option name="project" value="LOCAL" />
+      <updated>1629228188835</updated>
+    </task>
+    <task id="LOCAL-00023" summary="set up of rewrite of the _eventHandler function:&#10;a list of todo's&#10;contemplating about: this as a selector, selecting an element by a number between brackets, the load event that gets triggered as soon the component is the entire page is loaded but without the user needing to add javascript to do this">
+      <created>1629288791546</created>
+      <option name="number" value="00023" />
+      <option name="presentableId" value="LOCAL-00023" />
+      <option name="project" value="LOCAL" />
+      <updated>1629288791546</updated>
+    </task>
+    <task id="LOCAL-00024" summary="handling events:&#10;done = this selector, handling load event; handling click event;&#10;layoutStates:&#10;done = invisible elements">
+      <created>1629325708502</created>
+      <option name="number" value="00024" />
+      <option name="presentableId" value="LOCAL-00024" />
+      <option name="project" value="LOCAL" />
+      <updated>1629325708502</updated>
+    </task>
+    <task id="LOCAL-00025" summary="fixing bugs event_handler&#10;adding the invisible layoutState to some components">
+      <created>1629381678388</created>
+      <option name="number" value="00025" />
+      <option name="presentableId" value="LOCAL-00025" />
+      <option name="project" value="LOCAL" />
+      <updated>1629381678388</updated>
+    </task>
+    <task id="LOCAL-00026" summary="prepraring bug fixes processAction-method: slotted content gives bad results">
+      <created>1629397752750</created>
+      <option name="number" value="00026" />
+      <option name="presentableId" value="LOCAL-00026" />
+      <option name="project" value="LOCAL" />
+      <updated>1629397752750</updated>
+    </task>
+    <task id="LOCAL-00027" summary="prepraring bug fixes processAction-method: slotted content gives bad results: part 2">
+      <created>1629405307306</created>
+      <option name="number" value="00027" />
+      <option name="presentableId" value="LOCAL-00027" />
+      <option name="project" value="LOCAL" />
+      <updated>1629405307306</updated>
+    </task>
+    <option name="localTasksCounter" value="28" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
     <option name="version" value="3" />
   </component>
-  <component name="Vcs.Log.Tabs.Properties">
-    <option name="TAB_STATES">
-      <map>
-        <entry key="MAIN">
-          <value>
-            <State />
-          </value>
-        </entry>
-      </map>
-    </option>
-    <option name="oldMeFiltersMigrated" value="true" />
-  </component>
   <component name="VcsManagerConfiguration">
     <ignored-roots>
       <path value="$PROJECT_DIR$/.." />
     </ignored-roots>
-    <MESSAGE value="Second commit for testing purposes" />
-    <MESSAGE value="Third commit having a white screen in php storm why?" />
     <MESSAGE value="4e the commit restore the fault in my tag" />
     <MESSAGE value="start phj-master component" />
     <MESSAGE value="connecting the api with the connectedcallback method of phj-master so the table can be constructed with the data in it and the right amount of columns 'n stuff" />
@@ -291,7 +320,47 @@
     <MESSAGE value=" a custom-styles attribute that replaces parts of the layoutStates css so custom styles can be used with all custom components: part 1" />
     <MESSAGE value=" a custom-styles attribute that replaces parts of the layoutStates css so custom styles can be used with all custom components: step 1 of the process implemented not tested" />
     <MESSAGE value=" a custom-styles attribute that replaces parts of the layoutStates css so custom styles can be used with all custom components: opnieuw begonnen: algoritme voor het vervangen van styles in de component door styles van het custom-styles attribuut = ok" />
-    <MESSAGE value="refactoring" />
-    <option name="LAST_COMMIT_MESSAGE" value="refactoring" />
+    <MESSAGE value=" a custom-styles: creating custom functions that deal with a particular step in the process of overriding the necessary styles rules or adding new ones" />
+    <MESSAGE value="custom-styles attribute ready to be used" />
+    <MESSAGE value="set up of rewrite of the _eventHandler function:&#10;a list of todo's&#10;contemplating about: this as a selector, selecting an element by a number between brackets, the load event that gets triggered as soon the component is the entire page is loaded but without the user needing to add javascript to do this" />
+    <MESSAGE value="handling events:&#10;done = this selector, handling load event; handling click event;&#10;layoutStates:&#10;done = invisible elements" />
+    <MESSAGE value="fixing bugs event_handler&#10;adding the invisible layoutState to some components" />
+    <MESSAGE value="prepraring bug fixes processAction-method: slotted content gives bad results" />
+    <MESSAGE value="prepraring bug fixes processAction-method: slotted content gives bad results: part 2" />
+    <option name="LAST_COMMIT_MESSAGE" value="prepraring bug fixes processAction-method: slotted content gives bad results: part 2" />
+  </component>
+  <component name="WindowStateProjectService">
+    <state x="586" y="198" key="#Inspections" timestamp="1627821810157">
+      <screen x="0" y="0" width="1920" height="1040" />
+    </state>
+    <state x="586" y="198" key="#Inspections/0.0.1920.1040@0.0.1920.1040" timestamp="1627821810157" />
+    <state x="0" y="88" key="CommitChangelistDialog2" timestamp="1629405306262">
+      <screen x="0" y="0" width="1920" height="1040" />
+    </state>
+    <state x="0" y="88" key="CommitChangelistDialog2/0.0.1920.1040@0.0.1920.1040" timestamp="1629405306262" />
+    <state x="184" y="86" key="DiffContextDialog" timestamp="1627729652791">
+      <screen x="0" y="0" width="1920" height="1040" />
+    </state>
+    <state x="184" y="86" key="DiffContextDialog/0.0.1920.1040@0.0.1920.1040" timestamp="1627729652791" />
+    <state x="740" y="262" key="FileChooserDialogImpl" timestamp="1626675322704">
+      <screen x="0" y="0" width="1920" height="1040" />
+    </state>
+    <state x="740" y="262" key="FileChooserDialogImpl/0.0.1920.1040@0.0.1920.1040" timestamp="1626675322704" />
+    <state x="794" y="443" key="NewPhpFileDialog" timestamp="1625906154940">
+      <screen x="0" y="0" width="1920" height="1040" />
+    </state>
+    <state x="794" y="443" key="NewPhpFileDialog/0.0.1920.1040@0.0.1920.1040" timestamp="1625906154940" />
+    <state x="461" y="165" key="SettingsEditor" timestamp="1627739971507">
+      <screen x="0" y="0" width="1920" height="1040" />
+    </state>
+    <state x="461" y="165" key="SettingsEditor/0.0.1920.1040@0.0.1920.1040" timestamp="1627739971507" />
+    <state x="552" y="253" key="Vcs.Push.Dialog.v2" timestamp="1629405311380">
+      <screen x="0" y="0" width="1920" height="1040" />
+    </state>
+    <state x="552" y="253" key="Vcs.Push.Dialog.v2/0.0.1920.1040@0.0.1920.1040" timestamp="1629405311380" />
+    <state x="667" y="76" width="585" height="888" key="find.popup" timestamp="1629196980383">
+      <screen x="0" y="0" width="1920" height="1040" />
+    </state>
+    <state x="667" y="76" width="585" height="888" key="find.popup/0.0.1920.1040@0.0.1920.1040" timestamp="1629196980383" />
   </component>
 </project>
