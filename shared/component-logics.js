@@ -7,7 +7,7 @@ class ComponentLogics extends HTMLElement {
     _html
     _css
 
-    _events = [{click:[]},{hover:[]},{hoverAway:[]},{change:[]},{select:[]},{load:[]},{check:[]}]
+    _events = [{click: []}, {hover: []}, {hoverAway: []}, {change: []}, {select: []}, {load: []}, {check: []}]
     _state
 
     // the baseUrl variable should be used by the phj-content-elements component, everything inside that component can be considered
@@ -142,7 +142,7 @@ class ComponentLogics extends HTMLElement {
                     newCssBody += stringTemp.substring(0, stringTemp.indexOf(';') + 1)
                 }
                 // determine whether the loop has to end or not by cutting a piece from stringTemp that has already been processed
-                if (stringTemp.indexOf(';') + 1 >= stringTemp.length || stringTemp.indexOf(';')===-1 ) {
+                if (stringTemp.indexOf(';') + 1 >= stringTemp.length || stringTemp.indexOf(';') === -1) {
                     stringTemp = ''
                 } else {
                     stringTemp = stringTemp.substr(stringTemp.indexOf(';') + 1)
@@ -160,13 +160,13 @@ class ComponentLogics extends HTMLElement {
                 // bug : color: is a new rule but if background-color: exists in the original one these will not equal to -1
                 // while it should
                 if (newCssBody.toString().trim().search(key + ':') === -1
-                ||(newCssBody.toString().trim().search('-'+key + ':') !== -1
-                    &&(newCssBody.indexOf(key+':',newCssBody.indexOf('-'+key+':')+2)===-1)
+                    || (newCssBody.toString().trim().search('-' + key + ':') !== -1
+                        && (newCssBody.indexOf(key + ':', newCssBody.indexOf('-' + key + ':') + 2) === -1)
                     )) {
                     // de regel in customstyles bestaat niet in de originele en moet dus overgenomen worden
                     // add the style rule to the new css of the component
                     if (substringCustom.indexOf(';', startIndex) !== -1) {
-                        newCssBody += substringCustom.substring(startIndex, substringCustom.indexOf(';', startIndex)+1).toString().trim()
+                        newCssBody += substringCustom.substring(startIndex, substringCustom.indexOf(';', startIndex) + 1).toString().trim()
                         startIndex = substringCustom.indexOf(';', startIndex) + 1
                         if (startIndex >= substringCustom.length) {
                             keyAvailable = false
@@ -392,8 +392,8 @@ class ComponentLogics extends HTMLElement {
     }
 
     async _getOne(id) {
-        const url = this._baseUrl + '/' + this._table + '.php' + '?id=' + id
-        return await fetch(url).then(
+        console.log(this._url+'/'+id)
+        return await fetch(this._url+'/'+id).then(
             res => {
                 return res.json()
             }
@@ -431,7 +431,8 @@ class ComponentLogics extends HTMLElement {
     _responseHandler(response, verb) {
         switch (verb) {
             case 'getOne':
-                return Object.values(response)[1]
+                // return Object.values(response)[1]
+                return response
             case 'getAll':
                 return response
             case 'post':
@@ -461,14 +462,14 @@ class ComponentLogics extends HTMLElement {
         // this is the format for this situation:
         // event1/event2/../eventN:actions;event1/event2/../eventN:actions
         // it follows the same pattern but separated by a semi-colon
-        if(typeof eventProcess === 'string'){
+        if (typeof eventProcess === 'string') {
             // storing the events for this component
             const events = eventProcess.split(';')
-            for (let i=0;i<events.length;i++){
+            for (let i = 0; i < events.length; i++) {
                 const eventNames = events[i].split(':')[0].split('/')
                 const actions = events[i].split(':')[1].split(',')
-                eventNames.forEach(name=>{
-                    actions.forEach(action=>{
+                eventNames.forEach(name => {
+                    actions.forEach(action => {
                         this._events.forEach(evt => {
                             if (evt.hasOwnProperty(name.toString())) {
                                 evt[name.toString()].push(action)
@@ -478,12 +479,12 @@ class ComponentLogics extends HTMLElement {
                 })
             }
             // setting up all necessary eventListeners for this component
-            this._events.forEach(evt=>{
+            this._events.forEach(evt => {
                 // event is an object with the eventName as a key and an array with actions that need to happen upon the happening of the event
-                if(evt[Object.keys(evt)[0].toString()].length > 0){
-                    switch (Object.keys(evt)[0].toString()){
+                if (evt[Object.keys(evt)[0].toString()].length > 0) {
+                    switch (Object.keys(evt)[0].toString()) {
                         case 'click':
-                            this.addEventListener('click',this._eventHandler)
+                            this.addEventListener('click', this._eventHandler)
                             break
                         case 'load':
                             // a custom event, because the built-in load event works on the window object only (so it appears)
@@ -501,13 +502,25 @@ class ComponentLogics extends HTMLElement {
                     }
                 }
             })
-        } else{
+        } else {
             // handling the actions that need to be performed through a function
             // that is called from within the switch that handles a particular event
-            const processAction = (action)=>{
-                const setSource = (source)=>{
+            const processAction = (action) => {
+                const replaceN = function(target){
+                    let index = 0
+                    let startString = target
+                    while (startString.indexOf('(', index) !== -1) {
+                        const firstPart = startString.substring(0, startString.indexOf('(', index))
+                        const lastPart = startString.substr(startString.indexOf(')', index) + 1)
+                        const replacement = ':nth-of-type(' + startString.substring(startString.indexOf('(', index) + 1, startString.indexOf(')', index)) + ')'
+                        startString = firstPart + replacement + lastPart
+                        index = firstPart.length + replacement.length
+                    }
+                    return startString
+                }
+                const setSource = (source) => {
                     // step 1 replace (n) with nth of type
-                    if(source.indexOf('(')!==-1) {
+                    if (source.indexOf('(') !== -1) {
                         let index = 0
                         let startString = source
                         while (startString.indexOf('(', index) !== -1) {
@@ -517,91 +530,134 @@ class ComponentLogics extends HTMLElement {
                             startString = firstPart + replacement + lastPart
                             index = firstPart.length + replacement.length
                         }
-/*                        let current = this
-                        while (current && current.tagName !== 'BODY') {
-                            current = current.parentElement
-                        }*/
-/*                        if (!current) {
-                            let root = this
-                            while (root.parentElement) {
-                                root = root.parentElement
-                            }
-                            sourceElements = root.querySelectorAll(startString)
-                        } else {
-                            sourceElements = document.querySelectorAll(startString)
-                        }*/
                         source = startString
                     }
                     // step 2: handle this;this.parent etc. or a normal selector
-                    if(source==='this'){
+                    if (source === 'this') {
                         let arrOfElements = [this.tagName]
                         let current = this
-                        while(current && current.tagName !== 'BODY'){
+                        while (current && current.tagName !== 'BODY') {
                             current = current.parentElement
-                            if(current){
+                            if (current) {
                                 arrOfElements.push(current.tagName)
                             }
                         }
                         let selectorString = ''
                         arrOfElements = arrOfElements.reverse()
-                        arrOfElements.forEach(pathEl=>{
-                            if(selectorString.length>0){
+                        arrOfElements.forEach(pathEl => {
+                            if (selectorString.length > 0) {
                                 selectorString += ' > ' + pathEl.toLowerCase()
-                            } else{
+                            } else {
                                 selectorString += pathEl.toLowerCase()
                             }
                         })
-                        if(selectorString.indexOf('body')===-1){
+                        if (selectorString.indexOf('body') === -1) {
                             return [this]
-                        } else{
+                        } else {
                             return document.querySelectorAll(selectorString)
                         }
-                    } else if(source.indexOf('this.parent')!==-1||source.indexOf('this.child')!==-1||source.indexOf('this.next')!==-1||source.indexOf('this.previous')!==-1){
-                        let rootElement = source.split(' ')[0].replace('next','nextElementSibling')
-                            .replace('parent','parentElement').replace('previous','previousElementSibling')
+                    } else if (source.indexOf('this.parent') !== -1 || source.indexOf('this.next') !== -1 || source.indexOf('this.previous') !== -1) {
+                        // todo fix bug: it only replaces one time .parent etc. But it can be in here multiple times!!
+                        let index = 0
+                        let endOfString = false
+                        let searchString = 'next'
+                        let rootElement = source.split(' ')[0]
+                        /*                        let rootElement = source.split(' ')[0].replace('next','nextElementSibling')
+                                                    .replace('parent','parentElement').replace('previous','previousElementSibling')*/
+                        while(searchString){
+                            while (!endOfString) {
+                                if (rootElement.indexOf(searchString, index) !== -1) {
+                                    let start
+                                    let middle
+                                    let end
+                                    switch (searchString) {
+                                        case 'next':
+                                            start = rootElement.substring(0, rootElement.indexOf('next', index))
+                                            middle = 'nextElementSibling'
+                                            end = rootElement.substr(rootElement.indexOf('next', index) + 4)
+                                            index = rootElement.indexOf('next', index) + 14
+                                            rootElement = start + middle + end
+                                            break
+                                        case 'parent':
+                                            start = rootElement.substring(0, rootElement.indexOf('parent', index))
+                                            middle = 'parentElement'
+                                            end = rootElement.substr(rootElement.indexOf('parent', index) + 6)
+                                            index = rootElement.indexOf('parent', index) + 13
+                                            rootElement = start + middle + end
+                                            break
+                                        case 'previous':
+                                            start = rootElement.substring(0, rootElement.indexOf('previous', index))
+                                            middle = 'previousElementSibling'
+                                            end = rootElement.substr(rootElement.indexOf('previous', index) + 8)
+                                            index = rootElement.indexOf('previous', index) + 18
+                                            rootElement = start + middle + end
+                                            break
+                                    }
+                                    if (index > rootElement.length) {
+                                        endOfString = true
+                                    }
+                                } else{
+                                    endOfString = true
+                                }
+                            }
+                            index = 0
+                            endOfString = false
+                            switch (searchString){
+                                case 'next':
+                                    searchString = 'parent'
+                                    break
+                                case 'parent':
+                                    searchString = 'previous'
+                                    break
+                                case 'previous':
+                                    searchString = null
+                                    break
+                                default:
+                                    searchString = null
+                            }
+                        }
                         const root = eval(rootElement)
-                        if(source.split(' ').length>1){
+                        if (source.split(' ').length > 1) {
                             return root.querySelectorAll(source.split(' ')[1])
                         }
                         return [root]
-                    }
-                    else{
+                    } else {
                         return document.querySelectorAll(source)
                     }
                 }
                 const source = action.split('=>')[0].toString().trim()
                 const sourceElements = setSource(source)
-
-                const target = action.split('=>')[1].trim()
-                if(this._possibleLayoutStates.includes(target)){
-                    sourceElements.forEach(srcEl=>{
+                const target = replaceN(action.split('=>')[1].trim())
+                // todo handle target
+                if (this._possibleLayoutStates.includes(target)) {
+                    sourceElements.forEach(srcEl => {
                         srcEl.executeLayoutState(target)
                     })
-                } else if(sourceElements[0]._getState('text') !== undefined){
+                } else if (sourceElements[0]._getState('text') !== undefined) {
                     const targetElements = document.querySelectorAll(target)
-                    targetElements.forEach(trgtEl=>{
-                        if(trgtEl._getState('text') !== undefined){
+                    targetElements.forEach(trgtEl => {
+                        if (trgtEl._getState('text') !== undefined) {
                             trgtEl._setState('text', sourceElements[0]._getState('text'))
                         }
                     })
-                } else if(sourceElements[0]._getState('value') !== undefined){
+                } else if (sourceElements[0]._getState('value') !== undefined) {
                     const targetElements = document.querySelectorAll(target)
-                    targetElements.forEach(trgtEl=>{
-                        if(trgtEl._getState('value') !== undefined){
+                    targetElements.forEach(trgtEl => {
+                        if (trgtEl._getState('value') !== undefined) {
                             trgtEl._setState('value', sourceElements[0]._getState('value'))
                         }
                     })
-                } else{
+                } else {
 
                 }
             }
             switch (eventProcess.type) {
                 case 'click':
-                    if (this._currentLayoutState === 'enabled' || this._currentLayoutState === 'visible' ) {
+                    if (this._currentLayoutState === 'enabled' || this._currentLayoutState === 'visible') {
                         console.log(this._events)
                         this._events.forEach(el => {
                             if (el.hasOwnProperty('click') && el.click.length > 0) {
-                                el.click.forEach(act=>{
+                                el.click.forEach(act => {
                                     console.log(act)
                                     processAction(act)
                                 })
@@ -612,7 +668,7 @@ class ComponentLogics extends HTMLElement {
                 case 'component-loaded':
                     this._events.forEach(el => {
                         if (el.hasOwnProperty('load') && el.load.length > 0) {
-                            el.load.forEach(action=>{
+                            el.load.forEach(action => {
                                 processAction(action)
                             })
                         }

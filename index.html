@@ -39,23 +39,24 @@ div{
         ></phj-button>
         <phj-box events="load:this=>invisible">
             <phj-button
-                    events="click:phj-form(1)=>visible,this.parent=>invisible,this.parent.previous=>visible"
+                    events="click:phj-form(1)=>visible,this.parent=>invisible,this.parent.previous=>visible,this.parent.parent.next=>phj-form(1)"
                     custom-styles="div{border:none;background:none;color:blue;text-decoration:underline;}div:hover{color:darkblue;text-decoration:none;}">Bekijken
             </phj-button>
-            <phj-button events="click:phj-form(1)=>visible,this.parent=>invisible,this.parent.previous=>visible"
+            <phj-button events="click:phj-form(1)=>visible,this.parent=>invisible,this.parent.previous=>visible,this.parent.parent.next=>phj-form(1)"
                         custom-styles="div{border:none;background:none;color:blue;text-decoration:underline;}div:hover{color:darkblue;text-decoration:none;}">Aanpassen
             </phj-button>
-            <phj-button events="click:phj-form(2)=>visible,this.parent=>invisible,this.parent.previous=>visible"
+            <phj-button events="click:phj-form(2)=>visible,this.parent=>invisible,this.parent.previous=>visible,this.parent.parent.next=>phj-form(2)"
                         custom-styles="div{border:none;background:none;color:blue;text-decoration:underline;}div:hover{color:darkblue;text-decoration:none;}">Verwijderen
             </phj-button>
         </phj-box>
     </phj-box>
 </phj-table>
-<phj-form events="load:this=>invisible" url="patch:http://localhost:3000/specifications">
-    <p>form1 patch and read</p>
+<!-- todo de url om het uiteindelijke request te doen d.w.z. niet het prefill request komt op de button niet op het formulier -->
+<phj-form value="" events="load:this=>invisible" url="get:http://localhost:3000/specifications/id">
+
 </phj-form>
-<phj-form events="load:this=>invisible" url="delete:http://localhost:3000/specifications">
-    <p>form2 delete</p>
+<phj-form value="" events="load:this=>invisible" url="get:http://localhost:3000/specifications/id">
+
 </phj-form>
 
 <!--<phj-button>My button</phj-button>
