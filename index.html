@@ -20,6 +20,7 @@
     <script src="text-elements/phj-text.js"></script>
     <script src="forms/phj-form.js"></script>
     <script src="forms/phj-text-input.js"></script>
+    <script src="forms/phj-select.js"></script>
     <script src="forms/phj-number-input.js"></script>
     <script src="forms/phj-textarea.js"></script>
     <script src="forms/phj-radio-button.js"></script>
@@ -52,11 +53,19 @@ div{
     </phj-box>
 </phj-table>
 <!-- todo de url om het uiteindelijke request te doen d.w.z. niet het prefill request komt op de button niet op het formulier -->
+<!-- todo: hoe dwingen we dezelfde logica in de frontend af als in de backend zonder dit 2 keer te moeten doen->werken met foutcodes en boodschappen die
+                van de backend komen, geen controle in de frontend!! is dom en onnodig voor kleine business programma's -->
 <phj-form value="" events="load:this=>invisible" url="get:http://localhost:3000/specifications/id">
-
+    <phj-text-input label="Specificatie" prop="specification"></phj-text-input>
+    <phj-select label="Type" prop="type"></phj-select>
+    <phj-number-input label="Prijs" prop="price"></phj-number-input>
+    <phj-button action="dismiss">Annuleren</phj-button>
+    <phj-button action="reset">Reset</phj-button>
+    <phj-button action="update">Bewaar</phj-button>
 </phj-form>
 <phj-form value="" events="load:this=>invisible" url="get:http://localhost:3000/specifications/id">
-
+    <phj-button action="dismiss">Annuleren</phj-button>
+    <phj-button action="delete">Bewaar</phj-button>
 </phj-form>
 
 <!--<phj-button>My button</phj-button>

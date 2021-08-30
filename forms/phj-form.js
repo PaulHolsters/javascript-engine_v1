@@ -59,6 +59,7 @@ class PhjForm extends ComponentLogics {
     }
 
     async connectedCallback(){
+        // todo make the form a responsive element
         // set css of the webcomponent
         this._setLayoutState('enabled')
         // set HTML of the webcomponent

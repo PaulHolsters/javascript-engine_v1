@@ -88,7 +88,7 @@ router.get('/id/:specificationId', (req, res, next) => {
 
 // Je kan via deze route een bestaande klant aanpassen. Er wordt geen historiek van deze aanpassingen bijgehouden. Verander je dus iets aan een klant
 // dan is dat definitief. Je kan dus achteraf bijvoorbeeld geen historiek opvragen van alle adressen waar een bepaalde klant heeft gewoond.
-router.patch('/:specificationId', (req, res, next) => {
+router.patch('/id/:specificationId', (req, res, next) => {
     const id = req.params.specificationId
     Specification.findByIdAndUpdate(id, req.body).exec().then(result => {
         // result bevat de oorspronkeljke versie, vóór de update
@@ -112,7 +112,7 @@ router.patch('/:specificationId', (req, res, next) => {
 // van klant zuiver door gebruik te maken van de ID. Vervolgens gebruik je de huidige naam van de klant zoals je deze via deze API kan terugvinden.
 // Natuurlijk is het mogelijk dat de klant ondertussen verwijderd is. Bij zo'n sortering kan je dan voor deze gevallen de naam op het document (bv. offerte of factuur)
 // gebruiken. Deze gevallen kunnen dan mogelijks licht afwijken van een correcte alfabetische rangschikking.
-router.delete('/:specificationId', (req, res, next) => {
+router.delete('/id/:specificationId', (req, res, next) => {
     const id = req.params.specificationId
     Specification.findByIdAndRemove(id).exec(
 
