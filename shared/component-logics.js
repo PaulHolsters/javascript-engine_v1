@@ -333,18 +333,22 @@ class ComponentLogics extends HTMLElement {
                     if (this.hasAttribute('label')) {
                         this._state.hasLabel = true
                         this._state.label = this.getAttribute('label')
-                        this.insertAdjacentHTML('beforebegin','<label>'+ this._state.label +'</label>')
+                        this.insertAdjacentHTML('beforebegin','<label><b>'+ this._state.label +'</b></label>')
                     }
                     break
                 case 'money':
                     if (this.hasAttribute('money')) {
                         this._state.hasMoney = true
                         this._state.money = this.getAttribute('money')
+                        // todo change this piece of code make it more generic through all input elements
                         switch (this._state.money){
                             case 'euro':
                                 const tag = this.shadowRoot.querySelector('input')
-                                tag.insertAdjacentHTML('beforebegin','<span>&euro; </span>')
                                 tag.setAttribute('step','0.01')
+                                this.shadowRoot.querySelector('div').insertAdjacentHTML('afterend',`
+                                <div><span>&euro; </span></div>
+                                `)
+                                this.shadowRoot.querySelector('span').insertAdjacentElement('afterend',tag)
                                 break
                         }
                     }
@@ -354,7 +358,7 @@ class ComponentLogics extends HTMLElement {
                         this._state.showDecimals = this.getAttribute('decimals')
                         if(this._state.showDecimals>0){
                             // set up the event to always show the correct number of decimals
-                            this.addEventListener('input',this._eventHandler)
+                            this.addEventListener('blur',this._eventHandler)
                         }
                     }
                     break
@@ -709,8 +713,9 @@ class ComponentLogics extends HTMLElement {
                 case 'component-hovered-away-from':
 
                     break
-                case 'input':
+                case 'blur':
                     if(this.tagName.toLowerCase()==='phj-number-input' && this._state.showDecimals>0){
+                        // fill the number up with zero's until it matches the requested numbers of decimals
                         const calcDcms = ()=>{
                             if(this.shadowRoot.querySelector('input').value.indexOf('.')!==-1){
                                 return this.shadowRoot.querySelector('input').value.substring(this.shadowRoot.querySelector('input').value.indexOf('.')+1).trim().length
@@ -719,6 +724,7 @@ class ComponentLogics extends HTMLElement {
                             }
                         }
                         let numberOfDecimals = calcDcms()
+                        // todo make this only run when the input has lost focus
                         while(numberOfDecimals<this._state.showDecimals){
                             if(calcDcms()===0){
                                 this.shadowRoot.querySelector('input').value += '.0'
@@ -726,6 +732,11 @@ class ComponentLogics extends HTMLElement {
                                 this.shadowRoot.querySelector('input').value += '0'
                             }
                             numberOfDecimals = calcDcms()
+                        }
+                        // reduce the number of decimals until it fits the requested number
+                        if(calcDcms()>this._state.showDecimals){
+                            const reduceWith = calcDcms()-this._state.showDecimals
+                            this.shadowRoot.querySelector('input').value = this.shadowRoot.querySelector('input').value.substring(0,this.shadowRoot.querySelector('input').value.length-reduceWith)
                         }
                     }
                     break

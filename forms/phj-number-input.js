@@ -15,9 +15,10 @@ class PhjNumberInput extends ComponentLogics {
         border-radius: 5px;
         margin: 2px;
         width: 80%;
+        
     }
     :host{
-
+    display: block;
     }                                
 </style>
 `

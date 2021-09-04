@@ -59,10 +59,12 @@ div{
 <phj-form value="" events="load:this=>invisible" url="get:http://localhost:3000/specifications/id">
     <phj-text-input label="Specificatie" prop="specification"></phj-text-input>
 <!--    <phj-select label="Type" prop="type"></phj-select>-->
-    <phj-number-input label="Prijs (excl.BTW):" prop="price" money="euro" decimals="2"></phj-number-input>
-    <phj-button action="dismiss">Annuleren</phj-button>
-    <phj-button action="reset">Reset</phj-button>
-    <phj-button action="update">Bewaar</phj-button>
+    <phj-number-input label="Prijs (excl.BTW)" prop="price" money="euro" decimals="2"></phj-number-input>
+    <div style="width: max-content">
+        <phj-button action="dismiss">Annuleren</phj-button>
+        <phj-button action="reset">Reset</phj-button>
+        <phj-button action="update">Bewaar</phj-button>
+    </div>
 </phj-form>
 <phj-form value="" events="load:this=>invisible" url="get:http://localhost:3000/specifications/id">
     <phj-button action="dismiss">Annuleren</phj-button>

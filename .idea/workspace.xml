@@ -6,8 +6,6 @@
   <component name="ChangeListManager">
     <list default="true" id="541aa9e8-3035-4513-acb8-e23ab7e5a48a" name="Default Changelist" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/api/routes/specifications.js" beforeDir="false" afterPath="$PROJECT_DIR$/api/routes/specifications.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/forms/phj-form.js" beforeDir="false" afterPath="$PROJECT_DIR$/forms/phj-form.js" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/forms/phj-number-input.js" beforeDir="false" afterPath="$PROJECT_DIR$/forms/phj-number-input.js" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/forms/phj-text-input.js" beforeDir="false" afterPath="$PROJECT_DIR$/forms/phj-text-input.js" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/index.html" beforeDir="false" afterPath="$PROJECT_DIR$/index.html" afterDir="false" />
@@ -110,7 +108,7 @@
       <workItem from="1630345942292" duration="6601000" />
       <workItem from="1630601006788" duration="1502000" />
       <workItem from="1630702651312" duration="600000" />
-      <workItem from="1630737629892" duration="10356000" />
+      <workItem from="1630737629892" duration="23091000" />
     </task>
     <task id="LOCAL-00001" summary="Second commit for testing purposes">
       <created>1627739619455</created>
@@ -322,7 +320,14 @@
       <option name="project" value="LOCAL" />
       <updated>1630355858878</updated>
     </task>
-    <option name="localTasksCounter" value="31" />
+    <task id="LOCAL-00031" summary="attributes implemented: money, label, decimals">
+      <created>1630755917808</created>
+      <option name="number" value="00031" />
+      <option name="presentableId" value="LOCAL-00031" />
+      <option name="project" value="LOCAL" />
+      <updated>1630755917808</updated>
+    </task>
+    <option name="localTasksCounter" value="32" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -332,7 +337,6 @@
     <ignored-roots>
       <path value="$PROJECT_DIR$/.." />
     </ignored-roots>
-    <MESSAGE value="created phj-content to use baseUrl property" />
     <MESSAGE value="creating table for the phj-master component&#10;+ start of notification system for availability of components" />
     <MESSAGE value="creating table for the phj-master component&#10;+ start of notification system for availability of components&#10;PART2" />
     <MESSAGE value="creating table for the phj-master component&#10;+ start of notification system for availability of components&#10;PART3" />
@@ -357,17 +361,18 @@
     <MESSAGE value="fixed api: get specifications: altered the format of the response" />
     <MESSAGE value="you now can pass an id to a form from within a table with an actions column and then the form gets the data ; next face: refactor APÏ en prefill the form automatically" />
     <MESSAGE value="werken aan de frontend: phj-form + content: part 1" />
-    <option name="LAST_COMMIT_MESSAGE" value="werken aan de frontend: phj-form + content: part 1" />
+    <MESSAGE value="attributes implemented: money, label, decimals" />
+    <option name="LAST_COMMIT_MESSAGE" value="attributes implemented: money, label, decimals" />
   </component>
   <component name="WindowStateProjectService">
     <state x="586" y="198" key="#Inspections" timestamp="1627821810157">
       <screen x="0" y="0" width="1920" height="1040" />
     </state>
     <state x="586" y="198" key="#Inspections/0.0.1920.1040@0.0.1920.1040" timestamp="1627821810157" />
-    <state x="0" y="88" key="CommitChangelistDialog2" timestamp="1630355858002">
+    <state x="0" y="88" key="CommitChangelistDialog2" timestamp="1630755916568">
       <screen x="0" y="0" width="1920" height="1040" />
     </state>
-    <state x="0" y="88" key="CommitChangelistDialog2/0.0.1920.1040@0.0.1920.1040" timestamp="1630355858002" />
+    <state x="0" y="88" key="CommitChangelistDialog2/0.0.1920.1040@0.0.1920.1040" timestamp="1630755916568" />
     <state x="184" y="86" key="DiffContextDialog" timestamp="1627729652791">
       <screen x="0" y="0" width="1920" height="1040" />
     </state>
@@ -384,10 +389,10 @@
       <screen x="0" y="0" width="1920" height="1040" />
     </state>
     <state x="461" y="165" key="SettingsEditor/0.0.1920.1040@0.0.1920.1040" timestamp="1627739971507" />
-    <state x="552" y="253" key="Vcs.Push.Dialog.v2" timestamp="1630355861579">
+    <state x="552" y="253" key="Vcs.Push.Dialog.v2" timestamp="1630755923338">
       <screen x="0" y="0" width="1920" height="1040" />
     </state>
-    <state x="552" y="253" key="Vcs.Push.Dialog.v2/0.0.1920.1040@0.0.1920.1040" timestamp="1630355861579" />
+    <state x="552" y="253" key="Vcs.Push.Dialog.v2/0.0.1920.1040@0.0.1920.1040" timestamp="1630755923338" />
     <state x="667" y="76" width="585" height="888" key="find.popup" timestamp="1629196980383">
       <screen x="0" y="0" width="1920" height="1040" />
     </state>

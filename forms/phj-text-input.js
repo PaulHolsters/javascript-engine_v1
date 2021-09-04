@@ -17,7 +17,7 @@ class PhjTextInput extends ComponentLogics {
         width: 80%;
     }
     :host{
-
+display: block;
     }                                
 </style>
 `
