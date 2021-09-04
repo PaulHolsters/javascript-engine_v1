@@ -64,7 +64,7 @@ class PhjForm extends ComponentLogics {
         this._setLayoutState('enabled')
         // set HTML of the webcomponent
         this._setShadow(`
-            <div>Form</div>
+            <slot></slot>
         `)
         // set innerhtml
         this._executeShadow()
@@ -93,27 +93,14 @@ class PhjForm extends ComponentLogics {
     attributeChangedCallback(name, oldValue, newValue) {
         if (name === 'value' && newValue.length > 0) {
             this._getOne(newValue.trim()).then(data => {
-                console.log(data)
-                // todo refactor specifications/id API
-                // todo process data => how?!
                 const keys = Object.keys(data)
                 const values = Object.values(data)
-                // set the title
-                if (this.hasAttribute('column')) {
-                    for (let i = 0; i < keys.length; i++) {
-                        if (keys[i] === this.getAttribute('column').trim()) {
-                            // noinspection JSValidateTypes
-                            this.shadowRoot.querySelector('div > div:first-of-type').innerHTML = values[i]
-                            break
-                        }
-                    }
-                }
-                const children = this.shadowRoot.querySelector('div > div:nth-of-type(2) > slot').assignedNodes()
+                const children = this.shadowRoot.querySelector('slot').assignedNodes()
                 for (let j = 0;j<children.length;j++){
-                    if(children[j].nodeType === 1 && children[j].hasAttribute('column')){
+                    if(children[j].nodeType === 1 && children[j].hasAttribute('prop')){
+                        // todo prefill controls with their data
                         for (let i = 0; i < keys.length; i++) {
-                            if (keys[i] === children[j].getAttribute('column').trim()) {
-                                // noinspection JSValidateTypes
+                            if (keys[i] === children[j].getAttribute('prop').trim()) {
                                 children[j]._setState('text',values[i])
                                 break
                             }

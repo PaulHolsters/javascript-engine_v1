@@ -293,7 +293,11 @@ class ComponentLogics extends HTMLElement {
                     break
                 case 'text':
                     if (this.shadowRoot.querySelector('input[type="text"]') || this.shadowRoot.querySelector('input[type="number"]')) {
-                        this.shadowRoot.querySelector('input').value = value
+                        if(this.shadowRoot.querySelector('input[type="number"]')&&Math.floor(value)===value&&this._state.hasMoney&&this._state.money==='euro'){
+                            this.shadowRoot.querySelector('input').value = value+'.00'
+                        } else{
+                            this.shadowRoot.querySelector('input').value = value
+                        }
                         this._state.text = value
                     } else if (this.shadowRoot.querySelector('input[type="radio"]')) {
                         this._state.text = value
@@ -323,6 +327,35 @@ class ComponentLogics extends HTMLElement {
                 case 'url':
                     if (this.hasAttribute('url')) {
                         this._state.url = this.getAttribute('url')
+                    }
+                    break
+                case 'label':
+                    if (this.hasAttribute('label')) {
+                        this._state.hasLabel = true
+                        this._state.label = this.getAttribute('label')
+                        this.insertAdjacentHTML('beforebegin','<label>'+ this._state.label +'</label>')
+                    }
+                    break
+                case 'money':
+                    if (this.hasAttribute('money')) {
+                        this._state.hasMoney = true
+                        this._state.money = this.getAttribute('money')
+                        switch (this._state.money){
+                            case 'euro':
+                                const tag = this.shadowRoot.querySelector('input')
+                                tag.insertAdjacentHTML('beforebegin','<span>&euro; </span>')
+                                tag.setAttribute('step','0.01')
+                                break
+                        }
+                    }
+                    break
+                case 'decimals':
+                    if (this.hasAttribute('decimals')) {
+                        this._state.showDecimals = this.getAttribute('decimals')
+                        if(this._state.showDecimals>0){
+                            // set up the event to always show the correct number of decimals
+                            this.addEventListener('input',this._eventHandler)
+                        }
                     }
                     break
                 case 'custom-styles':
@@ -557,7 +590,6 @@ class ComponentLogics extends HTMLElement {
                             return document.querySelectorAll(selectorString)
                         }
                     } else if (source.indexOf('this.parent') !== -1 || source.indexOf('this.next') !== -1 || source.indexOf('this.previous') !== -1) {
-                        // todo fix bug: it only replaces one time .parent etc. But it can be in here multiple times!!
                         let index = 0
                         let endOfString = false
                         let searchString = 'next'
@@ -628,7 +660,6 @@ class ComponentLogics extends HTMLElement {
                 const source = action.split('=>')[0].toString().trim()
                 const sourceElements = setSource(source)
                 const target = replaceN(action.split('=>')[1].trim())
-                // todo handle target
                 if (this._possibleLayoutStates.includes(target)) {
                     sourceElements.forEach(srcEl => {
                         srcEl.executeLayoutState(target)
@@ -654,11 +685,9 @@ class ComponentLogics extends HTMLElement {
             switch (eventProcess.type) {
                 case 'click':
                     if (this._currentLayoutState === 'enabled' || this._currentLayoutState === 'visible') {
-                        console.log(this._events)
                         this._events.forEach(el => {
                             if (el.hasOwnProperty('click') && el.click.length > 0) {
                                 el.click.forEach(act => {
-                                    console.log(act)
                                     processAction(act)
                                 })
                             }
@@ -679,6 +708,26 @@ class ComponentLogics extends HTMLElement {
                     break
                 case 'component-hovered-away-from':
 
+                    break
+                case 'input':
+                    if(this.tagName.toLowerCase()==='phj-number-input' && this._state.showDecimals>0){
+                        const calcDcms = ()=>{
+                            if(this.shadowRoot.querySelector('input').value.indexOf('.')!==-1){
+                                return this.shadowRoot.querySelector('input').value.substring(this.shadowRoot.querySelector('input').value.indexOf('.')+1).trim().length
+                            } else{
+                                return 0
+                            }
+                        }
+                        let numberOfDecimals = calcDcms()
+                        while(numberOfDecimals<this._state.showDecimals){
+                            if(calcDcms()===0){
+                                this.shadowRoot.querySelector('input').value += '.0'
+                            } else{
+                                this.shadowRoot.querySelector('input').value += '0'
+                            }
+                            numberOfDecimals = calcDcms()
+                        }
+                    }
                     break
             }
         }

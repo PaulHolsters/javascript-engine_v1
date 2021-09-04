@@ -74,11 +74,24 @@ router.get('/type/:specificationType', (req, res, next) => {
 
 router.get('/id/:specificationId', (req, res, next) => {
     const id = req.params.specificationId
-    Specification.findById(id).exec().then(result => {
-        res.status(200).json({
-            // the customer can be null if the customer was erased before
-            specification: result
-        })
+    // todo beautify this response
+    Specification.findById(id).select('specification type price _id').exec().then(result => {
+        if(result.price === undefined){
+            res.status(200).json({
+                // the customer can be null if the customer was erased before
+                specification: result.specification,
+                type: result.type,
+                id:result.id
+            })
+        } else{
+            res.status(200).json({
+                // the customer can be null if the customer was erased before
+                specification: result.specification,
+                type: result.type,
+                price: result.price,
+                id:result.id
+            })
+        }
     }).catch(err => {
         res.status(500).json({
             error: err
