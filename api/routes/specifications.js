@@ -81,6 +81,7 @@ router.get('/id/:specificationId', (req, res, next) => {
                 // the customer can be null if the customer was erased before
                 specification: result.specification,
                 type: result.type,
+                price: null,
                 id:result.id
             })
         } else{

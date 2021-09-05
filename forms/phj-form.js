@@ -98,10 +98,13 @@ class PhjForm extends ComponentLogics {
                 const children = this.shadowRoot.querySelector('slot').assignedNodes()
                 for (let j = 0;j<children.length;j++){
                     if(children[j].nodeType === 1 && children[j].hasAttribute('prop')){
-                        // todo prefill controls with their data
                         for (let i = 0; i < keys.length; i++) {
                             if (keys[i] === children[j].getAttribute('prop').trim()) {
-                                children[j]._setState('text',values[i])
+                                if(!values[i]){
+                                    children[j]._setState('text','')
+                                } else{
+                                    children[j]._setState('text',values[i])
+                                }
                                 break
                             }
                         }

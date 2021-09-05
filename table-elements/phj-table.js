@@ -69,6 +69,10 @@ width: max-content;
         }
     }
 
+    _actionMenuHandler(){
+
+    }
+
     connectedCallback() {
         this._setLayoutState('enabled')
         // get all data to feel the master table with
