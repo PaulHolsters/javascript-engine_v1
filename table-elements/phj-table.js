@@ -4,9 +4,9 @@ class PhjTable extends ComponentLogics {
         super();
         this.attachShadow({mode: 'open'})
         this._layoutStates = {
-            default: {
+            enabled: {
                 layoutState: {
-                    default: true
+                    disabled: false
                 },
                 css:
                     `
@@ -70,7 +70,7 @@ width: max-content;
     }
 
     connectedCallback() {
-        this._setLayoutState('default')
+        this._setLayoutState('enabled')
         // get all data to feel the master table with
         if (this.hasAttribute('path') && this.getAttribute('path').substr(0, 3) === 'get') {
             this._path = this.getAttribute('path').substring(4)
@@ -89,16 +89,13 @@ width: max-content;
         )
         this._executeShadow()
         this._getAll().then(data => {
-            this._setUpAttributes('url', 'path', 'actions')
+            this._setUpAttributes('url', 'path', 'actions','events')
             // data format: { listOfObjects:[{}], numberOfObjects:number, listOfProperties:[string], numberOfProperties:number, modelName:string}
             let container = '<div id="container">'
             let head =''
             let body = ''
             if(this._state.has_actions){
                 const comboBox = this.shadowRoot.querySelector('slot').assignedNodes()[0].nextElementSibling
-                console.log(comboBox)
-                console.log(data)
-                console.log('hi')
                 // set up a actions column so the table becomes an interactive one
                 for (let j = 0; j <= data.numberOfProperties; j++) {
                     // the extra divs are necessary to make sure that the text inside the cell stays on one line which is the default behavior
@@ -113,8 +110,6 @@ width: max-content;
                     for (let j = 0; j <= data.numberOfProperties; j++) {
                         // the extra divs are necessary to make sure that the text inside the cell stays on one line
                         if(j!==0 && j%data.numberOfProperties===0){
-                            // todo pass the id of the object to either the button you click
-                            //  for action or some id-transmitter you put in the combobox component
                             row += `<div class="cell"><div>${comboBox.outerHTML}<phj-id value="${Object.values(data.listOfObjects[i])[j].toString().trim()}"></phj-id></div></div>`
                         } else{
                             row += `<div class="cell"><div><div>${Object.values(data.listOfObjects[i])[j]}</div></div></div>`

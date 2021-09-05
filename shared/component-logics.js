@@ -3,11 +3,11 @@ class ComponentLogics extends HTMLElement {
     _possibleLayoutStates = ['disabled', 'enabled', 'displayed', 'hidden', 'visible', 'invisible', 'selected', 'deselected']
     _layoutStates
     _currentLayoutState
-
+    _tabIndex = 0
     _html
     _css
 
-    _events = [{click: []}, {hover: []}, {hoverAway: []}, {change: []}, {select: []}, {load: []}, {check: []}]
+    _events = [{click: []}, {hover: []}, {hoverAway: []}, {change: []}, {select: []}, {load: []}, {check: []},{blur:[]}]
     _state
 
     // the baseUrl variable should be used by the phj-content-elements component, everything inside that component can be considered
@@ -75,44 +75,6 @@ class ComponentLogics extends HTMLElement {
          */
         this._currentLayoutState = state
         this._css = this._layoutStates[state].css
-    }
-
-    _restructureCssString(cssStr) {
-        // return-value: {selector:[{cssRule:value}]}
-        const cssState = []
-        // purifying the string
-        cssStr = cssStr.replace('<style>', '').replace('</style>', '').replace(' ', '')
-        // separating selectors from their bodies
-        let cssArr = cssStr.split('{')
-        let tempArr = []
-        for (let j = 0; j < cssArr.length; j++) {
-            tempArr.concat(cssArr[j].split('}'))
-        }
-        cssArr = tempArr
-        let objTemp = {}
-        let keyTemp = ''
-        for (let j = 0; j < cssArr.length; j++) {
-            if (j % 2 === 0) {
-                // selector
-                keyTemp = cssArr[j]
-                objTemp[keyTemp] = []
-            } else {
-                // body
-                const valueObjects = []
-                const cssValues = cssArr[j].split(';')
-                for (let k = 0; k < cssValues.length; k++) {
-                    const obj = {}
-                    const key = cssValues[k].split(':')[0]
-                    obj[key] = cssValues[k].split(':')[1]
-                    valueObjects.push(obj)
-                }
-                objTemp[keyTemp] = valueObjects
-                cssState.push(objTemp)
-                objTemp = {}
-                keyTemp = ''
-            }
-        }
-        return cssState
     }
 
     _addCustomStyles(customStyles) {
@@ -381,6 +343,7 @@ class ComponentLogics extends HTMLElement {
                     break
                 case 'events':
                     if (this.hasAttribute('events')) {
+                        console.log('setting up attributes for table??? = ',this)
                         this._eventHandler(this.getAttribute('events'))
                     }
                     break;
@@ -429,7 +392,6 @@ class ComponentLogics extends HTMLElement {
     }
 
     async _getOne(id) {
-        console.log(this._url+'/'+id)
         return await fetch(this._url+'/'+id).then(
             res => {
                 return res.json()
@@ -468,7 +430,6 @@ class ComponentLogics extends HTMLElement {
     _responseHandler(response, verb) {
         switch (verb) {
             case 'getOne':
-                // return Object.values(response)[1]
                 return response
             case 'getAll':
                 return response
@@ -523,6 +484,9 @@ class ComponentLogics extends HTMLElement {
                         case 'click':
                             this.addEventListener('click', this._eventHandler)
                             break
+                        case 'blur':
+                            this.addEventListener('blur', this._eventHandler)
+                            break
                         case 'load':
                             // a custom event, because the built-in load event works on the window object only (so it appears)
                             // this event gets fired as soon as the element is available and all initialisation is done
@@ -556,7 +520,9 @@ class ComponentLogics extends HTMLElement {
                     return startString
                 }
                 const setSource = (source) => {
+                    console.log('what?',this,source)
                     // step 1 replace (n) with nth of type
+                    //this .actions
                     if (source.indexOf('(') !== -1) {
                         let index = 0
                         let startString = source
@@ -598,8 +564,6 @@ class ComponentLogics extends HTMLElement {
                         let endOfString = false
                         let searchString = 'next'
                         let rootElement = source.split(' ')[0]
-                        /*                        let rootElement = source.split(' ')[0].replace('next','nextElementSibling')
-                                                    .replace('parent','parentElement').replace('previous','previousElementSibling')*/
                         while(searchString){
                             while (!endOfString) {
                                 if (rootElement.indexOf(searchString, index) !== -1) {
@@ -657,6 +621,9 @@ class ComponentLogics extends HTMLElement {
                             return root.querySelectorAll(source.split(' ')[1])
                         }
                         return [root]
+                    } else if(source.indexOf('this')!==-1){
+                        // it is an expression with normal DOM selectors in combination with this at the start
+                        return this.shadowRoot.querySelectorAll(source.split(' ')[1])
                     } else {
                         return document.querySelectorAll(source)
                     }
@@ -714,6 +681,7 @@ class ComponentLogics extends HTMLElement {
 
                     break
                 case 'blur':
+                    // blur werkt alleen bij input elements
                     if(this.tagName.toLowerCase()==='phj-number-input' && this._state.showDecimals>0){
                         // fill the number up with zero's until it matches the requested numbers of decimals
                         const calcDcms = ()=>{
@@ -724,7 +692,6 @@ class ComponentLogics extends HTMLElement {
                             }
                         }
                         let numberOfDecimals = calcDcms()
-                        // todo make this only run when the input has lost focus
                         while(numberOfDecimals<this._state.showDecimals){
                             if(calcDcms()===0){
                                 this.shadowRoot.querySelector('input').value += '.0'

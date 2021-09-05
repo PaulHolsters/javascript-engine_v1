@@ -47,6 +47,10 @@ class PhjBox extends ComponentLogics {
         // set innerhtml
         this._executeShadow()
         // set eventHandlers and handle attributes
+        if (!this.hasAttribute('tabindex')) {
+            // Choose one of the following lines (but not both):
+            this.setAttribute('tabindex', '0');
+        }
         await this._setUpAttributes('custom-styles', 'events')
         this._events.forEach(el => {
             if (el.hasOwnProperty('load') && el.load.length > 0) {

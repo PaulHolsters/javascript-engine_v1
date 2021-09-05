@@ -31,15 +31,17 @@ div{
 }
 </style>
 <body>
-<!-- todo extend the selector vocabulary with this.parent selector and a previousSiblingSelector: this.previous and make it possible to combine and chain them -->
+<!-- todo create the hover functionality event stuff -->
+<!-- todo make it happen that when you click outside of actions menu inside the table the menu closes: ONGOING!!! -->
 <phj-table url="get:http://localhost:3000/specifications" actions="Acties">
     <phj-box>
-        <!-- todo zorg ervoor dat als je ergens anders klikt wanneer het actions menu openstaat het actionsmenu gesloten worden-->
         <phj-button icon="phj-dots"
-                    events="click/hover:this=>invisible,this.next=>visible"
+                    events="click/hover:this.parent.parent.parent.parent .action-btn=>visible,this.parent.parent.parent.parent .actions=>invisible,
+                    this=>invisible,phj-form(1)=>invisible,phj-form(2)=>invisible,this.next=>visible"
                     custom-styles="div{border:none;background:none;color:black}div:hover{background-color:darkgray;color:white}"
+                    class="action-btn"
         ></phj-button>
-        <phj-box events="load:this=>invisible">
+        <phj-box events="load:this=>invisible" class="actions">
             <phj-button
                     events="click:phj-form(1)=>visible,this.parent=>invisible,this.parent.previous=>visible,this.parent.parent.next=>phj-form(1)"
                     custom-styles="div{border:none;background:none;color:blue;text-decoration:underline;}div:hover{color:darkblue;text-decoration:none;}">Bekijken
@@ -53,22 +55,23 @@ div{
         </phj-box>
     </phj-box>
 </phj-table>
-<!-- todo de url om het uiteindelijke request te doen d.w.z. niet het prefill request komt op de button niet op het formulier -->
-<!-- todo: hoe dwingen we dezelfde logica in de frontend af als in de backend zonder dit 2 keer te moeten doen->werken met foutcodes en boodschappen die
-                van de backend komen, geen controle in de frontend!! is dom en onnodig voor kleine business programma's -->
+<!-- todo: buttons: create, update, delete functionality (url's on buttons!) -->
+<!-- todo: boodschappen (success, fail, info) -->
 <phj-form value="" events="load:this=>invisible" url="get:http://localhost:3000/specifications/id">
     <phj-text-input label="Specificatie" prop="specification"></phj-text-input>
 <!--    <phj-select label="Type" prop="type"></phj-select>-->
     <phj-number-input label="Prijs (excl.BTW)" prop="price" money="euro" decimals="2"></phj-number-input>
     <div style="width: max-content">
-        <phj-button action="dismiss">Annuleren</phj-button>
+        <phj-button events="click:this.parent.parent=>invisible">Annuleren</phj-button>
         <phj-button action="reset">Reset</phj-button>
-        <phj-button action="update">Bewaar</phj-button>
+        <phj-button action="update:patch">Bewaar</phj-button>
     </div>
 </phj-form>
 <phj-form value="" events="load:this=>invisible" url="get:http://localhost:3000/specifications/id">
-    <phj-button action="dismiss">Annuleren</phj-button>
-    <phj-button action="delete">Bewaar</phj-button>
+    <div style="width: max-content">
+        <phj-button events="click:this.parent.parent=>invisible">Annuleren</phj-button>
+        <phj-button action="delete">Bewaar</phj-button>
+    </div>
 </phj-form>
 
 <!--<phj-button>My button</phj-button>
