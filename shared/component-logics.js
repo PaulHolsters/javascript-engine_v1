@@ -663,8 +663,6 @@ class ComponentLogics extends HTMLElement {
 
             }
             switch (eventProcess.type) {
-                // todo create a system where an event from a nested component gets precedence over the same event happening on the host component
-                //  using an event that informs that parent component not to execute his event
                 case 'click':
                     if ((this._currentLayoutState === 'enabled' || this._currentLayoutState === 'visible') && !this._noEvent) {
                         console.log('clicking element = ',this)
