@@ -6,8 +6,9 @@ class ComponentLogics extends HTMLElement {
     _tabIndex = 0
     _html
     _css
+    _noEvent = false
 
-    _events = [{click: []}, {hover: []}, {hoverAway: []}, {change: []}, {select: []}, {load: []}, {check: []},{blur:[]}]
+    _events = [{click: []}, {hover: []}, {hoverAway: []}, {change: []}, {select: []}, {load: []}, {check: []}, {blur: []}]
     _state
 
     // the baseUrl variable should be used by the phj-content-elements component, everything inside that component can be considered
@@ -255,9 +256,9 @@ class ComponentLogics extends HTMLElement {
                     break
                 case 'text':
                     if (this.shadowRoot.querySelector('input[type="text"]') || this.shadowRoot.querySelector('input[type="number"]')) {
-                        if(this.shadowRoot.querySelector('input[type="number"]')&&Math.floor(value)===value&&this._state.hasMoney&&this._state.money==='euro'){
-                            this.shadowRoot.querySelector('input').value = value+'.00'
-                        } else{
+                        if (this.shadowRoot.querySelector('input[type="number"]') && Math.floor(value) === value && this._state.hasMoney && this._state.money === 'euro') {
+                            this.shadowRoot.querySelector('input').value = value + '.00'
+                        } else {
                             this.shadowRoot.querySelector('input').value = value
                         }
                         this._state.text = value
@@ -286,6 +287,11 @@ class ComponentLogics extends HTMLElement {
     _setUpAttributes() {
         for (let i = 0; i < arguments.length; i++) {
             switch (arguments[i]) {
+                case 'noEvent':
+                    if (this.hasAttribute('noEvent')) {
+                        this._noEvent = this.getAttribute('noEvent')
+                    }
+                    break
                 case 'url':
                     if (this.hasAttribute('url')) {
                         this._state.url = this.getAttribute('url')
@@ -295,7 +301,7 @@ class ComponentLogics extends HTMLElement {
                     if (this.hasAttribute('label')) {
                         this._state.hasLabel = true
                         this._state.label = this.getAttribute('label')
-                        this.insertAdjacentHTML('beforebegin','<label><b>'+ this._state.label +'</b></label>')
+                        this.insertAdjacentHTML('beforebegin', '<label><b>' + this._state.label + '</b></label>')
                     }
                     break
                 case 'money':
@@ -303,14 +309,14 @@ class ComponentLogics extends HTMLElement {
                         this._state.hasMoney = true
                         this._state.money = this.getAttribute('money')
                         // todo change this piece of code make it more generic through all input elements
-                        switch (this._state.money){
+                        switch (this._state.money) {
                             case 'euro':
                                 const tag = this.shadowRoot.querySelector('input')
-                                tag.setAttribute('step','0.01')
-                                this.shadowRoot.querySelector('div').insertAdjacentHTML('afterend',`
+                                tag.setAttribute('step', '0.01')
+                                this.shadowRoot.querySelector('div').insertAdjacentHTML('afterend', `
                                 <div><span>&euro; </span></div>
                                 `)
-                                this.shadowRoot.querySelector('span').insertAdjacentElement('afterend',tag)
+                                this.shadowRoot.querySelector('span').insertAdjacentElement('afterend', tag)
                                 break
                         }
                     }
@@ -318,9 +324,9 @@ class ComponentLogics extends HTMLElement {
                 case 'decimals':
                     if (this.hasAttribute('decimals')) {
                         this._state.showDecimals = this.getAttribute('decimals')
-                        if(this._state.showDecimals>0){
+                        if (this._state.showDecimals > 0) {
                             // set up the event to always show the correct number of decimals
-                            this.addEventListener('blur',this._eventHandler)
+                            this.addEventListener('blur', this._eventHandler)
                         }
                     }
                     break
@@ -343,7 +349,7 @@ class ComponentLogics extends HTMLElement {
                     break
                 case 'events':
                     if (this.hasAttribute('events')) {
-                        console.log('setting up attributes for table??? = ',this)
+                        console.log('setting up attributes for table??? = ', this)
                         this._eventHandler(this.getAttribute('events'))
                     }
                     break;
@@ -392,7 +398,7 @@ class ComponentLogics extends HTMLElement {
     }
 
     async _getOne(id) {
-        return await fetch(this._url+'/'+id).then(
+        return await fetch(this._url + '/' + id).then(
             res => {
                 return res.json()
             }
@@ -507,7 +513,7 @@ class ComponentLogics extends HTMLElement {
             // handling the actions that need to be performed through a function
             // that is called from within the switch that handles a particular event
             const processAction = (action) => {
-                const replaceN = function(target){
+                const replaceN = function (target) {
                     let index = 0
                     let startString = target
                     while (startString.indexOf('(', index) !== -1) {
@@ -520,7 +526,6 @@ class ComponentLogics extends HTMLElement {
                     return startString
                 }
                 const setSource = (source) => {
-                    console.log('what?',this,source)
                     // step 1 replace (n) with nth of type
                     //this .actions
                     if (source.indexOf('(') !== -1) {
@@ -564,7 +569,7 @@ class ComponentLogics extends HTMLElement {
                         let endOfString = false
                         let searchString = 'next'
                         let rootElement = source.split(' ')[0]
-                        while(searchString){
+                        while (searchString) {
                             while (!endOfString) {
                                 if (rootElement.indexOf(searchString, index) !== -1) {
                                     let start
@@ -596,13 +601,13 @@ class ComponentLogics extends HTMLElement {
                                     if (index > rootElement.length) {
                                         endOfString = true
                                     }
-                                } else{
+                                } else {
                                     endOfString = true
                                 }
                             }
                             index = 0
                             endOfString = false
-                            switch (searchString){
+                            switch (searchString) {
                                 case 'next':
                                     searchString = 'parent'
                                     break
@@ -621,7 +626,7 @@ class ComponentLogics extends HTMLElement {
                             return root.querySelectorAll(source.split(' ')[1])
                         }
                         return [root]
-                    } else if(source.indexOf('this')!==-1){
+                    } else if (source.indexOf('this') !== -1) {
                         // it is an expression with normal DOM selectors in combination with this at the start
                         return this.shadowRoot.querySelectorAll(source.split(' ')[1])
                     } else {
@@ -630,32 +635,39 @@ class ComponentLogics extends HTMLElement {
                 }
                 const source = action.split('=>')[0].toString().trim()
                 const sourceElements = setSource(source)
-                const target = replaceN(action.split('=>')[1].trim())
+                let target = replaceN(action.split('=>')[1].trim())
                 if (this._possibleLayoutStates.includes(target)) {
                     sourceElements.forEach(srcEl => {
                         srcEl.executeLayoutState(target)
                     })
-                } else if (sourceElements[0]._getState('text') !== undefined) {
-                    const targetElements = document.querySelectorAll(target)
-                    targetElements.forEach(trgtEl => {
-                        if (trgtEl._getState('text') !== undefined) {
-                            trgtEl._setState('text', sourceElements[0]._getState('text'))
-                        }
-                    })
-                } else if (sourceElements[0]._getState('value') !== undefined) {
-                    const targetElements = document.querySelectorAll(target)
-                    targetElements.forEach(trgtEl => {
-                        if (trgtEl._getState('value') !== undefined) {
-                            trgtEl._setState('value', sourceElements[0]._getState('value'))
-                        }
-                    })
                 } else {
+                    if (sourceElements[0]._getState('value') !== undefined) {
+                        const targetElements = document.querySelectorAll(target)
+                        console.log(targetElements)
+                        targetElements.forEach(trgtEl => {
+                            if (trgtEl._getState('value') !== undefined) {
+                                trgtEl._setState('value', sourceElements[0]._getState('value'))
+                            }
+                        })
+                    } else if (sourceElements[0]._getState('text') !== undefined) {
+                        const targetElements = document.querySelectorAll(target)
+                        targetElements.forEach(trgtEl => {
+                            if (trgtEl._getState('text') !== undefined) {
+                                trgtEl._setState('text', sourceElements[0]._getState('text'))
+                            }
+                        })
+                    } else {
 
+                    }
                 }
+
             }
             switch (eventProcess.type) {
+                // todo create a system where an event from a nested component gets precedence over the same event happening on the host component
+                //  using an event that informs that parent component not to execute his event
                 case 'click':
-                    if (this._currentLayoutState === 'enabled' || this._currentLayoutState === 'visible') {
+                    if ((this._currentLayoutState === 'enabled' || this._currentLayoutState === 'visible') && !this._noEvent) {
+                        console.log('clicking element = ',this)
                         this._events.forEach(el => {
                             if (el.hasOwnProperty('click') && el.click.length > 0) {
                                 el.click.forEach(act => {
@@ -663,6 +675,9 @@ class ComponentLogics extends HTMLElement {
                                 })
                             }
                         })
+                    } else if(this._noEvent){
+                        this._noEvent = false
+                        this._setUpAttributes('value','false')
                     }
                     break
                 case 'component-loaded':
@@ -682,28 +697,28 @@ class ComponentLogics extends HTMLElement {
                     break
                 case 'blur':
                     // blur werkt alleen bij input elements
-                    if(this.tagName.toLowerCase()==='phj-number-input' && this._state.showDecimals>0){
+                    if (this.tagName.toLowerCase() === 'phj-number-input' && this._state.showDecimals > 0) {
                         // fill the number up with zero's until it matches the requested numbers of decimals
-                        const calcDcms = ()=>{
-                            if(this.shadowRoot.querySelector('input').value.indexOf('.')!==-1){
-                                return this.shadowRoot.querySelector('input').value.substring(this.shadowRoot.querySelector('input').value.indexOf('.')+1).trim().length
-                            } else{
+                        const calcDcms = () => {
+                            if (this.shadowRoot.querySelector('input').value.indexOf('.') !== -1) {
+                                return this.shadowRoot.querySelector('input').value.substring(this.shadowRoot.querySelector('input').value.indexOf('.') + 1).trim().length
+                            } else {
                                 return 0
                             }
                         }
                         let numberOfDecimals = calcDcms()
-                        while(numberOfDecimals<this._state.showDecimals){
-                            if(calcDcms()===0){
+                        while (numberOfDecimals < this._state.showDecimals) {
+                            if (calcDcms() === 0) {
                                 this.shadowRoot.querySelector('input').value += '.0'
-                            } else{
+                            } else {
                                 this.shadowRoot.querySelector('input').value += '0'
                             }
                             numberOfDecimals = calcDcms()
                         }
                         // reduce the number of decimals until it fits the requested number
-                        if(calcDcms()>this._state.showDecimals){
-                            const reduceWith = calcDcms()-this._state.showDecimals
-                            this.shadowRoot.querySelector('input').value = this.shadowRoot.querySelector('input').value.substring(0,this.shadowRoot.querySelector('input').value.length-reduceWith)
+                        if (calcDcms() > this._state.showDecimals) {
+                            const reduceWith = calcDcms() - this._state.showDecimals
+                            this.shadowRoot.querySelector('input').value = this.shadowRoot.querySelector('input').value.substring(0, this.shadowRoot.querySelector('input').value.length - reduceWith)
                         }
                     }
                     break

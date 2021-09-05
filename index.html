@@ -36,13 +36,15 @@ div{
 <!-- todo (LATER) make it happen that when you click outside of actions menu
         inside the table the menu closes: this has to be taken care of the phj-element that wrapped the phj-table -->
 
-<phj-table url="get:http://localhost:3000/specifications" actions="Acties">
+<phj-table url="get:http://localhost:3000/specifications" actions="Acties" events="click:this .actions=>invisible,this .action-btn=>visible" value="false">
     <phj-box>
+        <!-- todo how to make happen that text value transmitions works as well as noEvent transmission with the same functionality?-->
         <phj-button icon="phj-dots"
                     events="click/hover:this.parent.parent.parent.parent .action-btn=>visible,this.parent.parent.parent.parent .actions=>invisible,
-                    this=>invisible,phj-form(1)=>invisible,phj-form(2)=>invisible,this.next=>visible"
+                    this=>invisible,phj-form(1)=>invisible,phj-form(2)=>invisible,this.next=>visible;click:this=>phj-table(1)"
                     custom-styles="div{border:none;background:none;color:black}div:hover{background-color:darkgray;color:white}"
                     class="action-btn"
+                    value="true"
         ></phj-button>
         <phj-box events="load:this=>invisible" class="actions">
             <phj-button
@@ -63,7 +65,6 @@ div{
 <!-- todo: buttons: delete functionality -->
 <!-- todo: title and create on table -->
 <!-- todo: buttons: create functionality -->
-<!-- todo: messages: success, fail, info -->
 <!-- todo: messages: success, fail, info -->
 <!-- todo: phj-master component (=wrapper for one or more phj-table components) -->
 <!-- todo: phj-action component (=wrapper for one or more phj-form components)-->

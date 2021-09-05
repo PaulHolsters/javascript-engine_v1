@@ -65,7 +65,8 @@ width: max-content;
         this._state = {
             // contains only data for computation
             has_actions: false,
-            actions: ''
+            actions: '',
+            value: ''
         }
     }
 
@@ -93,7 +94,7 @@ width: max-content;
         )
         this._executeShadow()
         this._getAll().then(data => {
-            this._setUpAttributes('url', 'path', 'actions','events')
+            this._setUpAttributes('url', 'path', 'actions','events','value')
             // data format: { listOfObjects:[{}], numberOfObjects:number, listOfProperties:[string], numberOfProperties:number, modelName:string}
             let container = '<div id="container">'
             let head =''
@@ -210,6 +211,16 @@ width: max-content;
             this.shadowRoot.querySelector('#container > div:nth-child('+ (data.numberOfProperties+1) +')').style.borderRight = '1px solid black'
 
         })
+    }
+
+    attributeChangedCallback(name, oldValue, newValue) {
+        if (name === 'value'&&newValue==='true') {
+            this._noEvent = true
+        }
+    }
+
+    static get observedAttributes() {
+        return ['value']
     }
 }
 

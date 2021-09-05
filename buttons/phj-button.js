@@ -114,6 +114,7 @@ class Button extends ComponentLogics {
 
         this._state = {
             text: '',
+            value:''
         }
     }
 
@@ -133,7 +134,7 @@ class Button extends ComponentLogics {
             // Choose one of the following lines (but not both):
             this.setAttribute('tabindex', '0');
         }
-        this._setUpAttributes('icon', 'text','update','delete','create','get','getAll','custom-styles','events')
+        this._setUpAttributes('icon', 'text','custom-styles','events','value')
     }
 }
 
