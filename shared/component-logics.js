@@ -1,9 +1,9 @@
 class ComponentLogics extends HTMLElement {
 
     _possibleLayoutStates = ['disabled', 'enabled', 'displayed', 'hidden', 'visible', 'invisible', 'selected', 'deselected']
+    _possibleActions = ['refresh']
     _layoutStates
     _currentLayoutState
-    _tabIndex = 0
     _html
     _css
     _noEvent = false
@@ -403,7 +403,6 @@ class ComponentLogics extends HTMLElement {
         ).catch();
     }
 
-    // todo research how to use a verb and a body for a patch request with fetch
     async _getAll() {
         return await fetch(this._url).then(
             res => {
@@ -467,6 +466,7 @@ class ComponentLogics extends HTMLElement {
     }
 
     _eventHandler(eventProcess) {
+        console.log(eventProcess.type)
         // typical format of an event-string:
         // event1/event2/../eventN:actions
         // typical format of actions:
@@ -529,9 +529,6 @@ class ComponentLogics extends HTMLElement {
             // that is called from within the switch that handles a particular event
             const processAction = (action) => {
                 // this is always one action that needs to be processed
-                const fetchingData = () => {
-
-                }
                 const replaceN = function (target) {
                     let index = 0
                     let startString = target
@@ -660,7 +657,10 @@ class ComponentLogics extends HTMLElement {
                         sourceElements.forEach(srcEl => {
                             srcEl.executeLayoutState(target)
                         })
-                    } else {
+                    } else if(this._possibleActions.includes(target)){
+
+                    }
+                else {
                         if (sourceElements[0]._getState('value') !== undefined) {
                             const targetElements = document.querySelectorAll(target)
                             targetElements.forEach(trgtEl => {
@@ -692,10 +692,8 @@ class ComponentLogics extends HTMLElement {
                             const parent = this._getFirstParent('phj-form')
                             if (parent) {
                                 const dataPatch = {}
-                                console.log('parent',parent._url)
                                 this._url = parent._url
                                 const id = parent._getState('value')
-                                // todo get the data to patch or put
                                 const slot = parent.shadowRoot.querySelector('slot').assignedNodes()
                                 slot.forEach(content => {
                                     if (content.nodeType === 1 && content.hasAttribute('prop')) {
@@ -722,8 +720,11 @@ class ComponentLogics extends HTMLElement {
                                         }
                                     }
                                 })
-                                this._update(id,'patch',dataPatch).then(response => {
-                                    console.log(response)
+                                this._update(id, 'patch', dataPatch).then(response => {
+                                    // todo fire an update event to all listeners => custom event + een hogere component die ervoor zorgt dat het event aankomt?=>zie index.html
+/*                                    const refresh = new CustomEvent('refresh',{bubbles:true,detail:''})
+                                    this.dispatchEvent(refresh)
+                                    console.log('event dispatched')*/
                                 })
                             }
                             break
@@ -754,6 +755,16 @@ class ComponentLogics extends HTMLElement {
                     this._events.forEach(el => {
                         if (el.hasOwnProperty('load') && el.load.length > 0) {
                             el.load.forEach(action => {
+                                processAction(action)
+                            })
+                        }
+                    })
+                    break
+                case 'refresh':
+                    console.log('refresh called')
+                    this._events.forEach(el => {
+                        if (el.hasOwnProperty('listen') && el.listen.length > 0) {
+                            el.listen.forEach(action => {
                                 processAction(action)
                             })
                         }

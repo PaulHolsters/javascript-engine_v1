@@ -73,7 +73,7 @@ div{
     <div style="width: max-content">
         <phj-button events="click:this.parent.parent=>invisible">Annuleren</phj-button>
         <phj-button events="click:reset">Reset</phj-button>
-        <phj-button events="click:patch">Bewaar</phj-button>
+        <phj-button events="click:patch,refresh=>phj-table(1),clear,this.parent.parent=>invisible">Bewaar</phj-button>
     </div>
 </phj-form>
 <phj-form value="" events="load:this=>invisible" url="get:http://localhost:3000/specifications/id">

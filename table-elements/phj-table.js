@@ -70,10 +70,6 @@ width: max-content;
         }
     }
 
-    _actionMenuHandler(){
-
-    }
-
     connectedCallback() {
         this._setLayoutState('enabled')
         // get all data to feel the master table with
@@ -209,7 +205,6 @@ width: max-content;
             }
             // close the right border of the header
             this.shadowRoot.querySelector('#container > div:nth-child('+ (data.numberOfProperties+1) +')').style.borderRight = '1px solid black'
-
         })
     }
 
