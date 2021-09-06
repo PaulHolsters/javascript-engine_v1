@@ -168,7 +168,7 @@ class ComponentLogics extends HTMLElement {
             }
         }
         if (customStyles.split('[').length > 1) {
-            // in this case the customStyles target a specific layoutState
+            // todo: in this case the customStyles target a specific layoutState
 
         } else {
             // the customStyles have to be applied to every possible layoutState of the component
@@ -287,14 +287,9 @@ class ComponentLogics extends HTMLElement {
     _setUpAttributes() {
         for (let i = 0; i < arguments.length; i++) {
             switch (arguments[i]) {
-                case 'noEvent':
-                    if (this.hasAttribute('noEvent')) {
-                        this._noEvent = this.getAttribute('noEvent')
-                    }
-                    break
                 case 'url':
                     if (this.hasAttribute('url')) {
-                        this._state.url = this.getAttribute('url')
+                        this._url = this.getAttribute('url').substring(4)
                     }
                     break
                 case 'label':
@@ -349,7 +344,6 @@ class ComponentLogics extends HTMLElement {
                     break
                 case 'events':
                     if (this.hasAttribute('events')) {
-                        console.log('setting up attributes for table??? = ', this)
                         this._eventHandler(this.getAttribute('events'))
                     }
                     break;
@@ -409,6 +403,7 @@ class ComponentLogics extends HTMLElement {
         ).catch();
     }
 
+    // todo research how to use a verb and a body for a patch request with fetch
     async _getAll() {
         return await fetch(this._url).then(
             res => {
@@ -425,14 +420,32 @@ class ComponentLogics extends HTMLElement {
 
     }
 
-    async _update() {
-
+    async _update(id, verb, data) {
+        console.log(this._url + '/' + id)
+        return await fetch(this._url + '/' + id,
+            {
+                method: verb.toUpperCase(),
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(data)
+            }
+        ).then(
+            res => {
+                return res.json()
+            }
+        ).then(
+            res => {
+                return this._responseHandler(res, verb)
+            }
+        ).catch();
     }
 
     async _delete() {
 
     }
 
+    // todo refactor this away
     _responseHandler(response, verb) {
         switch (verb) {
             case 'getOne':
@@ -445,6 +458,8 @@ class ComponentLogics extends HTMLElement {
             case 'put':
 
                 break
+            case 'patch':
+                return response
             case 'delete':
 
                 break
@@ -513,6 +528,10 @@ class ComponentLogics extends HTMLElement {
             // handling the actions that need to be performed through a function
             // that is called from within the switch that handles a particular event
             const processAction = (action) => {
+                // this is always one action that needs to be processed
+                const fetchingData = () => {
+
+                }
                 const replaceN = function (target) {
                     let index = 0
                     let startString = target
@@ -633,31 +652,85 @@ class ComponentLogics extends HTMLElement {
                         return document.querySelectorAll(source)
                     }
                 }
-                const source = action.split('=>')[0].toString().trim()
-                const sourceElements = setSource(source)
-                let target = replaceN(action.split('=>')[1].trim())
-                if (this._possibleLayoutStates.includes(target)) {
-                    sourceElements.forEach(srcEl => {
-                        srcEl.executeLayoutState(target)
-                    })
-                } else {
-                    if (sourceElements[0]._getState('value') !== undefined) {
-                        const targetElements = document.querySelectorAll(target)
-                        console.log(targetElements)
-                        targetElements.forEach(trgtEl => {
-                            if (trgtEl._getState('value') !== undefined) {
-                                trgtEl._setState('value', sourceElements[0]._getState('value'))
-                            }
-                        })
-                    } else if (sourceElements[0]._getState('text') !== undefined) {
-                        const targetElements = document.querySelectorAll(target)
-                        targetElements.forEach(trgtEl => {
-                            if (trgtEl._getState('text') !== undefined) {
-                                trgtEl._setState('text', sourceElements[0]._getState('text'))
-                            }
+                if (action.indexOf('=>') !== -1) {
+                    const source = action.split('=>')[0].toString().trim()
+                    const sourceElements = setSource(source)
+                    let target = replaceN(action.split('=>')[1].trim())
+                    if (this._possibleLayoutStates.includes(target)) {
+                        sourceElements.forEach(srcEl => {
+                            srcEl.executeLayoutState(target)
                         })
                     } else {
+                        if (sourceElements[0]._getState('value') !== undefined) {
+                            const targetElements = document.querySelectorAll(target)
+                            targetElements.forEach(trgtEl => {
+                                if (trgtEl._getState('value') !== undefined) {
+                                    trgtEl._setState('value', sourceElements[0]._getState('value'))
+                                }
+                            })
+                        } else if (sourceElements[0]._getState('text') !== undefined) {
+                            const targetElements = document.querySelectorAll(target)
+                            targetElements.forEach(trgtEl => {
+                                if (trgtEl._getState('text') !== undefined) {
+                                    trgtEl._setState('text', sourceElements[0]._getState('text'))
+                                }
+                            })
+                        } else {
 
+                        }
+                    }
+                } else {
+                    // where dealing with crud functionality now (and maybe later other new possiblities for events functionalities
+                    switch (action) {
+                        case 'reset':
+                            break
+                        case 'create':
+                            break
+                        case 'patch':
+                            // todo later: make it possible to put the button outside the form element and still make it possible
+                            // to get the url from it by also checking if the element is rendered yet
+                            const parent = this._getFirstParent('phj-form')
+                            if (parent) {
+                                const dataPatch = {}
+                                console.log('parent',parent._url)
+                                this._url = parent._url
+                                const id = parent._getState('value')
+                                // todo get the data to patch or put
+                                const slot = parent.shadowRoot.querySelector('slot').assignedNodes()
+                                slot.forEach(content => {
+                                    if (content.nodeType === 1 && content.hasAttribute('prop')) {
+                                        // todo set initial values in the _state property to use as comparison
+                                        switch (content.tagName.toLowerCase()) {
+                                            case 'phj-number-input':
+                                                if (content.shadowRoot.querySelector('input').value.length > 0) {
+                                                    dataPatch[content.getAttribute('prop').toString().trim()] = content.shadowRoot.querySelector('input').value
+                                                }
+                                                break
+                                            case 'phj-text-input':
+                                                if (content.shadowRoot.querySelector('input').value.length > 0) {
+                                                    dataPatch[content.getAttribute('prop').toString().trim()] = content.shadowRoot.querySelector('input').value
+                                                }
+                                                break
+                                            case 'phj-select':
+                                                break
+                                            case 'phj-radio-button':
+                                                break
+                                            case 'phj-checkbox':
+                                                break
+                                            case 'phj-textarea':
+                                                break
+                                        }
+                                    }
+                                })
+                                this._update(id,'patch',dataPatch).then(response => {
+                                    console.log(response)
+                                })
+                            }
+                            break
+                        case 'delete':
+                            break
+                        case 'clear':
+                            break
                     }
                 }
 
@@ -665,7 +738,6 @@ class ComponentLogics extends HTMLElement {
             switch (eventProcess.type) {
                 case 'click':
                     if ((this._currentLayoutState === 'enabled' || this._currentLayoutState === 'visible') && !this._noEvent) {
-                        console.log('clicking element = ',this)
                         this._events.forEach(el => {
                             if (el.hasOwnProperty('click') && el.click.length > 0) {
                                 el.click.forEach(act => {
@@ -673,9 +745,9 @@ class ComponentLogics extends HTMLElement {
                                 })
                             }
                         })
-                    } else if(this._noEvent){
+                    } else if (this._noEvent) {
                         this._noEvent = false
-                        this._setUpAttributes('value','false')
+                        this._setUpAttributes('value', 'false')
                     }
                     break
                 case 'component-loaded':

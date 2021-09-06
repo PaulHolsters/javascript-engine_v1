@@ -114,7 +114,9 @@ class Button extends ComponentLogics {
 
         this._state = {
             text: '',
-            value:''
+            value:'',
+            hasAction: false,
+            action: ''
         }
     }
 

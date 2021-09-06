@@ -33,6 +33,15 @@ div{
 <body>
 
 <!-- todo create the hover functionality event stuff (LATER) -->
+<!-- todo: messages: success, fail, info -->
+<!-- todo: phj-master component (=wrapper for one or more phj-table components) -->
+<!-- todo: phj-action component (=wrapper for one or more phj-form components)-->
+<!-- todo: phj-crud-template component (=wrapper for phj-master+phj-detail+phj-action-pane components)-->
+
+<!-- todo: buttons: update functionality: ONGOING!!! -->
+<!-- todo: buttons: delete functionality: ONGOING!!! -->
+<!-- todo: title and create on table: ONGOING!!! -->
+<!-- todo: buttons: create functionality: ONGOING!!! -->
 
 <phj-table url="get:http://localhost:3000/specifications" actions="Acties" events="click:this .actions=>invisible,this .action-btn=>visible" value="false">
     <phj-box>
@@ -57,30 +66,20 @@ div{
         </phj-box>
     </phj-box>
 </phj-table>
-
-<!-- todo: buttons: update functionality: ONGOING!!! -->
-<!-- todo: buttons: delete functionality -->
-<!-- todo: title and create on table -->
-<!-- todo: buttons: create functionality -->
-<!-- todo: messages: success, fail, info -->
-<!-- todo: phj-master component (=wrapper for one or more phj-table components) -->
-<!-- todo: phj-action component (=wrapper for one or more phj-form components)-->
-<!-- todo: phj-crud-template component (=wrapper for phj-master+phj-detail+phj-action-pane components)-->
-
 <phj-form value="" events="load:this=>invisible" url="get:http://localhost:3000/specifications/id">
     <phj-text-input label="Specificatie" prop="specification"></phj-text-input>
 <!--    <phj-select label="Type" prop="type"></phj-select>-->
     <phj-number-input label="Prijs (excl.BTW)" prop="price" money="euro" decimals="2"></phj-number-input>
     <div style="width: max-content">
         <phj-button events="click:this.parent.parent=>invisible">Annuleren</phj-button>
-        <phj-button action="reset">Reset</phj-button>
-        <phj-button action="update:patch">Bewaar</phj-button>
+        <phj-button events="click:reset">Reset</phj-button>
+        <phj-button events="click:patch">Bewaar</phj-button>
     </div>
 </phj-form>
 <phj-form value="" events="load:this=>invisible" url="get:http://localhost:3000/specifications/id">
     <div style="width: max-content">
         <phj-button events="click:this.parent.parent=>invisible">Annuleren</phj-button>
-        <phj-button action="delete">Bewaar</phj-button>
+        <phj-button events="click:delete">Bewaar</phj-button>
     </div>
 </phj-form>
 
