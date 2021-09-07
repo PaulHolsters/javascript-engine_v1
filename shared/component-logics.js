@@ -28,6 +28,14 @@ class ComponentLogics extends HTMLElement {
         return parent
     }
 
+    _findValueObject(array, propertyName) {
+        for (let i = 0; i < array.length; i++) {
+            if (array[i].hasOwnProperty(propertyName)) {
+                return array[i][propertyName]
+            }
+        }
+    }
+
     _processEvent(event) {
         switch (event.type) {
             case 'action-pane-created':
@@ -420,7 +428,6 @@ class ComponentLogics extends HTMLElement {
     }
 
     async _update(id, verb, data) {
-        console.log(this._url + '/' + id)
         return await fetch(this._url + '/' + id,
             {
                 method: verb.toUpperCase(),
@@ -458,6 +465,7 @@ class ComponentLogics extends HTMLElement {
 
                 break
             case 'patch':
+                console.log('fetch=done')
                 return response
             case 'delete':
 
@@ -466,7 +474,6 @@ class ComponentLogics extends HTMLElement {
     }
 
     _eventHandler(eventProcess) {
-        console.log(eventProcess.type)
         // typical format of an event-string:
         // event1/event2/../eventN:actions
         // typical format of actions:
@@ -489,9 +496,11 @@ class ComponentLogics extends HTMLElement {
                 const actions = events[i].split(':')[1].split(',')
                 eventNames.forEach(name => {
                     actions.forEach(action => {
+                        console.log('creating action', action)
                         this._events.forEach(evt => {
                             if (evt.hasOwnProperty(name.toString())) {
-                                evt[name.toString()].push(action)
+                                console.log('action as an object', {name: action, status: 'idle'})
+                                evt[name.toString()].push({name: action, status: 'idle'})
                             }
                         })
                     })
@@ -527,8 +536,8 @@ class ComponentLogics extends HTMLElement {
         } else {
             // handling the actions that need to be performed through a function
             // that is called from within the switch that handles a particular event
-            const processAction = (action) => {
-                // this is always one action that needs to be processed
+            const processAction = (eventName, action, index) => {
+                // this is always one action that needs to be processed and now has the status 'running'
                 const replaceN = function (target) {
                     let index = 0
                     let startString = target
@@ -649,19 +658,29 @@ class ComponentLogics extends HTMLElement {
                         return document.querySelectorAll(source)
                     }
                 }
-                if (action.indexOf('=>') !== -1) {
-                    const source = action.split('=>')[0].toString().trim()
-                    const sourceElements = setSource(source)
-                    let target = replaceN(action.split('=>')[1].trim())
+                if (action.name.indexOf('=>') !== -1) {
+                    const source = action.name.split('=>')[0].toString().trim()
+                    let sourceElements = source
+                    if (source !== 'refresh') {
+                        sourceElements = setSource(source)
+                    }
+                    let target = replaceN(action.name.split('=>')[1].trim())
                     if (this._possibleLayoutStates.includes(target)) {
                         sourceElements.forEach(srcEl => {
                             srcEl.executeLayoutState(target)
                         })
-                    } else if(this._possibleActions.includes(target)){
+                    } else {
+                        if (sourceElements === 'refresh') {
+                            const comp = document.querySelectorAll(target)
+                            comp.forEach(targetComp => {
+                                targetComp._getAll().then(data => {
+                                    console.log('refresh event finished too!', data)
+                                    this._findValueObject(this._events, eventName)[index].status = 'idle'
+                                })
+                            })
+                            // todo make sure the target can be custom-selectors too
 
-                    }
-                else {
-                        if (sourceElements[0]._getState('value') !== undefined) {
+                        } else if (sourceElements[0]._getState('value') !== undefined) {
                             const targetElements = document.querySelectorAll(target)
                             targetElements.forEach(trgtEl => {
                                 if (trgtEl._getState('value') !== undefined) {
@@ -680,8 +699,8 @@ class ComponentLogics extends HTMLElement {
                         }
                     }
                 } else {
-                    // where dealing with crud functionality now (and maybe later other new possiblities for events functionalities
-                    switch (action) {
+                    // where dealing with crud functionality now (and maybe later other new possiblities for events functionalities)
+                    switch (action.name) {
                         case 'reset':
                             break
                         case 'create':
@@ -720,11 +739,15 @@ class ComponentLogics extends HTMLElement {
                                         }
                                     }
                                 })
+
+                                // todo solution= do all refresh actions for the click events for this component in the then block ******OnLY GOOD SOLUTION !!!!  *******
+
+                                console.log('starting the patch request')
                                 this._update(id, 'patch', dataPatch).then(response => {
-                                    // todo fire an update event to all listeners => custom event + een hogere component die ervoor zorgt dat het event aankomt?=>zie index.html
-/*                                    const refresh = new CustomEvent('refresh',{bubbles:true,detail:''})
-                                    this.dispatchEvent(refresh)
-                                    console.log('event dispatched')*/
+                                    // todo start refresh actions here
+                                    console.log('patch has been finished', response)
+                                    this._findValueObject(this._events, eventName)[index].status = 'idle'
+                                    console.log('result of process',this._events[index])
                                 })
                             }
                             break
@@ -734,16 +757,16 @@ class ComponentLogics extends HTMLElement {
                             break
                     }
                 }
-
             }
             switch (eventProcess.type) {
                 case 'click':
                     if ((this._currentLayoutState === 'enabled' || this._currentLayoutState === 'visible') && !this._noEvent) {
                         this._events.forEach(el => {
                             if (el.hasOwnProperty('click') && el.click.length > 0) {
-                                el.click.forEach(act => {
-                                    processAction(act)
-                                })
+                                for (let i = 0; i < el.click.length; i++) {
+                                    el.click[i].status = 'running'
+                                    processAction('click', el.click[i], i)
+                                }
                             }
                         })
                     } else if (this._noEvent) {
@@ -754,19 +777,10 @@ class ComponentLogics extends HTMLElement {
                 case 'component-loaded':
                     this._events.forEach(el => {
                         if (el.hasOwnProperty('load') && el.load.length > 0) {
-                            el.load.forEach(action => {
-                                processAction(action)
-                            })
-                        }
-                    })
-                    break
-                case 'refresh':
-                    console.log('refresh called')
-                    this._events.forEach(el => {
-                        if (el.hasOwnProperty('listen') && el.listen.length > 0) {
-                            el.listen.forEach(action => {
-                                processAction(action)
-                            })
+                            for (let i = 0; i < el.load.length; i++) {
+                                el.load[i].status = 'running'
+                                processAction('load', el.load[i], i)
+                            }
                         }
                     })
                     break
