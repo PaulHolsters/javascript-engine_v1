@@ -681,10 +681,9 @@ class ComponentLogics extends HTMLElement {
                         if (sourceElements === 'refresh') {
                             const comp = document.querySelectorAll(target)
                             comp.forEach(targetComp => {
-                                targetComp._getAll().then(data => {
-                                    console.log('refresh event finished too!', data)
-                                    this._findValueObject(this._events, eventName)[index].status = 'idle'
-                                })
+                                // todo create rebuild function in the component you need to rebuild
+                                targetComp._rebuild()
+                                this._findValueObject(this._events, eventName)[index].status = 'idle'
                             })
                             // todo make sure the target can be custom-selectors too
 

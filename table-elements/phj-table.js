@@ -66,7 +66,10 @@ width: max-content;
             // contains only data for computation
             has_actions: false,
             actions: '',
-            value: ''
+            value: '',
+            data:{},
+            selectedRow:-1,
+            selectedRowId: ''
         }
     }
 
@@ -90,6 +93,7 @@ width: max-content;
         )
         this._executeShadow()
         this._getAll().then(data => {
+            this._state.data = data
             this._setUpAttributes('url', 'path', 'actions','events','value')
             // data format: { listOfObjects:[{}], numberOfObjects:number, listOfProperties:[string], numberOfProperties:number, modelName:string}
             let container = '<div id="container">'
@@ -205,6 +209,34 @@ width: max-content;
             }
             // close the right border of the header
             this.shadowRoot.querySelector('#container > div:nth-child('+ (data.numberOfProperties+1) +')').style.borderRight = '1px solid black'
+        })
+    }
+
+    _removeData(){
+
+    }
+
+    _insertData(){
+
+    }
+
+    _addRows(numberOfRows){
+
+    }
+
+    _removeRows(numberOfRows){
+
+    }
+
+    _rebuild(){
+        this._getAll().then(data=>{
+            this._removeData()
+            if(data.numberOfObjects>this._state.data.numberOfObjects){
+                this._addRows(data.numberOfObjects-this._state.data.numberOfObjects)
+            } else if(data.numberOfObjects<this._state.data.numberOfObjects){
+                this._removeRows(Math.abs(data.numberOfObjects-this._state.data.numberOfObjects))
+            }
+            this._insertData(data)
         })
     }
 
