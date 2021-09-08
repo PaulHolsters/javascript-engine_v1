@@ -108,7 +108,8 @@
       <workItem from="1630737629892" duration="23147000" />
       <workItem from="1630826890066" duration="26776000" />
       <workItem from="1630946467491" duration="14277000" />
-      <workItem from="1631037960096" duration="9709000" />
+      <workItem from="1631037960096" duration="10189000" />
+      <workItem from="1631078989795" duration="2143000" />
     </task>
     <task id="LOCAL-00001" summary="Second commit for testing purposes">
       <created>1627739619455</created>
@@ -376,7 +377,14 @@
       <option name="project" value="LOCAL" />
       <updated>1630963992374</updated>
     </task>
-    <option name="localTasksCounter" value="39" />
+    <task id="LOCAL-00039" summary="further implementation and trial and error to implement of a refresh functionality of an element after a click: final solution found but has not been implemented yet">
+      <created>1631050437110</created>
+      <option name="number" value="00039" />
+      <option name="presentableId" value="LOCAL-00039" />
+      <option name="project" value="LOCAL" />
+      <updated>1631050437110</updated>
+    </task>
+    <option name="localTasksCounter" value="40" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -386,7 +394,6 @@
     <ignored-roots>
       <path value="$PROJECT_DIR$/.." />
     </ignored-roots>
-    <MESSAGE value="flexibele layout phj-table mbv css grid en flexbox: deel 1" />
     <MESSAGE value="phj-table basics: done&#10;(colors, borders, alternating rows, responsiveness, all text on one line as a default)" />
     <MESSAGE value="phj-table actions-column/actions attribute implemented" />
     <MESSAGE value="phj-table creating actions buttons: part 1" />
@@ -411,17 +418,18 @@
     <MESSAGE value="noEvent attribute implemented and tested2" />
     <MESSAGE value="patch request implemented" />
     <MESSAGE value="start of implementation of a refresh functionality of an element after a click" />
-    <option name="LAST_COMMIT_MESSAGE" value="start of implementation of a refresh functionality of an element after a click" />
+    <MESSAGE value="further implementation and trial and error to implement of a refresh functionality of an element after a click: final solution found but has not been implemented yet" />
+    <option name="LAST_COMMIT_MESSAGE" value="further implementation and trial and error to implement of a refresh functionality of an element after a click: final solution found but has not been implemented yet" />
   </component>
   <component name="WindowStateProjectService">
     <state x="586" y="198" key="#Inspections" timestamp="1627821810157">
       <screen x="0" y="0" width="1920" height="1040" />
     </state>
     <state x="586" y="198" key="#Inspections/0.0.1920.1040@0.0.1920.1040" timestamp="1627821810157" />
-    <state x="0" y="88" key="CommitChangelistDialog2" timestamp="1630963991530">
+    <state x="0" y="88" key="CommitChangelistDialog2" timestamp="1631050436082">
       <screen x="0" y="0" width="1920" height="1040" />
     </state>
-    <state x="0" y="88" key="CommitChangelistDialog2/0.0.1920.1040@0.0.1920.1040" timestamp="1630963991530" />
+    <state x="0" y="88" key="CommitChangelistDialog2/0.0.1920.1040@0.0.1920.1040" timestamp="1631050436082" />
     <state x="184" y="86" key="DiffContextDialog" timestamp="1627729652791">
       <screen x="0" y="0" width="1920" height="1040" />
     </state>
@@ -438,10 +446,10 @@
       <screen x="0" y="0" width="1920" height="1040" />
     </state>
     <state x="461" y="165" key="SettingsEditor/0.0.1920.1040@0.0.1920.1040" timestamp="1627739971507" />
-    <state x="552" y="253" key="Vcs.Push.Dialog.v2" timestamp="1630963997077">
+    <state x="552" y="253" key="Vcs.Push.Dialog.v2" timestamp="1631050441906">
       <screen x="0" y="0" width="1920" height="1040" />
     </state>
-    <state x="552" y="253" key="Vcs.Push.Dialog.v2/0.0.1920.1040@0.0.1920.1040" timestamp="1630963997077" />
+    <state x="552" y="253" key="Vcs.Push.Dialog.v2/0.0.1920.1040@0.0.1920.1040" timestamp="1631050441906" />
     <state x="667" y="76" width="585" height="888" key="find.popup" timestamp="1629196980383">
       <screen x="0" y="0" width="1920" height="1040" />
     </state>

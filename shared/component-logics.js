@@ -427,24 +427,32 @@ class ComponentLogics extends HTMLElement {
 
     }
 
+    // todo create a promise of this function
     async _update(id, verb, data) {
-        return await fetch(this._url + '/' + id,
-            {
-                method: verb.toUpperCase(),
-                headers: {
-                    'Content-Type': 'application/json'
-                },
-                body: JSON.stringify(data)
-            }
-        ).then(
-            res => {
-                return res.json()
-            }
-        ).then(
-            res => {
-                return this._responseHandler(res, verb)
-            }
-        ).catch();
+        return new Promise((resolve, reject) => {
+            resolve(this._updateInner(id,verb,data))
+        })
+    }
+
+    _updateInner(id, verb, data) {
+        return  fetch(this._url + '/' + id,
+                {
+                    method: verb.toUpperCase(),
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify(data)
+                }
+            ).then(
+                res => {
+                    return res.json()
+                }
+            ).then(
+                res => {
+                    return this._responseHandler(res, verb)
+                }
+            ).catch();
+
     }
 
     async _delete() {
@@ -473,7 +481,7 @@ class ComponentLogics extends HTMLElement {
         }
     }
 
-    _eventHandler(eventProcess) {
+    async _eventHandler(eventProcess) {
         // typical format of an event-string:
         // event1/event2/../eventN:actions
         // typical format of actions:
@@ -536,7 +544,7 @@ class ComponentLogics extends HTMLElement {
         } else {
             // handling the actions that need to be performed through a function
             // that is called from within the switch that handles a particular event
-            const processAction = (eventName, action, index) => {
+            const processAction = async (eventName, action, index) => {
                 // this is always one action that needs to be processed and now has the status 'running'
                 const replaceN = function (target) {
                     let index = 0
@@ -743,11 +751,11 @@ class ComponentLogics extends HTMLElement {
                                 // todo solution= do all refresh actions for the click events for this component in the then block ******OnLY GOOD SOLUTION !!!!  *******
 
                                 console.log('starting the patch request')
-                                this._update(id, 'patch', dataPatch).then(response => {
+                                await this._update(id, 'patch', dataPatch).then(response => {
                                     // todo start refresh actions here
                                     console.log('patch has been finished', response)
                                     this._findValueObject(this._events, eventName)[index].status = 'idle'
-                                    console.log('result of process',this._events[index])
+                                    console.log('result of process', this._events[index])
                                 })
                             }
                             break
@@ -761,14 +769,16 @@ class ComponentLogics extends HTMLElement {
             switch (eventProcess.type) {
                 case 'click':
                     if ((this._currentLayoutState === 'enabled' || this._currentLayoutState === 'visible') && !this._noEvent) {
-                        this._events.forEach(el => {
+                        for (const el of this._events) {
                             if (el.hasOwnProperty('click') && el.click.length > 0) {
+                                // todo run these actions with promises
                                 for (let i = 0; i < el.click.length; i++) {
                                     el.click[i].status = 'running'
-                                    processAction('click', el.click[i], i)
+                                    // todo make of this function a promise
+                                    await processAction('click', el.click[i], i)
                                 }
                             }
-                        })
+                        }
                     } else if (this._noEvent) {
                         this._noEvent = false
                         this._setUpAttributes('value', 'false')
