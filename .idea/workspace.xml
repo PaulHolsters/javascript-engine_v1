@@ -8,6 +8,7 @@
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/shared/component-logics.js" beforeDir="false" afterPath="$PROJECT_DIR$/shared/component-logics.js" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/table-elements/phj-table.js" beforeDir="false" afterPath="$PROJECT_DIR$/table-elements/phj-table.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/title-elements/phj-title.js" beforeDir="false" afterPath="$PROJECT_DIR$/title-elements/phj-title.js" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -111,7 +112,8 @@
       <workItem from="1630946467491" duration="14277000" />
       <workItem from="1631037960096" duration="10189000" />
       <workItem from="1631078989795" duration="2331000" />
-      <workItem from="1631129430928" duration="2537000" />
+      <workItem from="1631129430928" duration="2696000" />
+      <workItem from="1631304417124" duration="2514000" />
     </task>
     <task id="LOCAL-00001" summary="Second commit for testing purposes">
       <created>1627739619455</created>
@@ -393,7 +395,14 @@
       <option name="project" value="LOCAL" />
       <updated>1631081326494</updated>
     </task>
-    <option name="localTasksCounter" value="41" />
+    <task id="LOCAL-00041" summary="implementing a rebuild function for the table component: part1">
+      <created>1631136316054</created>
+      <option name="number" value="00041" />
+      <option name="presentableId" value="LOCAL-00041" />
+      <option name="project" value="LOCAL" />
+      <updated>1631136316054</updated>
+    </task>
+    <option name="localTasksCounter" value="42" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -403,7 +412,6 @@
     <ignored-roots>
       <path value="$PROJECT_DIR$/.." />
     </ignored-roots>
-    <MESSAGE value="phj-table actions-column/actions attribute implemented" />
     <MESSAGE value="phj-table creating actions buttons: part 1" />
     <MESSAGE value=" a custom-styles attribute that replaces parts of the layoutStates css so custom styles can be used with all custom components: part 1" />
     <MESSAGE value=" a custom-styles attribute that replaces parts of the layoutStates css so custom styles can be used with all custom components: step 1 of the process implemented not tested" />
@@ -428,17 +436,18 @@
     <MESSAGE value="start of implementation of a refresh functionality of an element after a click" />
     <MESSAGE value="further implementation and trial and error to implement of a refresh functionality of an element after a click: final solution found but has not been implemented yet" />
     <MESSAGE value="refresh action: added a way to make sure that certain request are finished before another is made: still to dow =&gt; refactor code so this only happens in cases it have to like with the refresh case" />
-    <option name="LAST_COMMIT_MESSAGE" value="refresh action: added a way to make sure that certain request are finished before another is made: still to dow =&gt; refactor code so this only happens in cases it have to like with the refresh case" />
+    <MESSAGE value="implementing a rebuild function for the table component: part1" />
+    <option name="LAST_COMMIT_MESSAGE" value="implementing a rebuild function for the table component: part1" />
   </component>
   <component name="WindowStateProjectService">
     <state x="586" y="198" key="#Inspections" timestamp="1627821810157">
       <screen x="0" y="0" width="1920" height="1040" />
     </state>
     <state x="586" y="198" key="#Inspections/0.0.1920.1040@0.0.1920.1040" timestamp="1627821810157" />
-    <state x="0" y="88" key="CommitChangelistDialog2" timestamp="1631081325474">
+    <state x="0" y="88" key="CommitChangelistDialog2" timestamp="1631136314976">
       <screen x="0" y="0" width="1920" height="1040" />
     </state>
-    <state x="0" y="88" key="CommitChangelistDialog2/0.0.1920.1040@0.0.1920.1040" timestamp="1631081325474" />
+    <state x="0" y="88" key="CommitChangelistDialog2/0.0.1920.1040@0.0.1920.1040" timestamp="1631136314976" />
     <state x="184" y="86" key="DiffContextDialog" timestamp="1627729652791">
       <screen x="0" y="0" width="1920" height="1040" />
     </state>
@@ -455,10 +464,10 @@
       <screen x="0" y="0" width="1920" height="1040" />
     </state>
     <state x="461" y="165" key="SettingsEditor/0.0.1920.1040@0.0.1920.1040" timestamp="1627739971507" />
-    <state x="552" y="253" key="Vcs.Push.Dialog.v2" timestamp="1631081331040">
+    <state x="552" y="253" key="Vcs.Push.Dialog.v2" timestamp="1631136319961">
       <screen x="0" y="0" width="1920" height="1040" />
     </state>
-    <state x="552" y="253" key="Vcs.Push.Dialog.v2/0.0.1920.1040@0.0.1920.1040" timestamp="1631081331040" />
+    <state x="552" y="253" key="Vcs.Push.Dialog.v2/0.0.1920.1040@0.0.1920.1040" timestamp="1631136319961" />
     <state x="667" y="76" width="585" height="888" key="find.popup" timestamp="1629196980383">
       <screen x="0" y="0" width="1920" height="1040" />
     </state>

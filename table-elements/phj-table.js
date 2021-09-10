@@ -212,12 +212,34 @@ width: max-content;
         })
     }
 
-    _removeData(){
-
+    _removeData(nop){
+        let row = 1
+        let count = 1
+        this.shadowRoot.querySelectorAll('.cell > div').forEach(element=>{
+            if(count!==(nop+1)*row){
+                element.innerHTML = ''
+            } else{
+                row++
+            }
+            count++
+        })
     }
 
-    _insertData(){
-
+    _insertData(data){
+        let row = 1
+        let count = 1
+        let col = 0
+        this.shadowRoot.querySelectorAll('.cell > div').forEach(element=>{
+            if(count!==(data.numberOfProperties+1)*row){
+                element.innerHTML = Object.values(data.listOfObjects[row-1])[col].toString()
+                col++
+            } else{
+                row++
+                col = 0
+            }
+            count++
+        })
+        this._state.data = data
     }
 
     _addRows(numberOfRows){
@@ -230,7 +252,7 @@ width: max-content;
 
     _rebuild(){
         this._getAll().then(data=>{
-            this._removeData()
+            this._removeData(data.numberOfProperties)
             if(data.numberOfObjects>this._state.data.numberOfObjects){
                 this._addRows(data.numberOfObjects-this._state.data.numberOfObjects)
             } else if(data.numberOfObjects<this._state.data.numberOfObjects){

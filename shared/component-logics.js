@@ -682,6 +682,7 @@ class ComponentLogics extends HTMLElement {
                             const comp = document.querySelectorAll(target)
                             comp.forEach(targetComp => {
                                 // todo create rebuild function in the component you need to rebuild
+
                                 targetComp._rebuild()
                                 this._findValueObject(this._events, eventName)[index].status = 'idle'
                             })
