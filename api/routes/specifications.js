@@ -6,6 +6,7 @@ const mongoose = require('mongoose')
 const Specification = require('../models/Specification')
 
 router.post('/', (req, res, next) => {
+    // in een post request verwijst 'this' in het model naar het onderstaande object
     const specification = new Specification(
         {
             _id: new mongoose.Types.ObjectId(),
@@ -14,6 +15,7 @@ router.post('/', (req, res, next) => {
             price: req.body.price
         }
     )
+    // todo add a callbackfunctions to do very non-generic validations here instead of in the model
     specification.save().then(result => {
         res.status(201).json({
             message: 'specification created',
@@ -31,7 +33,7 @@ router.get('/', (req, res, next) => {
     Specification.find().select('specification type price _id').populate('specifications').exec().then(result => {
         // het is mogelijk dat result een lege array is omdat er nog geen specificaties zijn aangemaakt
         const listOfObjects = result.map(spec=>{
-            if(spec.price === undefined){
+            if(spec.price === undefined || spec.price===null){
                 return {
                     specification:spec.specification,
                     type:spec.type,
@@ -76,7 +78,7 @@ router.get('/id/:specificationId', (req, res, next) => {
     const id = req.params.specificationId
     // todo beautify this response
     Specification.findById(id).select('specification type price _id').exec().then(result => {
-        if(result.price === undefined){
+        if(result.price === undefined||result.price === null){
             res.status(200).json({
                 // the customer can be null if the customer was erased before
                 specification: result.specification,
@@ -100,11 +102,14 @@ router.get('/id/:specificationId', (req, res, next) => {
     })
 })
 
-// Je kan via deze route een bestaande klant aanpassen. Er wordt geen historiek van deze aanpassingen bijgehouden. Verander je dus iets aan een klant
-// dan is dat definitief. Je kan dus achteraf bijvoorbeeld geen historiek opvragen van alle adressen waar een bepaalde klant heeft gewoond.
 router.patch('/id/:specificationId', (req, res, next) => {
     const id = req.params.specificationId
-    Specification.findByIdAndUpdate(id, req.body).exec().then(result => {
+    Specification.findByIdAndUpdate({_id:id}, {specification:req.body.specification,type:req.body.type,price:req.body.price} ,
+    {
+        new: true
+        ,runValidators:true,
+        context: 'query'
+    }).exec().then(result => {
         // result bevat de oorspronkeljke versie, vóór de update
         res.status(200).json({
             // the customer can be null if the customer was erased before
@@ -129,7 +134,6 @@ router.patch('/id/:specificationId', (req, res, next) => {
 router.delete('/id/:specificationId', (req, res, next) => {
     const id = req.params.specificationId
     Specification.findByIdAndRemove(id).exec(
-
     ).then(
         result => {
             // result bevat de oorspronkeljke versie, vóór de update
@@ -224,7 +228,7 @@ router.get('/filter/:filterOn/:filterDetail', (req, res, next) => {
     let responseStringEnd = 'exec().then(result=>{res.status(200).json(result)}).catch(err=>{res.status(500).json({error: err})})'
 
     const responseString = responseStringStart + responseStringMid + responseStringEnd
-    console.log(responseString)
+    //console.log(responseString)
     eval(responseString)
 })
 

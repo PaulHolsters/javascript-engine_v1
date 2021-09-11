@@ -226,12 +226,18 @@ width: max-content;
     }
 
     _insertData(data){
+        console.log('after updatedata = ',data)
         let row = 1
         let count = 1
         let col = 0
         this.shadowRoot.querySelectorAll('.cell > div').forEach(element=>{
             if(count!==(data.numberOfProperties+1)*row){
-                element.innerHTML = Object.values(data.listOfObjects[row-1])[col].toString()
+                if(Object.values(data.listOfObjects[row-1])[col]){
+                    element.innerHTML = Object.values(data.listOfObjects[row-1])[col].toString()
+                } else{
+                    element.innerHTML = ''
+                }
+
                 col++
             } else{
                 row++

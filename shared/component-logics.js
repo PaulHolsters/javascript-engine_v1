@@ -276,7 +276,11 @@ class ComponentLogics extends HTMLElement {
                     } else if (this.shadowRoot.querySelector('textarea')) {
                         this.shadowRoot.querySelector('textarea').innerText = value
                         this._state.text = value
-                    } else {
+                    } else if(this.shadowRoot.querySelector('select')){
+                        this.shadowRoot.querySelector('#text').innerHTML = value
+                        this._state.text = value
+                    }
+                    else {
                         this.innerText = ''
                         this._state.text = value
                         this.shadowRoot.querySelector('#text > slot').textContent = value
@@ -298,6 +302,19 @@ class ComponentLogics extends HTMLElement {
                 case 'url':
                     if (this.hasAttribute('url')) {
                         this._url = this.getAttribute('url').substring(4)
+                    }
+                    break
+                case 'options':
+                    if (this.hasAttribute('options')) {
+                        this._state.options = this.getAttribute('options').trim().split(',')
+                        // todo create options and select the text-option or the value you get from the backend
+                        let pointer = this.shadowRoot.querySelector('#text')
+                        this._state.options.forEach(optTxt=>{
+                            const element = document.createElement('option')
+                            element.innerText = optTxt.toString()
+                            pointer.insertAdjacentElement('afterend',element)
+                            pointer = pointer.nextElementSibling
+                        })
                     }
                     break
                 case 'label':
@@ -374,8 +391,11 @@ class ComponentLogics extends HTMLElement {
                             this.shadowRoot.querySelector('input').value = this._state.text
                         } else if (this.shadowRoot.querySelector('textarea')) {
                             this.shadowRoot.querySelector('textarea').innerText = this._state.text
+                        } else if(this.shadowRoot.querySelector('select')){
+                            this.shadowRoot.querySelector('#text').style.display = 'inline'
                         }
-                    } else {
+                    } else if(this.tagName.toLowerCase()!=='phj-select') {
+                        // todo fix bug: text attribute can be set but is not set
                         const slot = this.shadowRoot.querySelector('#text > slot')
                         slot.addEventListener('slotchange', () => {
                             if (slot.assignedNodes()[0]) {
@@ -427,7 +447,6 @@ class ComponentLogics extends HTMLElement {
 
     }
 
-    // todo create a promise of this function
     async _update(id, verb, data) {
         return new Promise((resolve, reject) => {
             resolve(this._updateInner(id,verb,data))
@@ -681,13 +700,10 @@ class ComponentLogics extends HTMLElement {
                         if (sourceElements === 'refresh') {
                             const comp = document.querySelectorAll(target)
                             comp.forEach(targetComp => {
-                                // todo create rebuild function in the component you need to rebuild
-
                                 targetComp._rebuild()
                                 this._findValueObject(this._events, eventName)[index].status = 'idle'
                             })
-                            // todo make sure the target can be custom-selectors too
-
+                            // todo rewrite selectors and events in an reactive way!
                         } else if (sourceElements[0]._getState('value') !== undefined) {
                             const targetElements = document.querySelectorAll(target)
                             targetElements.forEach(trgtEl => {
@@ -737,6 +753,8 @@ class ComponentLogics extends HTMLElement {
                                                 }
                                                 break
                                             case 'phj-select':
+                                                console.log(content.shadowRoot.querySelector('select').value)
+                                                dataPatch[content.getAttribute('prop').toString().trim()] = content.shadowRoot.querySelector('select').value
                                                 break
                                             case 'phj-radio-button':
                                                 break
@@ -747,15 +765,9 @@ class ComponentLogics extends HTMLElement {
                                         }
                                     }
                                 })
-
-                                // todo solution= do all refresh actions for the click events for this component in the then block ******OnLY GOOD SOLUTION !!!!  *******
-
-                                console.log('starting the patch request')
                                 await this._update(id, 'patch', dataPatch).then(response => {
-                                    // todo start refresh actions here
-                                    console.log('patch has been finished', response)
+                                    // todo use response to handle form validation and messages!
                                     this._findValueObject(this._events, eventName)[index].status = 'idle'
-                                    console.log('result of process', this._events[index])
                                 })
                             }
                             break
@@ -771,10 +783,8 @@ class ComponentLogics extends HTMLElement {
                     if ((this._currentLayoutState === 'enabled' || this._currentLayoutState === 'visible') && !this._noEvent) {
                         for (const el of this._events) {
                             if (el.hasOwnProperty('click') && el.click.length > 0) {
-                                // todo run these actions with promises
                                 for (let i = 0; i < el.click.length; i++) {
                                     el.click[i].status = 'running'
-                                    // todo make of this function a promise
                                     await processAction('click', el.click[i], i)
                                 }
                             }

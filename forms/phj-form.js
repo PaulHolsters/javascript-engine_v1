@@ -100,8 +100,13 @@ class PhjForm extends ComponentLogics {
                     if(children[j].nodeType === 1 && children[j].hasAttribute('prop')){
                         for (let i = 0; i < keys.length; i++) {
                             if (keys[i] === children[j].getAttribute('prop').trim()) {
+                                // todo add a way to distinguish between text and select component
                                 if(!values[i]){
-                                    children[j]._setState('text','')
+                                    if(children[j].nodeName.toLowerCase()==='phj-select'){
+                                        children[j]._setState()
+                                    } else{
+                                        children[j]._setState('text','')
+                                    }
                                 } else{
                                     children[j]._setState('text',values[i])
                                 }

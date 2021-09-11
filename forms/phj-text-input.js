@@ -64,7 +64,7 @@ display: block;
         this._executeShadow()
         // set eventHandlers and handle attributes
         // todo make the label attribute do its job
-        this._setUpAttributes('text','events','label')
+        this._setUpAttributes('text','events','label','prop')
     }
 }
 customElements.define('phj-text-input',PhjTextInput)

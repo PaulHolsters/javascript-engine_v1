@@ -66,7 +66,7 @@ class PhjNumberInput extends ComponentLogics {
         // set innerhtml
         this._executeShadow()
         // set eventHandlers and handle attributes
-        this._setUpAttributes('text','events','label','money','decimals')
+        this._setUpAttributes('text','events','label','money','decimals','prop')
     }
 }
 customElements.define('phj-number-input',PhjNumberInput)

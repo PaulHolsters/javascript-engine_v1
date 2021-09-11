@@ -31,19 +31,26 @@ div{
 }
 </style>
 <body>
+<!-- todo: better layout for phj-select -->
+<!-- todo: don't show selected item in dropdown -->
+<!-- todo: don't show the text-option once a real item has been selected for the first time -->
+<!-- todo: add a 'selected' attribute -->
+
+<!-- todo: form validation -->
+
+<!-- todo: title and create on table -->
+<!-- todo: buttons: create functionality -->
+
+<!-- todo: buttons: delete functionality  -->
 
 <!-- todo create the hover functionality event stuff (LATER) -->
 <!-- todo: messages: success, fail, info -->
 <!-- todo: phj-master component (=wrapper for one or more phj-table components) -->
 <!-- todo: phj-action component (=wrapper for one or more phj-form components)-->
 <!-- todo: phj-crud-template component (=wrapper for phj-master+phj-detail+phj-action-pane components)-->
+<!-- todo: add column-layout as an attribute to phj-table -->
 
-<!-- todo: buttons: update functionality: ONGOING!!! -->
-<!-- todo: buttons: delete functionality: ONGOING!!! -->
-<!-- todo: title and create on table: ONGOING!!! -->
-<!-- todo: buttons: create functionality: ONGOING!!! -->
-
-<phj-table url="get:http://localhost:3000/specifications" actions="Acties" events="click:this .actions=>invisible,this .action-btn=>visible" value="false">
+<phj-table url="get:http://localhost:3000/specifications" column-layout="3:euro" actions="Acties" events="click:this .actions=>invisible,this .action-btn=>visible" value="false">
     <phj-box>
         <phj-button icon="phj-dots"
                     events="click/hover:this.parent.parent.parent.parent .action-btn=>visible,this.parent.parent.parent.parent .actions=>invisible,
@@ -68,7 +75,7 @@ div{
 </phj-table>
 <phj-form value="" events="load:this=>invisible" url="get:http://localhost:3000/specifications/id">
     <phj-text-input label="Specificatie" prop="specification"></phj-text-input>
-<!--    <phj-select label="Type" prop="type"></phj-select>-->
+    <phj-select prop="type" label="Type" options="basic,option,extra"></phj-select>
     <phj-number-input label="Prijs (excl.BTW)" prop="price" money="euro" decimals="2"></phj-number-input>
     <div style="width: max-content">
         <phj-button events="click:this.parent.parent=>invisible">Annuleren</phj-button>
@@ -82,6 +89,7 @@ div{
         <phj-button events="click:delete">Bewaar</phj-button>
     </div>
 </phj-form>
+
 
 <!--<phj-button>My button</phj-button>
 <phj-box>
