@@ -104,6 +104,7 @@ router.get('/id/:specificationId', (req, res, next) => {
 
 router.patch('/id/:specificationId', (req, res, next) => {
     const id = req.params.specificationId
+    console.log(req.body)
     Specification.findByIdAndUpdate({_id:id}, {specification:req.body.specification,type:req.body.type,price:req.body.price} ,
     {
         new: true
@@ -122,15 +123,6 @@ router.patch('/id/:specificationId', (req, res, next) => {
     })
 })
 
-// Klanten kunnen definitief verwijderd. Hieraan zijn geen voorwaarden gesteld. Ook als er aan deze klant (klantID) offertes of facturen verbonden zijn
-// kan de klant met het klantID volledig verwijderd worden. Dit kan omdat alle klantgegevens ook steeds in het document staan van de desbtreffende
-// enititeit die gebruik maakt van de klantgegevens. Je moet dus nooit een join leggen om alle relevante gegevens van bijvoorbeeld een offerte of een factuur
-// terug te vinden. In al deze entiteiten bevinden zich naast de gegevens van een klant (en hetzelfde geldt voor de gegevens van een product)
-// ook altijd het klantID. Als je een klant opzoekt via deze API en het klantID kunnen de gegevens dus verschillen met de gegevens voor datzelfde ID op
-// de corresponderende entiteit (bv. een offerte). Toch is een klantID op een corresponderend document toch nog nuttig. Je kan bv. offertes of facturen sorteren op basis
-// van klant zuiver door gebruik te maken van de ID. Vervolgens gebruik je de huidige naam van de klant zoals je deze via deze API kan terugvinden.
-// Natuurlijk is het mogelijk dat de klant ondertussen verwijderd is. Bij zo'n sortering kan je dan voor deze gevallen de naam op het document (bv. offerte of factuur)
-// gebruiken. Deze gevallen kunnen dan mogelijks licht afwijken van een correcte alfabetische rangschikking.
 router.delete('/id/:specificationId', (req, res, next) => {
     const id = req.params.specificationId
     Specification.findByIdAndRemove(id).exec(

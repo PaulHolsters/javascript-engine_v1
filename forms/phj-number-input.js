@@ -51,7 +51,8 @@ class PhjNumberInput extends ComponentLogics {
             label: '',
             hasMoney: false,
             money: '',
-            showDecimals: 0
+            showDecimals: 0,
+            nullWhenEmpty: true
         }
     }
 

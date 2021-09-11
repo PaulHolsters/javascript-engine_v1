@@ -68,5 +68,6 @@ display: block;
         // set eventHandlers and handle attributes
         this._setUpAttributes('events','label','prop','text','options')
     }
+
 }
 customElements.define('phj-select',PhjSelect)

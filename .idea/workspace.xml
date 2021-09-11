@@ -6,15 +6,12 @@
   <component name="ChangeListManager">
     <list default="true" id="541aa9e8-3035-4513-acb8-e23ab7e5a48a" name="Default Changelist" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/api/models/Specification.js" beforeDir="false" afterPath="$PROJECT_DIR$/api/models/Specification.js" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/api/routes/specifications.js" beforeDir="false" afterPath="$PROJECT_DIR$/api/routes/specifications.js" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/forms/phj-form.js" beforeDir="false" afterPath="$PROJECT_DIR$/forms/phj-form.js" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/forms/phj-number-input.js" beforeDir="false" afterPath="$PROJECT_DIR$/forms/phj-number-input.js" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/forms/phj-select.js" beforeDir="false" afterPath="$PROJECT_DIR$/forms/phj-select.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/forms/phj-text-input.js" beforeDir="false" afterPath="$PROJECT_DIR$/forms/phj-text-input.js" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/index.html" beforeDir="false" afterPath="$PROJECT_DIR$/index.html" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/shared/component-logics.js" beforeDir="false" afterPath="$PROJECT_DIR$/shared/component-logics.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/table-elements/phj-table.js" beforeDir="false" afterPath="$PROJECT_DIR$/table-elements/phj-table.js" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -120,7 +117,7 @@
       <workItem from="1631078989795" duration="2331000" />
       <workItem from="1631129430928" duration="2696000" />
       <workItem from="1631304417124" duration="4653000" />
-      <workItem from="1631352923236" duration="21787000" />
+      <workItem from="1631352923236" duration="31896000" />
     </task>
     <task id="LOCAL-00001" summary="Second commit for testing purposes">
       <created>1627739619455</created>
@@ -416,7 +413,14 @@
       <option name="project" value="LOCAL" />
       <updated>1631307173818</updated>
     </task>
-    <option name="localTasksCounter" value="43" />
+    <task id="LOCAL-00043" summary="aanpassing API: validation for patch request to Specification route">
+      <created>1631386483044</created>
+      <option name="number" value="00043" />
+      <option name="presentableId" value="LOCAL-00043" />
+      <option name="project" value="LOCAL" />
+      <updated>1631386483044</updated>
+    </task>
+    <option name="localTasksCounter" value="44" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -426,7 +430,6 @@
     <ignored-roots>
       <path value="$PROJECT_DIR$/.." />
     </ignored-roots>
-    <MESSAGE value=" a custom-styles attribute that replaces parts of the layoutStates css so custom styles can be used with all custom components: part 1" />
     <MESSAGE value=" a custom-styles attribute that replaces parts of the layoutStates css so custom styles can be used with all custom components: step 1 of the process implemented not tested" />
     <MESSAGE value=" a custom-styles attribute that replaces parts of the layoutStates css so custom styles can be used with all custom components: opnieuw begonnen: algoritme voor het vervangen van styles in de component door styles van het custom-styles attribuut = ok" />
     <MESSAGE value=" a custom-styles: creating custom functions that deal with a particular step in the process of overriding the necessary styles rules or adding new ones" />
@@ -451,7 +454,8 @@
     <MESSAGE value="refresh action: added a way to make sure that certain request are finished before another is made: still to dow =&gt; refactor code so this only happens in cases it have to like with the refresh case" />
     <MESSAGE value="implementing a rebuild function for the table component: part1" />
     <MESSAGE value="implementing a rebuild function for the table component: removeData and insertData are done (part2)" />
-    <option name="LAST_COMMIT_MESSAGE" value="implementing a rebuild function for the table component: removeData and insertData are done (part2)" />
+    <MESSAGE value="aanpassing API: validation for patch request to Specification route" />
+    <option name="LAST_COMMIT_MESSAGE" value="aanpassing API: validation for patch request to Specification route" />
   </component>
   <component name="WindowStateProjectService">
     <state x="586" y="198" key="#Inspections" timestamp="1627821810157">
@@ -462,10 +466,10 @@
       <screen x="0" y="0" width="1920" height="1040" />
     </state>
     <state x="690" y="267" key="#com.intellij.refactoring.safeDelete.UnsafeUsagesDialog/0.0.1920.1040@0.0.1920.1040" timestamp="1631364168910" />
-    <state x="0" y="88" key="CommitChangelistDialog2" timestamp="1631307172593">
+    <state x="0" y="88" key="CommitChangelistDialog2" timestamp="1631386481543">
       <screen x="0" y="0" width="1920" height="1040" />
     </state>
-    <state x="0" y="88" key="CommitChangelistDialog2/0.0.1920.1040@0.0.1920.1040" timestamp="1631307172593" />
+    <state x="0" y="88" key="CommitChangelistDialog2/0.0.1920.1040@0.0.1920.1040" timestamp="1631386481543" />
     <state x="184" y="86" key="DiffContextDialog" timestamp="1627729652791">
       <screen x="0" y="0" width="1920" height="1040" />
     </state>

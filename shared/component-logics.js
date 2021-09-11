@@ -292,6 +292,22 @@ class ComponentLogics extends HTMLElement {
                     break
                 case 'id_selected':
                     break
+                case 'selected':
+                    // value now is the text of an option
+                    // in options zitten alle waarden die toegelaten zijn
+                    // todo fix bug of bad request but the mistake is not in here!
+                    this._state.selected = this._state.options.indexOf(value)
+                    const options = this.shadowRoot.querySelectorAll('option')
+                    for (let i = 1;i<options.length;i++){
+                        if(i===this._state.selected+1){
+                            options[i].setAttribute('selected',"true")
+                        } else{
+                            if(options[i].hasAttribute('selected')){
+                                options[i].removeAttribute('selected')
+                            }
+                        }
+                    }
+                    break
             }
         }
     }
@@ -369,7 +385,7 @@ class ComponentLogics extends HTMLElement {
                     break
                 case 'events':
                     if (this.hasAttribute('events')) {
-                        this._eventHandler(this.getAttribute('events'))
+                        this._eventHandler(this.getAttribute('events')).then().catch()
                     }
                     break;
                 case 'icon':
@@ -492,7 +508,6 @@ class ComponentLogics extends HTMLElement {
 
                 break
             case 'patch':
-                console.log('fetch=done')
                 return response
             case 'delete':
 
@@ -701,6 +716,7 @@ class ComponentLogics extends HTMLElement {
                             const comp = document.querySelectorAll(target)
                             comp.forEach(targetComp => {
                                 targetComp._rebuild()
+                                // todo remove status of events/actions
                                 this._findValueObject(this._events, eventName)[index].status = 'idle'
                             })
                             // todo rewrite selectors and events in an reactive way!
@@ -726,6 +742,7 @@ class ComponentLogics extends HTMLElement {
                     // where dealing with crud functionality now (and maybe later other new possiblities for events functionalities)
                     switch (action.name) {
                         case 'reset':
+
                             break
                         case 'create':
                             break
@@ -744,6 +761,7 @@ class ComponentLogics extends HTMLElement {
                                         switch (content.tagName.toLowerCase()) {
                                             case 'phj-number-input':
                                                 if (content.shadowRoot.querySelector('input').value.length > 0) {
+                                                     // todo fix bug where .00 is send when using money attribute in this component
                                                     dataPatch[content.getAttribute('prop').toString().trim()] = content.shadowRoot.querySelector('input').value
                                                 }
                                                 break
@@ -753,7 +771,6 @@ class ComponentLogics extends HTMLElement {
                                                 }
                                                 break
                                             case 'phj-select':
-                                                console.log(content.shadowRoot.querySelector('select').value)
                                                 dataPatch[content.getAttribute('prop').toString().trim()] = content.shadowRoot.querySelector('select').value
                                                 break
                                             case 'phj-radio-button':
@@ -766,14 +783,27 @@ class ComponentLogics extends HTMLElement {
                                     }
                                 })
                                 await this._update(id, 'patch', dataPatch).then(response => {
+                                    console.log('response from patch',response)
                                     // todo use response to handle form validation and messages!
                                     this._findValueObject(this._events, eventName)[index].status = 'idle'
+                                }).catch(err=>{
+                                    console.log('error = ',err)
                                 })
                             }
                             break
                         case 'delete':
                             break
                         case 'clear':
+                            // if it is a button => clear all form fields
+                            if(this.tagName.toLowerCase()==='phj-button'){
+                                const parent = this._getFirstParent('phj-form')
+                                if (parent) {
+                                    // todo clear all form-controls of parent
+
+                                }
+                            } else{
+
+                            }
                             break
                     }
                 }
@@ -812,7 +842,8 @@ class ComponentLogics extends HTMLElement {
                     break
                 case 'blur':
                     // blur werkt alleen bij input elements
-                    if (this.tagName.toLowerCase() === 'phj-number-input' && this._state.showDecimals > 0) {
+                    if (this.tagName.toLowerCase() === 'phj-number-input' && this._state.showDecimals > 0
+                        && (!this._state.nullWhenEmpty||this.shadowRoot.querySelector('input').value>0)) {
                         // fill the number up with zero's until it matches the requested numbers of decimals
                         const calcDcms = () => {
                             if (this.shadowRoot.querySelector('input').value.indexOf('.') !== -1) {
