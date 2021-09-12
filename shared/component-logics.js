@@ -255,6 +255,7 @@ class ComponentLogics extends HTMLElement {
         }
     }
 
+
     _setState(property, value) {
         if (this._state.hasOwnProperty(property)) {
             switch (property) {
@@ -295,15 +296,23 @@ class ComponentLogics extends HTMLElement {
                 case 'selected':
                     // value now is the text of an option
                     // in options zitten alle waarden die toegelaten zijn
-                    // todo fix bug of bad request but the mistake is not in here!
                     this._state.selected = this._state.options.indexOf(value)
-                    const options = this.shadowRoot.querySelectorAll('option')
-                    for (let i = 1;i<options.length;i++){
-                        if(i===this._state.selected+1){
-                            options[i].setAttribute('selected',"true")
-                        } else{
-                            if(options[i].hasAttribute('selected')){
-                                options[i].removeAttribute('selected')
+                    console.log('array',this._state.options,'value given',value,'setstate to',this._state.selected)
+                    if(this._state.selected===-1){
+                        this._state.selected = 0
+                        const options = this.shadowRoot.querySelectorAll('option')
+                        for (let i = 1;i<options.length;i++){
+                            options[i].removeAttribute('selected')
+                        }
+                    } else{
+                        const options = this.shadowRoot.querySelectorAll('option')
+                        for (let i = 1;i<options.length;i++){
+                            if(i===this._state.selected+1){
+                                options[i].setAttribute('selected',"true")
+                            } else{
+                                if(options[i].hasAttribute('selected')){
+                                    options[i].removeAttribute('selected')
+                                }
                             }
                         }
                     }
@@ -515,6 +524,44 @@ class ComponentLogics extends HTMLElement {
         }
     }
 
+    /*
+    *                                     // todo make these methods inside component instead of here!
+                                    parent.querySelectorAll('phj-number-input').forEach(input=>{
+
+                                    })
+                                    parent.querySelectorAll('phj-text-input').forEach(input=>{
+                                        input.querySelector('input').value=''
+                                    })
+                                    parent.querySelectorAll('phj-select').forEach(select=>{
+                                        select._clear()
+                                    })
+    * */
+
+    _clear(){
+        switch (this.tagName.toLowerCase()){
+            case 'phj-form':
+                this.querySelectorAll('phj-text-input').forEach(el=>{
+                    el._clear()
+                })
+                this.querySelectorAll('phj-number-input').forEach(el=>{
+                    el._clear()
+                })
+                this.querySelectorAll('phj-select').forEach(el=>{
+                    el._clear()
+                })
+                break
+            case 'phj-select':
+                this._setState('selected',0)
+                break
+            case 'phj-number-input':
+                this._setState('text','')
+                break
+            case 'phj-text-input':
+                this._setState('text','')
+                break
+        }
+    }
+
     async _eventHandler(eventProcess) {
         // typical format of an event-string:
         // event1/event2/../eventN:actions
@@ -703,7 +750,7 @@ class ComponentLogics extends HTMLElement {
                 if (action.name.indexOf('=>') !== -1) {
                     const source = action.name.split('=>')[0].toString().trim()
                     let sourceElements = source
-                    if (source !== 'refresh') {
+                    if (source !== 'refresh' && source !== 'clear') {
                         sourceElements = setSource(source)
                     }
                     let target = replaceN(action.name.split('=>')[1].trim())
@@ -720,6 +767,15 @@ class ComponentLogics extends HTMLElement {
                                 this._findValueObject(this._events, eventName)[index].status = 'idle'
                             })
                             // todo rewrite selectors and events in an reactive way!
+                        } else if(sourceElements === 'clear'){
+                            // clear value of this component
+                            const comp = document.querySelectorAll(target)
+                            console.log('cop',comp,'calling clear')
+                            comp.forEach(targetComp => {
+                                targetComp._clear()
+                                // todo remove status of events/actions
+                                this._findValueObject(this._events, eventName)[index].status = 'idle'
+                            })
                         } else if (sourceElements[0]._getState('value') !== undefined) {
                             const targetElements = document.querySelectorAll(target)
                             targetElements.forEach(trgtEl => {
@@ -798,7 +854,17 @@ class ComponentLogics extends HTMLElement {
                             if(this.tagName.toLowerCase()==='phj-button'){
                                 const parent = this._getFirstParent('phj-form')
                                 if (parent) {
-                                    // todo clear all form-controls of parent
+                                    // todo make these methods inside component instead of here!
+                                    parent.querySelectorAll('phj-number-input').forEach(input=>{
+                                        input._clear()
+                                    })
+                                    parent.querySelectorAll('phj-text-input').forEach(input=>{
+                                        input._clear()
+                                    })
+                                    parent.querySelectorAll('phj-select').forEach(select=>{
+                                        select._clear()
+                                    })
+                                } else{
 
                                 }
                             } else{

@@ -57,7 +57,7 @@ div{
     <phj-box>
         <phj-button icon="phj-dots"
                     events="click/hover:this.parent.parent.parent.parent .action-btn=>visible,this.parent.parent.parent.parent .actions=>invisible,
-                    this=>invisible,phj-form(1)=>invisible,phj-form(2)=>invisible,this.next=>visible;click:this=>phj-table(1)"
+                    this=>invisible,phj-form(1)=>invisible,phj-form(2)=>invisible,this.next=>visible;click:this=>phj-table(1),clear=>phj-form"
                     custom-styles="div{border:none;background:none;color:black}div:hover{background-color:darkgray;color:white}"
                     class="action-btn"
                     value="true"
@@ -78,7 +78,7 @@ div{
 </phj-table>
 <phj-form value="" events="load:this=>invisible" url="get:http://localhost:3000/specifications/id">
     <phj-text-input label="Specificatie" prop="specification"></phj-text-input>
-    <phj-select prop="type" label="Type" options="basic,option,extra"></phj-select>
+    <phj-select text="Selecteer een type..." prop="type" label="Type" options="basic,option,extra"></phj-select>
     <phj-number-input label="Prijs (excl.BTW)" prop="price" money="euro" decimals="2"></phj-number-input>
     <div style="width: max-content">
         <phj-button events="click:this.parent.parent=>invisible">Annuleren</phj-button>
