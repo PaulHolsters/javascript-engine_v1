@@ -277,11 +277,10 @@ class ComponentLogics extends HTMLElement {
                     } else if (this.shadowRoot.querySelector('textarea')) {
                         this.shadowRoot.querySelector('textarea').innerText = value
                         this._state.text = value
-                    } else if(this.shadowRoot.querySelector('select')){
+                    } else if (this.shadowRoot.querySelector('select')) {
                         this.shadowRoot.querySelector('#text').innerHTML = value
                         this._state.text = value
-                    }
-                    else {
+                    } else {
                         this.innerText = ''
                         this._state.text = value
                         this.shadowRoot.querySelector('#text > slot').textContent = value
@@ -297,20 +296,20 @@ class ComponentLogics extends HTMLElement {
                     // value now is the text of an option
                     // in options zitten alle waarden die toegelaten zijn
                     this._state.selected = this._state.options.indexOf(value)
-                    console.log('array',this._state.options,'value given',value,'setstate to',this._state.selected)
-                    if(this._state.selected===-1){
+                    console.log('array', this._state.options, 'value given', value, 'setstate to', this._state.selected)
+                    if (this._state.selected === -1) {
                         this._state.selected = 0
                         const options = this.shadowRoot.querySelectorAll('option')
-                        for (let i = 1;i<options.length;i++){
+                        for (let i = 1; i < options.length; i++) {
                             options[i].removeAttribute('selected')
                         }
-                    } else{
+                    } else {
                         const options = this.shadowRoot.querySelectorAll('option')
-                        for (let i = 1;i<options.length;i++){
-                            if(i===this._state.selected+1){
-                                options[i].setAttribute('selected',"true")
-                            } else{
-                                if(options[i].hasAttribute('selected')){
+                        for (let i = 1; i < options.length; i++) {
+                            if (i === this._state.selected + 1) {
+                                options[i].setAttribute('selected', "true")
+                            } else {
+                                if (options[i].hasAttribute('selected')) {
                                     options[i].removeAttribute('selected')
                                 }
                             }
@@ -334,10 +333,10 @@ class ComponentLogics extends HTMLElement {
                         this._state.options = this.getAttribute('options').trim().split(',')
                         // todo create options and select the text-option or the value you get from the backend
                         let pointer = this.shadowRoot.querySelector('#text')
-                        this._state.options.forEach(optTxt=>{
+                        this._state.options.forEach(optTxt => {
                             const element = document.createElement('option')
                             element.innerText = optTxt.toString()
-                            pointer.insertAdjacentElement('afterend',element)
+                            pointer.insertAdjacentElement('afterend', element)
                             pointer = pointer.nextElementSibling
                         })
                     }
@@ -416,10 +415,10 @@ class ComponentLogics extends HTMLElement {
                             this.shadowRoot.querySelector('input').value = this._state.text
                         } else if (this.shadowRoot.querySelector('textarea')) {
                             this.shadowRoot.querySelector('textarea').innerText = this._state.text
-                        } else if(this.shadowRoot.querySelector('select')){
+                        } else if (this.shadowRoot.querySelector('select')) {
                             this.shadowRoot.querySelector('#text').style.display = 'inline'
                         }
-                    } else if(this.tagName.toLowerCase()!=='phj-select') {
+                    } else if (this.tagName.toLowerCase() !== 'phj-select') {
                         // todo fix bug: text attribute can be set but is not set
                         const slot = this.shadowRoot.querySelector('#text > slot')
                         slot.addEventListener('slotchange', () => {
@@ -474,28 +473,28 @@ class ComponentLogics extends HTMLElement {
 
     async _update(id, verb, data) {
         return new Promise((resolve, reject) => {
-            resolve(this._updateInner(id,verb,data))
+            resolve(this._updateInner(id, verb, data))
         })
     }
 
     _updateInner(id, verb, data) {
-        return  fetch(this._url + '/' + id,
-                {
-                    method: verb.toUpperCase(),
-                    headers: {
-                        'Content-Type': 'application/json'
-                    },
-                    body: JSON.stringify(data)
-                }
-            ).then(
-                res => {
-                    return res.json()
-                }
-            ).then(
-                res => {
-                    return this._responseHandler(res, verb)
-                }
-            ).catch();
+        return fetch(this._url + '/' + id,
+            {
+                method: verb.toUpperCase(),
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(data)
+            }
+        ).then(
+            res => {
+                return res.json()
+            }
+        ).then(
+            res => {
+                return this._responseHandler(res, verb)
+            }
+        ).catch();
 
     }
 
@@ -537,27 +536,48 @@ class ComponentLogics extends HTMLElement {
                                     })
     * */
 
-    _clear(){
+    _executeValidation(validationErrors){
         switch (this.tagName.toLowerCase()){
             case 'phj-form':
-                this.querySelectorAll('phj-text-input').forEach(el=>{
+                validationErrors.forEach(err=>{
+
+                    err.element.style.border = '1px solid red'
+                    const messageElement = document.createElement('P')
+                    messageElement.innerText = err.message
+                    messageElement.style.color = 'red'
+                    err.element.insertAdjacentElement('afterend',messageElement)
+                })
+                break
+            case 'phj-text-input':
+                this.
+                break
+            case 'phj-number-input':
+
+                break
+        }
+    }
+
+    _clear() {
+        switch (this.tagName.toLowerCase()) {
+            case 'phj-form':
+                this.querySelectorAll('phj-text-input').forEach(el => {
                     el._clear()
                 })
-                this.querySelectorAll('phj-number-input').forEach(el=>{
+                this.querySelectorAll('phj-number-input').forEach(el => {
                     el._clear()
                 })
-                this.querySelectorAll('phj-select').forEach(el=>{
+                this.querySelectorAll('phj-select').forEach(el => {
                     el._clear()
                 })
                 break
             case 'phj-select':
-                this._setState('selected',0)
+                this._setState('selected', 0)
                 break
             case 'phj-number-input':
-                this._setState('text','')
+                this._setState('text', '')
                 break
             case 'phj-text-input':
-                this._setState('text','')
+                this._setState('text', '')
                 break
         }
     }
@@ -767,10 +787,10 @@ class ComponentLogics extends HTMLElement {
                                 this._findValueObject(this._events, eventName)[index].status = 'idle'
                             })
                             // todo rewrite selectors and events in an reactive way!
-                        } else if(sourceElements === 'clear'){
+                        } else if (sourceElements === 'clear') {
                             // clear value of this component
                             const comp = document.querySelectorAll(target)
-                            console.log('cop',comp,'calling clear')
+                            console.log('cop', comp, 'calling clear')
                             comp.forEach(targetComp => {
                                 targetComp._clear()
                                 // todo remove status of events/actions
@@ -817,7 +837,7 @@ class ComponentLogics extends HTMLElement {
                                         switch (content.tagName.toLowerCase()) {
                                             case 'phj-number-input':
                                                 if (content.shadowRoot.querySelector('input').value.length > 0) {
-                                                     // todo fix bug where .00 is send when using money attribute in this component
+                                                    // todo fix bug where .00 is send when using money attribute in this component
                                                     dataPatch[content.getAttribute('prop').toString().trim()] = content.shadowRoot.querySelector('input').value
                                                 }
                                                 break
@@ -839,11 +859,28 @@ class ComponentLogics extends HTMLElement {
                                     }
                                 })
                                 await this._update(id, 'patch', dataPatch).then(response => {
-                                    console.log('response from patch',response)
-                                    // todo use response to handle form validation and messages!
+                                    if (response.error.errors) {
+                                        // update contains validation errors
+                                        const validationFailedFor = []
+                                        Object.keys(response.error.errors).forEach(key => {
+                                            parent.querySelectorAll('*').forEach(el => {
+                                                if (el.hasAttribute('prop') && el.getAttribute('prop').trim() === key.toString()) {
+                                                    validationFailedFor.push({
+                                                        element: el,
+                                                        // todo create better messages
+                                                        message: response.error.errors[key.toString()].message
+                                                    })
+                                                }
+                                            })
+
+                                        })
+                                        parent._executeValidation(validationFailedFor)
+                                    } else {
+
+                                    }
                                     this._findValueObject(this._events, eventName)[index].status = 'idle'
-                                }).catch(err=>{
-                                    console.log('error = ',err)
+                                }).catch(err => {
+                                    console.log('backend is gecrashed = ', err)
                                 })
                             }
                             break
@@ -851,23 +888,23 @@ class ComponentLogics extends HTMLElement {
                             break
                         case 'clear':
                             // if it is a button => clear all form fields
-                            if(this.tagName.toLowerCase()==='phj-button'){
+                            if (this.tagName.toLowerCase() === 'phj-button') {
                                 const parent = this._getFirstParent('phj-form')
                                 if (parent) {
                                     // todo make these methods inside component instead of here!
-                                    parent.querySelectorAll('phj-number-input').forEach(input=>{
+                                    parent.querySelectorAll('phj-number-input').forEach(input => {
                                         input._clear()
                                     })
-                                    parent.querySelectorAll('phj-text-input').forEach(input=>{
+                                    parent.querySelectorAll('phj-text-input').forEach(input => {
                                         input._clear()
                                     })
-                                    parent.querySelectorAll('phj-select').forEach(select=>{
+                                    parent.querySelectorAll('phj-select').forEach(select => {
                                         select._clear()
                                     })
-                                } else{
+                                } else {
 
                                 }
-                            } else{
+                            } else {
 
                             }
                             break
@@ -909,7 +946,7 @@ class ComponentLogics extends HTMLElement {
                 case 'blur':
                     // blur werkt alleen bij input elements
                     if (this.tagName.toLowerCase() === 'phj-number-input' && this._state.showDecimals > 0
-                        && (!this._state.nullWhenEmpty||this.shadowRoot.querySelector('input').value>0)) {
+                        && (!this._state.nullWhenEmpty || this.shadowRoot.querySelector('input').value > 0)) {
                         // fill the number up with zero's until it matches the requested numbers of decimals
                         const calcDcms = () => {
                             if (this.shadowRoot.querySelector('input').value.indexOf('.') !== -1) {
