@@ -8,7 +8,14 @@ class ComponentLogics extends HTMLElement {
     _css
     _noEvent = false
 
-    _events = [{click: []}, {hover: []}, {hoverAway: []}, {change: []}, {select: []}, {load: []}, {check: []}, {blur: []}]
+    _events = [{eventName: 'click',actions: [],conditions: []},
+        {eventName: 'hover',actions: [],conditions: []},
+        {eventName: 'hover-away',actions: [],conditions: []},
+        {eventName: 'change',actions: [],conditions: []},
+        {eventName: 'select',actions: [],conditions: []},
+        {eventName: 'load',actions: [],conditions: []},
+        {eventName: 'check',actions: [],conditions: []},
+        {eventName: 'blur',actions: [],conditions: []}]
     _state
 
     // the baseUrl variable should be used by the phj-content-elements component, everything inside that component can be considered
@@ -29,9 +36,11 @@ class ComponentLogics extends HTMLElement {
     }
 
     _findValueObject(array, propertyName) {
+        // todo rename this function!
+        // returns the actions array that belongs to a certain event with eventName = propertyName
         for (let i = 0; i < array.length; i++) {
-            if (array[i].hasOwnProperty(propertyName)) {
-                return array[i][propertyName]
+            if (array[i].eventName === propertyName) {
+                return array[i].actions
             }
         }
     }
@@ -523,24 +532,11 @@ class ComponentLogics extends HTMLElement {
         }
     }
 
-    /*
-    *                                     // todo make these methods inside component instead of here!
-                                    parent.querySelectorAll('phj-number-input').forEach(input=>{
-
-                                    })
-                                    parent.querySelectorAll('phj-text-input').forEach(input=>{
-                                        input.querySelector('input').value=''
-                                    })
-                                    parent.querySelectorAll('phj-select').forEach(select=>{
-                                        select._clear()
-                                    })
-    * */
-
+    // todo validation implementation is not good
     _executeValidation(validationErrors){
         switch (this.tagName.toLowerCase()){
             case 'phj-form':
                 validationErrors.forEach(err=>{
-
                     err.element.style.border = '1px solid red'
                     const messageElement = document.createElement('P')
                     messageElement.innerText = err.message
@@ -549,7 +545,7 @@ class ComponentLogics extends HTMLElement {
                 })
                 break
             case 'phj-text-input':
-                this.
+
                 break
             case 'phj-number-input':
 
@@ -605,11 +601,9 @@ class ComponentLogics extends HTMLElement {
                 const actions = events[i].split(':')[1].split(',')
                 eventNames.forEach(name => {
                     actions.forEach(action => {
-                        console.log('creating action', action)
                         this._events.forEach(evt => {
-                            if (evt.hasOwnProperty(name.toString())) {
-                                console.log('action as an object', {name: action, status: 'idle'})
-                                evt[name.toString()].push({name: action, status: 'idle'})
+                            if (evt.eventName===name) {
+                                evt.actions.push({name: action, status: 'idle'})
                             }
                         })
                     })
@@ -618,8 +612,8 @@ class ComponentLogics extends HTMLElement {
             // setting up all necessary eventListeners for this component
             this._events.forEach(evt => {
                 // event is an object with the eventName as a key and an array with actions that need to happen upon the happening of the event
-                if (evt[Object.keys(evt)[0].toString()].length > 0) {
-                    switch (Object.keys(evt)[0].toString()) {
+                if (evt.actions.length > 0) {
+                    switch (evt.eventName) {
                         case 'click':
                             this.addEventListener('click', this._eventHandler)
                             break
@@ -790,7 +784,6 @@ class ComponentLogics extends HTMLElement {
                         } else if (sourceElements === 'clear') {
                             // clear value of this component
                             const comp = document.querySelectorAll(target)
-                            console.log('cop', comp, 'calling clear')
                             comp.forEach(targetComp => {
                                 targetComp._clear()
                                 // todo remove status of events/actions
@@ -915,10 +908,10 @@ class ComponentLogics extends HTMLElement {
                 case 'click':
                     if ((this._currentLayoutState === 'enabled' || this._currentLayoutState === 'visible') && !this._noEvent) {
                         for (const el of this._events) {
-                            if (el.hasOwnProperty('click') && el.click.length > 0) {
-                                for (let i = 0; i < el.click.length; i++) {
-                                    el.click[i].status = 'running'
-                                    await processAction('click', el.click[i], i)
+                            if (el.eventName==='click' && el.actions.length > 0) {
+                                for (let i = 0; i < el.actions.length; i++) {
+                                    el.actions[i].status = 'running'
+                                    await processAction('click', el.actions[i], i)
                                 }
                             }
                         }
@@ -929,10 +922,10 @@ class ComponentLogics extends HTMLElement {
                     break
                 case 'component-loaded':
                     this._events.forEach(el => {
-                        if (el.hasOwnProperty('load') && el.load.length > 0) {
-                            for (let i = 0; i < el.load.length; i++) {
-                                el.load[i].status = 'running'
-                                processAction('load', el.load[i], i)
+                        if (el.eventName==='load' && el.actions.length > 0) {
+                            for (let i = 0; i < el.actions.length; i++) {
+                                el.actions[i].status = 'running'
+                                processAction('load', el.actions[i], i)
                             }
                         }
                     })

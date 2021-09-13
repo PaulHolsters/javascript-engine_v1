@@ -6,7 +6,6 @@
   <component name="ChangeListManager">
     <list default="true" id="541aa9e8-3035-4513-acb8-e23ab7e5a48a" name="Default Changelist" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/index.html" beforeDir="false" afterPath="$PROJECT_DIR$/index.html" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/shared/component-logics.js" beforeDir="false" afterPath="$PROJECT_DIR$/shared/component-logics.js" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -114,7 +113,8 @@
       <workItem from="1631129430928" duration="2696000" />
       <workItem from="1631304417124" duration="4653000" />
       <workItem from="1631352923236" duration="31926000" />
-      <workItem from="1631432995609" duration="14274000" />
+      <workItem from="1631432995609" duration="14561000" />
+      <workItem from="1631542877018" duration="5466000" />
     </task>
     <task id="LOCAL-00001" summary="Second commit for testing purposes">
       <created>1627739619455</created>
@@ -431,7 +431,14 @@
       <option name="project" value="LOCAL" />
       <updated>1631439154470</updated>
     </task>
-    <option name="localTasksCounter" value="46" />
+    <task id="LOCAL-00046" summary="research: conditional events + syntax determination in index.html">
+      <created>1631472939287</created>
+      <option name="number" value="00046" />
+      <option name="presentableId" value="LOCAL-00046" />
+      <option name="project" value="LOCAL" />
+      <updated>1631472939287</updated>
+    </task>
+    <option name="localTasksCounter" value="47" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -441,7 +448,6 @@
     <ignored-roots>
       <path value="$PROJECT_DIR$/.." />
     </ignored-roots>
-    <MESSAGE value=" a custom-styles attribute that replaces parts of the layoutStates css so custom styles can be used with all custom components: opnieuw begonnen: algoritme voor het vervangen van styles in de component door styles van het custom-styles attribuut = ok" />
     <MESSAGE value=" a custom-styles: creating custom functions that deal with a particular step in the process of overriding the necessary styles rules or adding new ones" />
     <MESSAGE value="custom-styles attribute ready to be used" />
     <MESSAGE value="set up of rewrite of the _eventHandler function:&#10;a list of todo's&#10;contemplating about: this as a selector, selecting an element by a number between brackets, the load event that gets triggered as soon the component is the entire page is loaded but without the user needing to add javascript to do this" />
@@ -466,7 +472,8 @@
     <MESSAGE value="implementing a rebuild function for the table component: removeData and insertData are done (part2)" />
     <MESSAGE value="aanpassing API: validation for patch request to Specification route" />
     <MESSAGE value="added a clear action functionality + improvements" />
-    <option name="LAST_COMMIT_MESSAGE" value="added a clear action functionality + improvements" />
+    <MESSAGE value="research: conditional events + syntax determination in index.html" />
+    <option name="LAST_COMMIT_MESSAGE" value="research: conditional events + syntax determination in index.html" />
   </component>
   <component name="WindowStateProjectService">
     <state x="586" y="198" key="#Inspections" timestamp="1627821810157">
@@ -477,10 +484,10 @@
       <screen x="0" y="0" width="1920" height="1040" />
     </state>
     <state x="690" y="267" key="#com.intellij.refactoring.safeDelete.UnsafeUsagesDialog/0.0.1920.1040@0.0.1920.1040" timestamp="1631364168910" />
-    <state x="0" y="88" key="CommitChangelistDialog2" timestamp="1631439153459">
+    <state x="0" y="88" key="CommitChangelistDialog2" timestamp="1631472938537">
       <screen x="0" y="0" width="1920" height="1040" />
     </state>
-    <state x="0" y="88" key="CommitChangelistDialog2/0.0.1920.1040@0.0.1920.1040" timestamp="1631439153459" />
+    <state x="0" y="88" key="CommitChangelistDialog2/0.0.1920.1040@0.0.1920.1040" timestamp="1631472938537" />
     <state x="184" y="86" key="DiffContextDialog" timestamp="1627729652791">
       <screen x="0" y="0" width="1920" height="1040" />
     </state>
