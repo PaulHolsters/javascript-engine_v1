@@ -1,7 +1,7 @@
 class PhjSelect extends ComponentLogics {
     constructor() {
         super();
-        this.attachShadow({mode: 'open'})
+        //this.attachShadow({mode: 'open'})
         this._layoutStates = {
             enabled: {
                 layoutState: {
@@ -58,13 +58,14 @@ display: block;
         // set css of the webcomponent
         this._setLayoutState('enabled')
         // set HTML of the webcomponent
-        this._setShadow(`
+        this.innerHTML = `
         <select>
             <option id="text" style="display: none"></option>
         </select>
-        `)
+        `
+/*        this._setShadow()
         // set innerhtml
-        this._executeShadow()
+        this._executeShadow()*/
         // set eventHandlers and handle attributes
         this._setUpAttributes('events','label','prop','text','options')
     }

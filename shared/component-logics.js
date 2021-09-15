@@ -305,15 +305,14 @@ class ComponentLogics extends HTMLElement {
                     // value now is the text of an option
                     // in options zitten alle waarden die toegelaten zijn
                     this._state.selected = this._state.options.indexOf(value)
-                    console.log('array', this._state.options, 'value given', value, 'setstate to', this._state.selected)
                     if (this._state.selected === -1) {
                         this._state.selected = 0
-                        const options = this.shadowRoot.querySelectorAll('option')
+                        const options = this.querySelectorAll('option')
                         for (let i = 1; i < options.length; i++) {
                             options[i].removeAttribute('selected')
                         }
                     } else {
-                        const options = this.shadowRoot.querySelectorAll('option')
+                        const options = this.querySelectorAll('option')
                         for (let i = 1; i < options.length; i++) {
                             if (i === this._state.selected + 1) {
                                 options[i].setAttribute('selected', "true")
@@ -341,7 +340,8 @@ class ComponentLogics extends HTMLElement {
                     if (this.hasAttribute('options')) {
                         this._state.options = this.getAttribute('options').trim().split(',')
                         // todo create options and select the text-option or the value you get from the backend
-                        let pointer = this.shadowRoot.querySelector('#text')
+                        let pointer = this.querySelector('#text')
+                        console.log(pointer,'pointer')
                         this._state.options.forEach(optTxt => {
                             const element = document.createElement('option')
                             element.innerText = optTxt.toString()
@@ -419,16 +419,19 @@ class ComponentLogics extends HTMLElement {
                 case 'text':
                     if (this.hasAttribute('text')) {
                         this._state.text = this.getAttribute('text').trim()
-                        this.shadowRoot.querySelector('#text').innerHTML = this._state.text
-                        if (this.shadowRoot.querySelector('input')) {
+                        if(this.tagName.toLowerCase()==='phj-select'){
+                            this.querySelector('#text').innerHTML = this._state.text
+                        } else{
+                            this.shadowRoot.querySelector('#text').innerHTML = this._state.text
+                        }
+                        if (this.tagName.toLowerCase()!=='phj-select' && this.shadowRoot.querySelector('input')) {
                             this.shadowRoot.querySelector('input').value = this._state.text
-                        } else if (this.shadowRoot.querySelector('textarea')) {
+                        } else if (this.tagName.toLowerCase()!=='phj-select' && this.shadowRoot.querySelector('textarea')) {
                             this.shadowRoot.querySelector('textarea').innerText = this._state.text
-                        } else if (this.shadowRoot.querySelector('select')) {
-                            this.shadowRoot.querySelector('#text').style.display = 'inline'
+                        } else if (this.querySelector('select')) {
+                            this.querySelector('#text').style.display = 'inline'
                         }
                     } else if (this.tagName.toLowerCase() !== 'phj-select') {
-                        // todo fix bug: text attribute can be set but is not set
                         const slot = this.shadowRoot.querySelector('#text > slot')
                         slot.addEventListener('slotchange', () => {
                             if (slot.assignedNodes()[0]) {
@@ -450,6 +453,36 @@ class ComponentLogics extends HTMLElement {
                     break;
             }
         }
+    }
+
+    _checkConditions(conditionArray){
+        console.log(conditionArray)
+        conditionArray.forEach(cond=>{
+            console.log('cond',cond)
+            if(cond==='selected=1'){
+                console.log('selected=1',this._state.selected===1)
+                return (this._state.selected===1)
+            } else if(cond==='click.patch.status=idle'){
+                for (let i = 0;i<this._events.length;i++){
+                    if(this._events[i].eventName==='click'){
+                        const boolean =  this._events[i].actions.find(action=>{
+                            if(action.name==='patch'){
+                                return true
+                            }
+                        }).status === 'idle'
+                        console.log(boolean)
+                        return boolean
+                    }
+                }
+                return false
+            } else if(cond==='selected!=1'){
+                console.log('selected!=1',this._state.selected!==1)
+                return (this._state.selected!==1)
+            } else{
+                throw new Error('unknown condition')
+            }
+        })
+        return true
     }
 
     async _getOne(id) {
@@ -594,16 +627,28 @@ class ComponentLogics extends HTMLElement {
         // event1/event2/../eventN:actions;event1/event2/../eventN:actions
         // it follows the same pattern but separated by a semi-colon
         if (typeof eventProcess === 'string') {
+            console.log('string=',eventProcess)
             // storing the events for this component
             const events = eventProcess.split(';')
             for (let i = 0; i < events.length; i++) {
                 const eventNames = events[i].split(':')[0].split('/')
+                let conditionArray = []
+                if(eventNames[0].indexOf('[')!==-1){
+                    // todo separate conditions
+                    conditionArray = eventNames[0].substring(eventNames[0].indexOf('[')+1,eventNames[0].indexOf(']')).split(',')
+                    // todo adapt first eventName
+                    eventNames[0] = eventNames[0].substr(eventNames[0].indexOf(']')+1)
+                }
+                console.log('conds',conditionArray)
                 const actions = events[i].split(':')[1].split(',')
+                console.log('produced actions',actions,'eventnamesz',eventNames)
                 eventNames.forEach(name => {
                     actions.forEach(action => {
                         this._events.forEach(evt => {
                             if (evt.eventName===name) {
+                                console.log(name,'?load')
                                 evt.actions.push({name: action, status: 'idle'})
+                                evt.conditions = conditionArray
                             }
                         })
                     })
@@ -617,6 +662,12 @@ class ComponentLogics extends HTMLElement {
                         case 'click':
                             this.addEventListener('click', this._eventHandler)
                             break
+                        case 'select':
+                            // todo function eventHandler unavailable because select element bubbles up to the root (not included) and it is the root that
+                            //  actually has this function at its disposal
+                            this.addEventListener('select', this._eventHandler)
+                            console.log('adding eventlistener to select')
+                            break
                         case 'blur':
                             this.addEventListener('blur', this._eventHandler)
                             break
@@ -624,6 +675,7 @@ class ComponentLogics extends HTMLElement {
                             // a custom event, because the built-in load event works on the window object only (so it appears)
                             // this event gets fired as soon as the element is available and all initialisation is done
                             this.addEventListener('component-loaded', this._eventHandler)
+                            console.log('load handler')
                             break
                         case 'hover':
                             // todo how to trigger this on the right time?
@@ -637,6 +689,7 @@ class ComponentLogics extends HTMLElement {
                 }
             })
         } else {
+            console.log('select event takes place or what?',eventProcess)
             // handling the actions that need to be performed through a function
             // that is called from within the switch that handles a particular event
             const processAction = async (eventName, action, index) => {
@@ -777,16 +830,13 @@ class ComponentLogics extends HTMLElement {
                             const comp = document.querySelectorAll(target)
                             comp.forEach(targetComp => {
                                 targetComp._rebuild()
-                                // todo remove status of events/actions
                                 this._findValueObject(this._events, eventName)[index].status = 'idle'
                             })
-                            // todo rewrite selectors and events in an reactive way!
                         } else if (sourceElements === 'clear') {
                             // clear value of this component
                             const comp = document.querySelectorAll(target)
                             comp.forEach(targetComp => {
                                 targetComp._clear()
-                                // todo remove status of events/actions
                                 this._findValueObject(this._events, eventName)[index].status = 'idle'
                             })
                         } else if (sourceElements[0]._getState('value') !== undefined) {
@@ -910,8 +960,11 @@ class ComponentLogics extends HTMLElement {
                         for (const el of this._events) {
                             if (el.eventName==='click' && el.actions.length > 0) {
                                 for (let i = 0; i < el.actions.length; i++) {
-                                    el.actions[i].status = 'running'
-                                    await processAction('click', el.actions[i], i)
+                                    // todo only processAction if conditions are met
+                                    if(this._checkConditions(el.conditions)){
+                                        el.actions[i].status = 'running'
+                                        await processAction('click', el.actions[i], i)
+                                    }
                                 }
                             }
                         }
@@ -920,10 +973,26 @@ class ComponentLogics extends HTMLElement {
                         this._setUpAttributes('value', 'false')
                     }
                     break
+                case 'select':
+                        for (const el of this._events) {
+                            if (el.eventName==='select' && el.actions.length > 0) {
+                                for (let i = 0; i < el.actions.length; i++) {
+                                    // todo only processAction if conditions are met
+                                    if(this._checkConditions(el.conditions)){
+
+                                        el.actions[i].status = 'running'
+                                        await processAction('select', el.actions[i], i)
+                                    }
+                                }
+                            }
+                        }
+                    break
                 case 'component-loaded':
+                    console.log('processing on load event')
                     this._events.forEach(el => {
                         if (el.eventName==='load' && el.actions.length > 0) {
                             for (let i = 0; i < el.actions.length; i++) {
+                                console.log('processing on load event')
                                 el.actions[i].status = 'running'
                                 processAction('load', el.actions[i], i)
                             }

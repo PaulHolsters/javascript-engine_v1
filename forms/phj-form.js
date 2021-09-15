@@ -83,7 +83,7 @@ class PhjForm extends ComponentLogics {
         }
         await this._setUpAttributes('events','value','url')
         this._events.forEach(el => {
-            if (el.hasOwnProperty('load') && el.load.length > 0) {
+            if (el.eventName==='load' && el.actions.length > 0) {
                 const loadEvent = new Event('component-loaded')
                 this.dispatchEvent(loadEvent)
             }
@@ -104,7 +104,7 @@ class PhjForm extends ComponentLogics {
                                     if(!values[i]){
                                         children[j]._setState('selected',0)
                                     } else{
-                                        console.log('setting the state of phj-el')
+                                        console.log(values[i],'for select')
                                         children[j]._setState('selected',values[i])
                                     }
                                 } else{

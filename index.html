@@ -85,15 +85,28 @@ div{
 <phj-form value="" events="load:this=>invisible" url="get:http://localhost:3000/specifications/id">
     <phj-text-input label="Specificatie" prop="specification"></phj-text-input>
     <phj-message type="error:required">Specificatie is een verplicht veld.</phj-message>
+    <!-- todo extend the select element with extra's like the _eventHandler function and events attribute and when it all works wrap it in a phj-select and adapt that element-->
+    <select>
+        <option>
+            Basis
+        </option>
+        <option>
+            Optie
+        </option>
+        <option>
+            Extra
+        </option>
+    </select>
     <phj-select text="Selecteer een type..." prop="type" label="Type" options="basic,option,extra"
-                events="[selected=1]select:clear=>phj-number-input(1),phj-number-input(1)=>disabled;[selected!=1]select:phj-number-input(1)=>enabled"></phj-select>
+                events="[selected=1]select:clear=>phj-number-input(1),phj-number-input(1)=>disabled;[selected!=1]select:phj-number-input(1)=>enabled">
+    </phj-select>
     <phj-message type="error:required">Je moet een type selecteren.</phj-message>
     <phj-number-input label="Prijs (excl.BTW)" prop="price" money="euro" decimals="2" ></phj-number-input>
     <phj-message type="error:required">Prijs is een verplicht veld.</phj-message>
     <div style="width: max-content">
         <phj-button events="click:this.parent.parent=>invisible">Annuleren</phj-button>
         <phj-button events="click:reset">Reset</phj-button>
-        <phj-button events="click:patch;[patch.status=idle]click:refresh=>phj-table(1),clear,this.parent.parent=>invisible">Bewaar</phj-button>
+        <phj-button events="click:patch;[click.patch.status=idle]click:refresh=>phj-table(1),clear,this.parent.parent=>invisible">Bewaar</phj-button>
     </div>
 </phj-form>
 <phj-form value="" events="load:this=>invisible" url="get:http://localhost:3000/specifications/id">

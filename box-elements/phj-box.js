@@ -52,8 +52,9 @@ class PhjBox extends ComponentLogics {
             this.setAttribute('tabindex', '0');
         }
         await this._setUpAttributes('custom-styles', 'events')
+        // todo fix bug: load event doesn't take place
         this._events.forEach(el => {
-            if (el.hasOwnProperty('load') && el.load.length > 0) {
+            if (el.eventName==='load' && el.actions.length > 0) {
                 const loadEvent = new Event('component-loaded')
                 this.dispatchEvent(loadEvent)
             }
