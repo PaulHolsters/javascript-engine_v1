@@ -2,6 +2,8 @@ class PhjNumberInput extends ComponentLogics {
     constructor() {
         super();
         this.attachShadow({mode: 'open'})
+        // todo when changed the disabled state is not shown but the same enabled css gets replaced by itself
+        //   + the input field should get a tag 'disabled'
         this._layoutStates = {
             enabled: {
                 layoutState: {

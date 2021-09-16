@@ -36,10 +36,12 @@ class InnerSelect extends HTMLSelectElement {
 
     _notifyParent(){
         // todo create custom event that bubbles up to the root component: composed path = true!
+        const selectChanged = new Event('select-changed',{bubbles:true,composed:true})
+        this.dispatchEvent(selectChanged)
     }
 
     connectedCallback(){
 
     }
 }
-customElements.define('phj-select',PhjSelect)
+customElements.define('inner-select',InnerSelect,{extends:'select'})

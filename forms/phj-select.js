@@ -1,7 +1,7 @@
 class PhjSelect extends ComponentLogics {
     constructor() {
         super();
-        //this.attachShadow({mode: 'open'})
+        this.attachShadow({mode: 'open'})
         this._layoutStates = {
             enabled: {
                 layoutState: {
@@ -9,16 +9,7 @@ class PhjSelect extends ComponentLogics {
                 },
                 css: `
 <style>
-    input{
-        border: 2px solid #284260;
-        padding: 6px;
-        border-radius: 5px;
-        margin: 2px;
-        width: 80%;
-    }
-    :host{
-display: block;
-    }                                
+                             
 </style>
 `
             },
@@ -28,17 +19,7 @@ display: block;
                 },
                 css: `
 <style>
-    input{
-        border: 1px solid #525456;
-        padding: 6px;
-        border-radius: 5px;
-        margin: 2px;
-        width: 80%;
-        color: #a7a2a2;
-    }
-    input:hover{
-        cursor: not-allowed;
-    }                                
+                             
 </style>
 `
 
@@ -56,19 +37,20 @@ display: block;
 
     connectedCallback(){
         // set css of the webcomponent
+        // set HTML of the webcomponent
         this._setLayoutState('enabled')
         // set HTML of the webcomponent
-        this.innerHTML = `
-        <select>
-            <option id="text" style="display: none"></option>
-        </select>
-        `
-/*        this._setShadow()
+        this._setShadow(`
+<select is="inner-select">
+                        <option id="text" style="display: none"></option>
+                        </select>
+        `)
         // set innerhtml
-        this._executeShadow()*/
+        this._executeShadow()
+        this.addEventListener('select-changed',this._eventHandler)
+        console.log('eventlistener added')
         // set eventHandlers and handle attributes
-        this._setUpAttributes('events','label','prop','text','options')
+        this._setUpAttributes('label','events','prop','text','options')
     }
-
 }
 customElements.define('phj-select',PhjSelect)

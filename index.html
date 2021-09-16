@@ -21,6 +21,7 @@
     <script src="forms/phj-form.js"></script>
     <script src="forms/phj-text-input.js"></script>
     <script src="forms/phj-select.js"></script>
+    <script src="forms/inner-select.js"></script>
     <script src="forms/phj-number-input.js"></script>
     <script src="forms/phj-textarea.js"></script>
     <script src="forms/phj-radio-button.js"></script>
@@ -85,21 +86,10 @@ div{
 <phj-form value="" events="load:this=>invisible" url="get:http://localhost:3000/specifications/id">
     <phj-text-input label="Specificatie" prop="specification"></phj-text-input>
     <phj-message type="error:required">Specificatie is een verplicht veld.</phj-message>
-    <!-- todo extend the select element with extra's like the _eventHandler function and events attribute and when it all works wrap it in a phj-select and adapt that element-->
-    <select>
-        <option>
-            Basis
-        </option>
-        <option>
-            Optie
-        </option>
-        <option>
-            Extra
-        </option>
-    </select>
-    <phj-select text="Selecteer een type..." prop="type" label="Type" options="basic,option,extra"
-                events="[selected=1]select:clear=>phj-number-input(1),phj-number-input(1)=>disabled;[selected!=1]select:phj-number-input(1)=>enabled">
-    </phj-select>
+    <!-- todo phj-number-input is not disabled-->
+        <phj-select text="Selecteer een type..." prop="type" label="Type" options="basic,option,extra"
+                events="[selected=1]change:clear=>phj-number-input(1),phj-number-input(1)=>disabled;[selected!=1]change:phj-number-input(1)=>enabled">
+        </phj-select>
     <phj-message type="error:required">Je moet een type selecteren.</phj-message>
     <phj-number-input label="Prijs (excl.BTW)" prop="price" money="euro" decimals="2" ></phj-number-input>
     <phj-message type="error:required">Prijs is een verplicht veld.</phj-message>
