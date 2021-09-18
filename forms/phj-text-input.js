@@ -42,6 +42,25 @@ display: block;
 </style>
 `
 
+            },
+            invalid: {
+                layoutState: {
+                    invalid: true
+                },
+                css: `
+<style>
+    input{
+        border: 1px solid red;
+        padding: 6px;
+        border-radius: 5px;
+        margin: 2px;
+        width: 80%;
+    }
+    :host{
+display: block;
+    }                                
+</style>
+`
             }
         }
 

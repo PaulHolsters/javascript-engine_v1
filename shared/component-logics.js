@@ -1,6 +1,6 @@
 class ComponentLogics extends HTMLElement {
 
-    _possibleLayoutStates = ['disabled', 'enabled', 'displayed', 'hidden', 'visible', 'invisible', 'selected', 'deselected']
+    _possibleLayoutStates = ['disabled', 'enabled', 'displayed', 'hidden', 'visible', 'invisible', 'selected', 'deselected','invalid','error','info','success']
     _possibleActions = ['refresh']
     _layoutStates
     _currentLayoutState
@@ -8,7 +8,8 @@ class ComponentLogics extends HTMLElement {
     _css
     _noEvent = false
 
-    // structure of an event-element: {eventName:String,actions:Array of {actionStream:[],conditions:String}}
+    // todo adapt code to new structure
+    // structure of an event-element: {eventName:String,actions:Array of {actionStream:Array of {action:String, status:String},conditions:String}}
     _events = [{eventName: 'click',actions: []},
         {eventName: 'hover',actions: []},
         {eventName: 'hover-away',actions: []},
@@ -16,7 +17,9 @@ class ComponentLogics extends HTMLElement {
         {eventName: 'select',actions: []},
         {eventName: 'load',actions: []},
         {eventName: 'check',actions: []},
-        {eventName: 'blur',actions: []}]
+        {eventName: 'blur',actions: []},
+        {eventName: 'input',actions: []},]
+
     _state
 
     // the baseUrl variable should be used by the phj-content-elements component, everything inside that component can be considered
@@ -93,6 +96,7 @@ class ComponentLogics extends HTMLElement {
          *
          */
         this._currentLayoutState = state
+        // here the initial css is set!!!
         this._css = this._layoutStates[state].css
     }
 
@@ -236,6 +240,7 @@ class ComponentLogics extends HTMLElement {
         const el = document.createElement('STYLE')
         el.innerText = this._css.replace('<style>', '').replace('</style>', '')
         this.shadowRoot.insertBefore(el, this.shadowRoot.childNodes[0]);
+        console.log(this,'style=',this.shadowRoot.childNodes[0],'current layout state',this._currentLayoutState)
         if (this.shadowRoot.querySelector('input')) {
             if (state === 'disabled' && !this.shadowRoot.querySelector('input').hasAttribute('disabled')) {
                 this.shadowRoot.querySelector('input').setAttribute('disabled', 'true')
@@ -400,6 +405,12 @@ class ComponentLogics extends HTMLElement {
                         this._state.title = this.getAttribute('title')
                     }
                     break
+                case 'type':
+                    if (this.hasAttribute('type')) {
+                        this._state.type = this.getAttribute('type')
+                        console.log(this,this._state.type)
+                    }
+                    break
                 case 'events':
                     if (this.hasAttribute('events')) {
                         this._eventHandler(this.getAttribute('events')).then().catch()
@@ -453,14 +464,13 @@ class ComponentLogics extends HTMLElement {
 
     _checkConditions(conditionStr){
         if(conditionStr==='selected=1'){
-            console.log('cond selected = 1 => ',this._state.selected===1)
-            console.log('state selected',this._state.selected)
             return (this._state.selected===1)
         } else if(conditionStr==='click.patch.status=idle'){
             for (let i = 0;i<this._events.length;i++){
                 if(this._events[i].eventName==='click'){
+                    // todo fix bug => because of the change of the data structure of this._events !!!
                     return this._events[i].actions.find(action => {
-                        if (action.name === 'patch') {
+                        if (action=== 'patch') {
                             return true
                         }
                     }).status === 'idle'
@@ -468,8 +478,6 @@ class ComponentLogics extends HTMLElement {
             }
             return false
         } else if(conditionStr==='selected!=1'){
-            console.log('condition select!=1 => ',this._state.selected!==1,'events are ',this._events)
-            console.log('state selected',this._state.selected)
             return (this._state.selected!==1)
         } else if(conditionStr===''){
             return true
@@ -558,16 +566,16 @@ class ComponentLogics extends HTMLElement {
         }
     }
 
-    // todo validation implementation is not good
     _executeValidation(validationErrors){
         switch (this.tagName.toLowerCase()){
             case 'phj-form':
                 validationErrors.forEach(err=>{
-                    err.element.style.border = '1px solid red'
-                    const messageElement = document.createElement('P')
-                    messageElement.innerText = err.message
-                    messageElement.style.color = 'red'
-                    err.element.insertAdjacentElement('afterend',messageElement)
+                    console.log(err)
+                    if(err.errType==='required'){
+                        err.element.executeLayoutState('invalid')
+                        const messageElement = err.element.nextElementSibling
+                        messageElement.executeLayoutState(messageElement._state.type.split(':')[0].toString())
+                    }
                 })
                 break
             case 'phj-text-input':
@@ -709,8 +717,11 @@ class ComponentLogics extends HTMLElement {
                     }
                     // step 2: handle this;this.parent etc. or a normal selector
                     if (source === 'this') {
-                        let arrOfElements = [this.tagName]
+                        return [this]
+                        // todo code here under is complete bullshit but monitor this to be sure it actually is!
+/*                        let arrOfElements = [this.tagName]
                         let current = this
+                        console.log('just this?',this)
                         while (current && current.tagName !== 'BODY') {
                             current = current.parentElement
                             if (current) {
@@ -726,11 +737,15 @@ class ComponentLogics extends HTMLElement {
                                 selectorString += pathEl.toLowerCase()
                             }
                         })
+
                         if (selectorString.indexOf('body') === -1) {
+                            console.log('returning',[this])
                             return [this]
                         } else {
+                            console.log('returning queryAll string',selectorString)
+                            console.log('returning queryAll arr',document.querySelectorAll(selectorString))
                             return document.querySelectorAll(selectorString)
-                        }
+                        }*/
                     } else if (source.indexOf('this.parent') !== -1 || source.indexOf('this.next') !== -1 || source.indexOf('this.previous') !== -1) {
                         let index = 0
                         let endOfString = false
@@ -898,7 +913,7 @@ class ComponentLogics extends HTMLElement {
                                                     validationFailedFor.push({
                                                         element: el,
                                                         // todo create better messages
-                                                        message: response.error.errors[key.toString()].message
+                                                        errType: response.error.errors[key.toString()].properties.type
                                                     })
                                                 }
                                             })

@@ -5,9 +5,12 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="541aa9e8-3035-4513-acb8-e23ab7e5a48a" name="Default Changelist" comment="">
+      <change afterPath="$PROJECT_DIR$/message-elements/phj-message.js" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/forms/inner-select.js" beforeDir="false" afterPath="$PROJECT_DIR$/forms/inner-select.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/forms/phj-number-input.js" beforeDir="false" afterPath="$PROJECT_DIR$/forms/phj-number-input.js" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/forms/phj-select.js" beforeDir="false" afterPath="$PROJECT_DIR$/forms/phj-select.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/forms/phj-text-input.js" beforeDir="false" afterPath="$PROJECT_DIR$/forms/phj-text-input.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/index.html" beforeDir="false" afterPath="$PROJECT_DIR$/index.html" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/shared/component-logics.js" beforeDir="false" afterPath="$PROJECT_DIR$/shared/component-logics.js" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -37,7 +40,7 @@
     <property name="RunOnceActivity.OpenProjectViewOnStart" value="true" />
     <property name="RunOnceActivity.ShowReadmeOnStart" value="true" />
     <property name="WebServerToolWindowFactoryState" value="false" />
-    <property name="last_opened_file_path" value="$PROJECT_DIR$/forms" />
+    <property name="last_opened_file_path" value="$PROJECT_DIR$/message-elements" />
     <property name="node.js.detected.package.eslint" value="true" />
     <property name="node.js.detected.package.tslint" value="true" />
     <property name="node.js.path.for.package.eslint" value="project" />
@@ -49,15 +52,15 @@
     <property name="vue.rearranger.settings.migration" value="true" />
   </component>
   <component name="RecentsManager">
-    <key name="MoveFile.RECENT_KEYS">
-      <recent name="D:\privé-projecten\vistaline\title-elements" />
-    </key>
     <key name="CopyFile.RECENT_KEYS">
+      <recent name="D:\privé-projecten\vistaline\message-elements" />
       <recent name="D:\privé-projecten\vistaline\forms" />
       <recent name="D:\privé-projecten\vistaline\icons" />
       <recent name="D:\privé-projecten\vistaline\buttons" />
       <recent name="D:\privé-projecten\vistaline\box-elements" />
-      <recent name="D:\privé-projecten\vistaline\table-elements" />
+    </key>
+    <key name="MoveFile.RECENT_KEYS">
+      <recent name="D:\privé-projecten\vistaline\title-elements" />
     </key>
   </component>
   <component name="SpellCheckerSettings" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" DefaultDictionary="application-level" UseSingleDictionary="true" transferred="true" />
@@ -121,14 +124,8 @@
       <workItem from="1631641113477" duration="598000" />
       <workItem from="1631717280559" duration="11487000" />
       <workItem from="1631817002948" duration="12750000" />
-      <workItem from="1631944623510" duration="8380000" />
-    </task>
-    <task id="LOCAL-00002" summary="Third commit having a white screen in php storm why?">
-      <created>1627739855407</created>
-      <option name="number" value="00002" />
-      <option name="presentableId" value="LOCAL-00002" />
-      <option name="project" value="LOCAL" />
-      <updated>1627739855407</updated>
+      <workItem from="1631944623510" duration="8622000" />
+      <workItem from="1631982363484" duration="13497000" />
     </task>
     <task id="LOCAL-00003" summary="4e the commit restore the fault in my tag">
       <created>1627740015305</created>
@@ -466,7 +463,14 @@
       <option name="project" value="LOCAL" />
       <updated>1631831444423</updated>
     </task>
-    <option name="localTasksCounter" value="51" />
+    <task id="LOCAL-00051" summary="event -&gt; conditions -&gt; actionStream bugfixed: it works properly now!">
+      <created>1631957459485</created>
+      <option name="number" value="00051" />
+      <option name="presentableId" value="LOCAL-00051" />
+      <option name="project" value="LOCAL" />
+      <updated>1631957459485</updated>
+    </task>
+    <option name="localTasksCounter" value="52" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -476,7 +480,6 @@
     <ignored-roots>
       <path value="$PROJECT_DIR$/.." />
     </ignored-roots>
-    <MESSAGE value="fixing bugs event_handler&#10;adding the invisible layoutState to some components" />
     <MESSAGE value="prepraring bug fixes processAction-method: slotted content gives bad results" />
     <MESSAGE value="prepraring bug fixes processAction-method: slotted content gives bad results: part 2" />
     <MESSAGE value="fixed api: get specifications: altered the format of the response" />
@@ -501,7 +504,8 @@
     <MESSAGE value="refactoring the select element to make it able for other elements to detect that a selection has been made and they can respond to it: preparation" />
     <MESSAGE value="adding inner-select file" />
     <MESSAGE value="select is added, event fires whenever a selection is made BUT there still is a complicated bug in the disabling of the price field" />
-    <option name="LAST_COMMIT_MESSAGE" value="select is added, event fires whenever a selection is made BUT there still is a complicated bug in the disabling of the price field" />
+    <MESSAGE value="event -&gt; conditions -&gt; actionStream bugfixed: it works properly now!" />
+    <option name="LAST_COMMIT_MESSAGE" value="event -&gt; conditions -&gt; actionStream bugfixed: it works properly now!" />
   </component>
   <component name="WindowStateProjectService">
     <state x="586" y="198" key="#Inspections" timestamp="1627821810157">
@@ -512,10 +516,10 @@
       <screen x="0" y="0" width="1920" height="1040" />
     </state>
     <state x="690" y="267" key="#com.intellij.refactoring.safeDelete.UnsafeUsagesDialog/0.0.1920.1040@0.0.1920.1040" timestamp="1631364168910" />
-    <state x="0" y="88" key="CommitChangelistDialog2" timestamp="1631831443199">
+    <state x="0" y="88" key="CommitChangelistDialog2" timestamp="1631957458170">
       <screen x="0" y="0" width="1920" height="1040" />
     </state>
-    <state x="0" y="88" key="CommitChangelistDialog2/0.0.1920.1040@0.0.1920.1040" timestamp="1631831443199" />
+    <state x="0" y="88" key="CommitChangelistDialog2/0.0.1920.1040@0.0.1920.1040" timestamp="1631957458170" />
     <state x="184" y="86" key="DiffContextDialog" timestamp="1627729652791">
       <screen x="0" y="0" width="1920" height="1040" />
     </state>
@@ -532,10 +536,10 @@
       <screen x="0" y="0" width="1920" height="1040" />
     </state>
     <state x="461" y="165" key="SettingsEditor/0.0.1920.1040@0.0.1920.1040" timestamp="1627739971507" />
-    <state x="552" y="253" key="Vcs.Push.Dialog.v2" timestamp="1631831448400">
+    <state x="552" y="253" key="Vcs.Push.Dialog.v2" timestamp="1631957463819">
       <screen x="0" y="0" width="1920" height="1040" />
     </state>
-    <state x="552" y="253" key="Vcs.Push.Dialog.v2/0.0.1920.1040@0.0.1920.1040" timestamp="1631831448400" />
+    <state x="552" y="253" key="Vcs.Push.Dialog.v2/0.0.1920.1040@0.0.1920.1040" timestamp="1631957463819" />
     <state x="667" y="76" width="585" height="888" key="find.popup" timestamp="1629196980383">
       <screen x="0" y="0" width="1920" height="1040" />
     </state>

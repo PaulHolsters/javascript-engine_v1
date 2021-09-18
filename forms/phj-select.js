@@ -36,6 +36,7 @@ class PhjSelect extends ComponentLogics {
     }
 
     connectedCallback(){
+        // todo create an option-disabled mask
         // set css of the webcomponent
         // set HTML of the webcomponent
         this._setLayoutState('enabled')

@@ -8,6 +8,7 @@
     <title>Vistaline - administratief beheer</title>
     <script src="shared/component-logics.js"></script>
     <script src="box-elements/phj-box.js"></script>
+    <script src="message-elements/phj-message.js"></script>
     <script src="icons/phj-dots.js"></script>
     <script src="buttons/phj-button.js"></script>
     <script src="cards/phj-card.js"></script>
@@ -85,14 +86,13 @@ div{
 </phj-table>
 <phj-form value="" events="load:this=>invisible" url="get:http://localhost:3000/specifications/id">
     <phj-text-input label="Specificatie" prop="specification"></phj-text-input>
-    <phj-message type="error:required">Specificatie is een verplicht veld.</phj-message>
-    <!-- todo phj-number-input is not disabled-->
-        <phj-select text="Selecteer een type..." prop="type" label="Type" options="basic,option,extra"
-                events="[selected=1]change:clear=>phj-number-input(1),phj-number-input(1)=>disabled;[selected!=1]change:phj-number-input(1)=>enabled">
-        </phj-select>
-    <phj-message type="error:required">Je moet een type selecteren.</phj-message>
+    <phj-message events="load:this=>invisible" type="error:required">Specificatie is een verplicht veld.</phj-message>
+    <phj-select text="Selecteer een type..." prop="type" label="Type" options="basic,option,extra"
+            events="[selected=1]change:clear=>phj-number-input(1),phj-number-input(1)=>disabled;[selected!=1]change:phj-number-input(1)=>enabled">
+    </phj-select>
+    <phj-message events="load:this=>invisible" type="error:required">Je moet een type selecteren.</phj-message>
     <phj-number-input label="Prijs (excl.BTW)" prop="price" money="euro" decimals="2" ></phj-number-input>
-    <phj-message type="error:required">Prijs is een verplicht veld.</phj-message>
+    <phj-message events="load:this=>invisible" type="error:required">Prijs is een verplicht veld.</phj-message>
     <div style="width: max-content">
         <phj-button events="click:this.parent.parent=>invisible">Annuleren</phj-button>
         <phj-button events="click:reset">Reset</phj-button>
