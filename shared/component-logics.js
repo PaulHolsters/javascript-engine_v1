@@ -8,14 +8,15 @@ class ComponentLogics extends HTMLElement {
     _css
     _noEvent = false
 
-    _events = [{eventName: 'click',actions: [],conditions: []},
-        {eventName: 'hover',actions: [],conditions: []},
-        {eventName: 'hover-away',actions: [],conditions: []},
-        {eventName: 'change',actions: [],conditions: []},
-        {eventName: 'select',actions: [],conditions: []},
-        {eventName: 'load',actions: [],conditions: []},
-        {eventName: 'check',actions: [],conditions: []},
-        {eventName: 'blur',actions: [],conditions: []}]
+    // structure of an event-element: {eventName:String,actions:Array of {actionStream:[],conditions:String}}
+    _events = [{eventName: 'click',actions: []},
+        {eventName: 'hover',actions: []},
+        {eventName: 'hover-away',actions: []},
+        {eventName: 'change',actions: []},
+        {eventName: 'select',actions: []},
+        {eventName: 'load',actions: []},
+        {eventName: 'check',actions: []},
+        {eventName: 'blur',actions: []}]
     _state
 
     // the baseUrl variable should be used by the phj-content-elements component, everything inside that component can be considered
@@ -229,10 +230,6 @@ class ComponentLogics extends HTMLElement {
     }
 
     executeLayoutState(state) {
-        // todo waarom 2 keer number input?index.html?
-        console.log()
-        console.log(this,'current state',this._currentLayoutState,'new state',state)
-        console.log(this,'current css',this._css,'new css',this._layoutStates[state].css)
         this._currentLayoutState = state
         this._css = this._layoutStates[state].css
         this.shadowRoot.querySelector('style').remove()
@@ -252,7 +249,6 @@ class ComponentLogics extends HTMLElement {
                 this.shadowRoot.querySelector('textarea').removeAttribute('disabled')
             }
         }
-        console.log(this.shadowRoot)
     }
 
     _setShadow(html) {
@@ -455,28 +451,31 @@ class ComponentLogics extends HTMLElement {
         }
     }
 
-    _checkConditions(conditionArray){
-        conditionArray.forEach(cond=>{
-            if(cond==='selected=1'){
-                return (this._state.selected===1)
-            } else if(cond==='click.patch.status=idle'){
-                for (let i = 0;i<this._events.length;i++){
-                    if(this._events[i].eventName==='click'){
-                        return this._events[i].actions.find(action => {
-                            if (action.name === 'patch') {
-                                return true
-                            }
-                        }).status === 'idle'
-                    }
+    _checkConditions(conditionStr){
+        if(conditionStr==='selected=1'){
+            console.log('cond selected = 1 => ',this._state.selected===1)
+            console.log('state selected',this._state.selected)
+            return (this._state.selected===1)
+        } else if(conditionStr==='click.patch.status=idle'){
+            for (let i = 0;i<this._events.length;i++){
+                if(this._events[i].eventName==='click'){
+                    return this._events[i].actions.find(action => {
+                        if (action.name === 'patch') {
+                            return true
+                        }
+                    }).status === 'idle'
                 }
-                return false
-            } else if(cond==='selected!=1'){
-                return (this._state.selected!==1)
-            } else{
-                throw new Error('unknown condition')
             }
-        })
-        return true
+            return false
+        } else if(conditionStr==='selected!=1'){
+            console.log('condition select!=1 => ',this._state.selected!==1,'events are ',this._events)
+            console.log('state selected',this._state.selected)
+            return (this._state.selected!==1)
+        } else if(conditionStr===''){
+            return true
+        }else{
+            throw new Error('unknown condition')
+        }
     }
 
     async _getOne(id) {
@@ -625,24 +624,27 @@ class ComponentLogics extends HTMLElement {
             const events = eventProcess.split(';')
             for (let i = 0; i < events.length; i++) {
                 const eventNames = events[i].split(':')[0].split('/')
-                let conditionArray = []
+                // todo fix bug!
+                console.log(eventNames,'can you detect selected =1?')
+                console.log('condition exists? ',eventNames[0].indexOf('[')!==-1)
+                let conditionStr = ''
                 if(eventNames[0].indexOf('[')!==-1){
                     // todo separate conditions
-                    conditionArray = eventNames[0].substring(eventNames[0].indexOf('[')+1,eventNames[0].indexOf(']')).split(',')
+                    conditionStr = eventNames[0].substring(eventNames[0].indexOf('[')+1,eventNames[0].indexOf(']'))
                     // todo adapt first eventName
                     eventNames[0] = eventNames[0].substr(eventNames[0].indexOf(']')+1)
+                    console.log('eventNames now ',eventNames)
                 }
                 const actions = events[i].split(':')[1].split(',')
                 eventNames.forEach(name => {
-                    actions.forEach(action => {
-                        this._events.forEach(evt => {
-                            if (evt.eventName===name) {
-                                evt.actions.push({name: action, status: 'idle'})
-                                evt.conditions = conditionArray
-                            }
-                        })
+                    this._events.forEach(evt => {
+                        if (evt.eventName===name) {
+                            // todo fix bug: one condition per actionStream
+                            evt.actions.push({actionStream: actions, status: 'idle',conditions:conditionStr})
+                        }
                     })
                 })
+                console.log('events after initializing',this._events)
             }
             // setting up all necessary eventListeners for this component
             this._events.forEach(evt => {
@@ -675,9 +677,8 @@ class ComponentLogics extends HTMLElement {
                 }
             })
         } else {
-            // handling the actions that need to be performed through a function
-            // that is called from within the switch that handles a particular event
-            const processAction = async (eventName, action, index) => {
+            // action structure: {actionStream:[],status:String,conditions:String}
+            const processAction = async (eventName,actionObject, action, index) => {
                 // this is always one action that needs to be processed and now has the status 'running'
                 const replaceN = function (target) {
                     let index = 0
@@ -799,13 +800,13 @@ class ComponentLogics extends HTMLElement {
                         return document.querySelectorAll(source)
                     }
                 }
-                if (action.name.indexOf('=>') !== -1) {
-                    const source = action.name.split('=>')[0].toString().trim()
+                if (action.indexOf('=>') !== -1) {
+                    const source = action.split('=>')[0].toString().trim()
                     let sourceElements = source
                     if (source !== 'refresh' && source !== 'clear') {
                         sourceElements = setSource(source)
                     }
-                    let target = replaceN(action.name.split('=>')[1].trim())
+                    let target = replaceN(action.split('=>')[1].trim())
                     if (this._possibleLayoutStates.includes(target)) {
                         sourceElements.forEach(srcEl => {
                             srcEl.executeLayoutState(target)
@@ -843,8 +844,9 @@ class ComponentLogics extends HTMLElement {
                         }
                     }
                 } else {
+                    // another type of actions
                     // where dealing with crud functionality now (and maybe later other new possiblities for events functionalities)
-                    switch (action.name) {
+                    switch (action) {
                         case 'reset':
 
                             break
@@ -886,9 +888,7 @@ class ComponentLogics extends HTMLElement {
                                         }
                                     }
                                 })
-                                console.log('dp',dataPatch)
                                 await this._update(id, 'patch', dataPatch).then(response => {
-                                    console.log(response)
                                     if (response.error!==undefined) {
                                         // update contains validation errors
                                         const validationFailedFor = []
@@ -908,7 +908,6 @@ class ComponentLogics extends HTMLElement {
                                     } else {
                                         console.log('ok?')
                                     }
-                                    console.log(this._events,eventName,'log')
                                     this._findValueObject(this._events, eventName)[index].status = 'idle'
                                 }).catch(err => {
                                     console.log(err)
@@ -948,10 +947,14 @@ class ComponentLogics extends HTMLElement {
                         for (const el of this._events) {
                             if (el.eventName==='click' && el.actions.length > 0) {
                                 for (let i = 0; i < el.actions.length; i++) {
-                                    // todo only processAction if conditions are met
-                                    if(this._checkConditions(el.conditions)){
+                                    if(this._checkConditions(el.actions[i].conditions)){
                                         el.actions[i].status = 'running'
-                                        await processAction('click', el.actions[i], i)
+                                        for (const action of el.actions[i].actionStream) {
+                                            console.log(action)
+                                            // todo fix bug: you do not always choose the correct actionStream to perform
+
+                                            await processAction('click', el.actions[i],action, i)
+                                        }
                                     }
                                 }
                             }
@@ -962,13 +965,19 @@ class ComponentLogics extends HTMLElement {
                     }
                     break
                 case 'select-changed':
+                    this._state.selected = this._state.options.indexOf(eventProcess.detail)+1
                     for (const el of this._events ) {
                         if (el.eventName==='change' && el.actions.length > 0) {
                             for (let i = 0; i < el.actions.length; i++) {
-                                // todo only processAction if conditions are met
-                                if(this._checkConditions(el.conditions)){
+                                console.log('conditions to check', el.actions[i].conditions)
+                                if(this._checkConditions(el.actions[i].conditions)){
+                                    console.log('performing actions for condition ',el.actions[i].conditions)
                                     el.actions[i].status = 'running'
-                                    await processAction('change', el.actions[i], i)
+                                    for (const action of el.actions[i].actionStream) {
+                                        // todo fix bug: you do not always choose the correct actionStream to perform
+                                        console.log('start performing action ',action)
+                                        await processAction('change', el.actions[i],action, i)
+                                    }
                                 }
                             }
                         }
@@ -979,7 +988,9 @@ class ComponentLogics extends HTMLElement {
                         if (el.eventName==='load' && el.actions.length > 0) {
                             for (let i = 0; i < el.actions.length; i++) {
                                 el.actions[i].status = 'running'
-                                processAction('load', el.actions[i], i)
+                                for (const action of el.actions[i].actionStream) {
+                                    processAction('load', el.actions[i],action, i)
+                                }
                             }
                         }
                     })

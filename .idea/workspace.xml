@@ -5,13 +5,9 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="541aa9e8-3035-4513-acb8-e23ab7e5a48a" name="Default Changelist" comment="">
-      <change beforePath="$PROJECT_DIR$/.idea/inspectionProfiles/Project_Default.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/inspectionProfiles/Project_Default.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/forms/inner-select.js" beforeDir="false" afterPath="$PROJECT_DIR$/forms/inner-select.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/forms/phj-form.js" beforeDir="false" afterPath="$PROJECT_DIR$/forms/phj-form.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/forms/phj-number-input.js" beforeDir="false" afterPath="$PROJECT_DIR$/forms/phj-number-input.js" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/forms/phj-select.js" beforeDir="false" afterPath="$PROJECT_DIR$/forms/phj-select.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/index.html" beforeDir="false" afterPath="$PROJECT_DIR$/index.html" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/shared/component-logics.js" beforeDir="false" afterPath="$PROJECT_DIR$/shared/component-logics.js" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -124,14 +120,8 @@
       <workItem from="1631565251527" duration="1124000" />
       <workItem from="1631641113477" duration="598000" />
       <workItem from="1631717280559" duration="11487000" />
-      <workItem from="1631817002948" duration="12576000" />
-    </task>
-    <task id="LOCAL-00001" summary="Second commit for testing purposes">
-      <created>1627739619455</created>
-      <option name="number" value="00001" />
-      <option name="presentableId" value="LOCAL-00001" />
-      <option name="project" value="LOCAL" />
-      <updated>1627739619455</updated>
+      <workItem from="1631817002948" duration="12750000" />
+      <workItem from="1631944623510" duration="8380000" />
     </task>
     <task id="LOCAL-00002" summary="Third commit having a white screen in php storm why?">
       <created>1627739855407</created>
@@ -469,7 +459,14 @@
       <option name="project" value="LOCAL" />
       <updated>1631825731876</updated>
     </task>
-    <option name="localTasksCounter" value="50" />
+    <task id="LOCAL-00050" summary="select is added, event fires whenever a selection is made BUT there still is a complicated bug in the disabling of the price field">
+      <created>1631831444422</created>
+      <option name="number" value="00050" />
+      <option name="presentableId" value="LOCAL-00050" />
+      <option name="project" value="LOCAL" />
+      <updated>1631831444423</updated>
+    </task>
+    <option name="localTasksCounter" value="51" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -479,7 +476,6 @@
     <ignored-roots>
       <path value="$PROJECT_DIR$/.." />
     </ignored-roots>
-    <MESSAGE value="handling events:&#10;done = this selector, handling load event; handling click event;&#10;layoutStates:&#10;done = invisible elements" />
     <MESSAGE value="fixing bugs event_handler&#10;adding the invisible layoutState to some components" />
     <MESSAGE value="prepraring bug fixes processAction-method: slotted content gives bad results" />
     <MESSAGE value="prepraring bug fixes processAction-method: slotted content gives bad results: part 2" />
@@ -504,7 +500,8 @@
     <MESSAGE value="refactoring _events variable to make it possible to implement conditional events" />
     <MESSAGE value="refactoring the select element to make it able for other elements to detect that a selection has been made and they can respond to it: preparation" />
     <MESSAGE value="adding inner-select file" />
-    <option name="LAST_COMMIT_MESSAGE" value="adding inner-select file" />
+    <MESSAGE value="select is added, event fires whenever a selection is made BUT there still is a complicated bug in the disabling of the price field" />
+    <option name="LAST_COMMIT_MESSAGE" value="select is added, event fires whenever a selection is made BUT there still is a complicated bug in the disabling of the price field" />
   </component>
   <component name="WindowStateProjectService">
     <state x="586" y="198" key="#Inspections" timestamp="1627821810157">
@@ -515,10 +512,10 @@
       <screen x="0" y="0" width="1920" height="1040" />
     </state>
     <state x="690" y="267" key="#com.intellij.refactoring.safeDelete.UnsafeUsagesDialog/0.0.1920.1040@0.0.1920.1040" timestamp="1631364168910" />
-    <state x="0" y="88" key="CommitChangelistDialog2" timestamp="1631825731132">
+    <state x="0" y="88" key="CommitChangelistDialog2" timestamp="1631831443199">
       <screen x="0" y="0" width="1920" height="1040" />
     </state>
-    <state x="0" y="88" key="CommitChangelistDialog2/0.0.1920.1040@0.0.1920.1040" timestamp="1631825731132" />
+    <state x="0" y="88" key="CommitChangelistDialog2/0.0.1920.1040@0.0.1920.1040" timestamp="1631831443199" />
     <state x="184" y="86" key="DiffContextDialog" timestamp="1627729652791">
       <screen x="0" y="0" width="1920" height="1040" />
     </state>
@@ -535,10 +532,10 @@
       <screen x="0" y="0" width="1920" height="1040" />
     </state>
     <state x="461" y="165" key="SettingsEditor/0.0.1920.1040@0.0.1920.1040" timestamp="1627739971507" />
-    <state x="552" y="253" key="Vcs.Push.Dialog.v2" timestamp="1631735757519">
+    <state x="552" y="253" key="Vcs.Push.Dialog.v2" timestamp="1631831448400">
       <screen x="0" y="0" width="1920" height="1040" />
     </state>
-    <state x="552" y="253" key="Vcs.Push.Dialog.v2/0.0.1920.1040@0.0.1920.1040" timestamp="1631735757519" />
+    <state x="552" y="253" key="Vcs.Push.Dialog.v2/0.0.1920.1040@0.0.1920.1040" timestamp="1631831448400" />
     <state x="667" y="76" width="585" height="888" key="find.popup" timestamp="1629196980383">
       <screen x="0" y="0" width="1920" height="1040" />
     </state>

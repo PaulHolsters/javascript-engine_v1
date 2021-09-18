@@ -36,7 +36,7 @@ class InnerSelect extends HTMLSelectElement {
 
     _notifyParent(){
         // todo create custom event that bubbles up to the root component: composed path = true!
-        const selectChanged = new Event('select-changed',{bubbles:true,composed:true})
+        const selectChanged = new CustomEvent('select-changed',{bubbles:true,composed:true,detail:this.value})
         this.dispatchEvent(selectChanged)
     }
 

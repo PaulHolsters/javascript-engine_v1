@@ -48,7 +48,6 @@ class PhjSelect extends ComponentLogics {
         // set innerhtml
         this._executeShadow()
         this.addEventListener('select-changed',this._eventHandler)
-        console.log('eventlistener added')
         // set eventHandlers and handle attributes
         this._setUpAttributes('label','events','prop','text','options')
     }
