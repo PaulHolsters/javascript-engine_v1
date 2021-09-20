@@ -17,7 +17,9 @@ class ComponentLogics extends HTMLElement {
         {eventName: 'load',actions: []},
         {eventName: 'check',actions: []},
         {eventName: 'blur',actions: []},
-        {eventName: 'input',actions: []},]
+        {eventName: 'input',actions: []},
+        {eventName: 'prefill',actions: []},
+    ]
 
     _state
 
@@ -451,6 +453,7 @@ class ComponentLogics extends HTMLElement {
     }
 
     _checkConditions(eventName,actions,i){
+        console.log(eventName,this._events)
         const conditionStr = this._events.find(event=>{
             return event.eventName===eventName
         }).actions[i].conditions
@@ -655,6 +658,9 @@ class ComponentLogics extends HTMLElement {
                             break
                         case 'change':
                             this.shadowRoot.querySelector('select').addEventListener('change', this.shadowRoot.querySelector('select')._notifyParent)
+                            break
+                        case 'prefill':
+                            this.addEventListener('prefill', this._eventHandler)
                             break
                         case 'blur':
                             this.addEventListener('blur', this._eventHandler)
@@ -921,9 +927,8 @@ class ComponentLogics extends HTMLElement {
                                         })
                                         parent._executeValidation(validationFailedFor)
                                     } else {
-                                        console.log('ok?')
+                                        getActionObject().status = 'idle'
                                     }
-                                    getActionObject().status = 'idle'
                                 }).catch(err => {
                                     console.log(err)
                                 })
@@ -987,6 +992,23 @@ class ComponentLogics extends HTMLElement {
                                     for (const actionData of el.actions[i].actionStream) {
                                         actionData.status = 'running'
                                         await processAction('change',actionData.action, i)
+                                    }
+                                }
+                            }
+                        }
+                    }
+                    break
+                case 'prefill':
+                    if(this.tagName.toLowerCase()==='phj-select'){
+                        this._state.selected = this._state.options.indexOf(eventProcess.detail)+1
+                    }
+                    for (const el of this._events ) {
+                        if (el.eventName==='prefill' && el.actions.length > 0) {
+                            for (let i = 0; i < el.actions.length; i++) {
+                                if(this._checkConditions('prefill',el.actions,i)){
+                                    for (const actionData of el.actions[i].actionStream) {
+                                        actionData.status = 'running'
+                                        await processAction('prefill',actionData.action, i)
                                     }
                                 }
                             }

@@ -34,78 +34,72 @@ div{
 </style>
 <body>
 
-<!-- todo create conditional actions : ONGOING
--->
-
-<!-- todo: form validation -->
-<!-- todo: messages: success, fail, info -->
-
+<!-- todo create a fill event -->
+<!-- todo make sure the processes involved terminate when the form is reset -->
 <!-- todo: button=>implement reset functionality  -->
-
 <!-- todo: better layout for phj-select -->
 <!-- todo: add column-layout as an attribute to phj-table -->
 <!-- todo: don't show selected item in dropdown -->
 <!-- todo: don't show the text-option once a real item has been selected for the first time -->
-<!-- todo: add a 'selected' attribute -->
-<!-- todo: add a 'empty' attribute to phj-number-input -->
-
 <!-- todo: title and create on table -->
 <!-- todo: buttons: create functionality -->
-
 <!-- todo: buttons: delete functionality  -->
-
 <!-- todo create the hover functionality event stuff (LATER) -->
-
 <!-- todo: phj-master component (=wrapper for one or more phj-table components) -->
 <!-- todo: phj-action component (=wrapper for one or more phj-form components)-->
 <!-- todo: phj-crud-template component (=wrapper for phj-master+phj-detail+phj-action-pane components)-->
 
-
-<phj-table url="get:http://localhost:3000/specifications" column-layout="3:euro" actions="Acties" events="click:this .actions=>invisible,this .action-btn=>visible" value="false">
-    <phj-box>
-        <phj-button icon="phj-dots"
-                    events="click/hover:this.parent.parent.parent.parent .action-btn=>visible,this.parent.parent.parent.parent .actions=>invisible,
-                    this=>invisible,phj-form(1)=>invisible,phj-form(2)=>invisible,this.next=>visible;click:this=>phj-table(1),clear=>phj-form"
-                    custom-styles="div{border:none;background:none;color:black}div:hover{background-color:darkgray;color:white}"
-                    class="action-btn"
-                    value="true"
-        ></phj-button>
-        <phj-box events="load:this=>invisible" class="actions">
-            <phj-button
-                    events="click:phj-form(1)=>visible,this.parent=>invisible,this.parent.previous=>visible,this.parent.parent.next=>phj-form(1)"
-                    custom-styles="div{border:none;background:none;color:blue;text-decoration:underline;}div:hover{color:darkblue;text-decoration:none;}">Bekijken
-            </phj-button>
-            <phj-button events="click:phj-form(1)=>visible,this.parent=>invisible,this.parent.previous=>visible,this.parent.parent.next=>phj-form(1)"
-                        custom-styles="div{border:none;background:none;color:blue;text-decoration:underline;}div:hover{color:darkblue;text-decoration:none;}">Aanpassen
-            </phj-button>
-            <phj-button events="click:phj-form(2)=>visible,this.parent=>invisible,this.parent.previous=>visible,this.parent.parent.next=>phj-form(2)"
-                        custom-styles="div{border:none;background:none;color:blue;text-decoration:underline;}div:hover{color:darkblue;text-decoration:none;}">Verwijderen
-            </phj-button>
+    <phj-table url="get:http://localhost:3000/specifications" column-layout="3:euro" actions="Acties" events="click:this .actions=>invisible,this .action-btn=>visible" value="false">
+        <phj-box>
+            <phj-button icon="phj-dots"
+                        events="click/hover:this.parent.parent.parent.parent .action-btn=>visible,this.parent.parent.parent.parent .actions=>invisible,
+                        this=>invisible,phj-form(1)=>invisible,phj-form(2)=>invisible,this.next=>visible;click:this=>phj-table(1),
+                        clear=>phj-form,phj-message=>invisible,phj-text-input=>enabled,phj-number-input=>enabled"
+                        custom-styles="div{border:none;background:none;color:black}div:hover{background-color:darkgray;color:white}"
+                        class="action-btn"
+                        value="true"
+            ></phj-button>
+            <phj-box events="load:this=>invisible" class="actions">
+                <phj-button
+                        events="click:phj-form(1)=>visible,this.parent=>invisible,this.parent.previous=>visible,this.parent.parent.next=>phj-form(1)"
+                        custom-styles="div{border:none;background:none;color:blue;text-decoration:underline;}div:hover{color:darkblue;text-decoration:none;}">Bekijken
+                </phj-button>
+                <phj-button events="click:phj-form(1)=>visible,this.parent=>invisible,this.parent.previous=>visible,this.parent.parent.next=>phj-form(1)"
+                            custom-styles="div{border:none;background:none;color:blue;text-decoration:underline;}div:hover{color:darkblue;text-decoration:none;}">Aanpassen
+                </phj-button>
+                <phj-button events="click:phj-form(2)=>visible,this.parent=>invisible,this.parent.previous=>visible,this.parent.parent.next=>phj-form(2)"
+                            custom-styles="div{border:none;background:none;color:blue;text-decoration:underline;}div:hover{color:darkblue;text-decoration:none;}">Verwijderen
+                </phj-button>
+            </phj-box>
         </phj-box>
-    </phj-box>
-</phj-table>
-<phj-form value="" events="load:this=>invisible" url="get:http://localhost:3000/specifications/id">
-    <phj-text-input label="Specificatie" prop="specification"></phj-text-input>
-    <phj-message events="load:this=>invisible" type="error:required">Specificatie is een verplicht veld.</phj-message>
-    <phj-select text="Selecteer een type..." prop="type" label="Type" options="basic,option,extra"
-            events="[selected=1]change:clear=>phj-number-input(1),phj-number-input(1)=>disabled;[selected!=1]change:phj-number-input(1)=>enabled">
-    </phj-select>
-    <phj-message events="load:this=>invisible" type="error:required">Je moet een type selecteren.</phj-message>
-    <phj-number-input label="Prijs (excl.BTW)" prop="price" money="euro" decimals="2" ></phj-number-input>
-    <phj-message events="load:this=>invisible" type="error:required">Prijs is een verplicht veld.</phj-message>
-    <div style="width: max-content">
-        <phj-button events="click:this.parent.parent=>invisible">Annuleren</phj-button>
-        <phj-button events="click:reset">Reset</phj-button>
-        <phj-button events="click:patch;[click.patch.status=idle]click:refresh=>phj-table(1),clear,this.parent.parent=>invisible">Bewaar</phj-button>
-    </div>
-</phj-form>
-<phj-form value="" events="load:this=>invisible" url="get:http://localhost:3000/specifications/id">
-    <div style="width: max-content">
-        <phj-button events="click:this.parent.parent=>invisible">Annuleren</phj-button>
-        <phj-button events="click:delete">Bewaar</phj-button>
-    </div>
-</phj-form>
+    </phj-table>
+    <phj-form value="" events="load:this=>invisible" url="get:http://localhost:3000/specifications/id">
+        <phj-text-input label="Specificatie"
+                        prop="specification"
+                        events="[phj-message(1)=visible]fill:phj-message(1)=>invisible,this=>enabled">
+        </phj-text-input>
+        <phj-message events="load:this=>invisible" type="error:required">Specificatie is een verplicht veld.</phj-message>
+        <phj-select text="Selecteer een type..." prop="type" label="Type" options="basic,option,extra"
+                events="[selected=1]change:clear=>phj-number-input(1),phj-number-input(1)=>disabled;
+                [selected=1]prefill:phj-number-input(1)=>disabled;
+                [selected!=1]change:phj-number-input(1)=>enabled">
+        </phj-select>
+        <phj-number-input label="Prijs (excl.BTW)" prop="price" money="euro" decimals="2"
+                          events="[phj-message(2)=visible]fill:phj-message(2)=>invisible,this=>enabled"></phj-number-input>
+        <phj-message events="load:this=>invisible" type="error:required">Prijs is een verplicht veld.</phj-message>
+        <div style="width: max-content">
+            <phj-button events="click:this.parent.parent=>invisible">Annuleren</phj-button>
+            <phj-button events="click:reset">Reset</phj-button>
 
+            <phj-button events="click:patch;[click.patch.status=idle]click:refresh=>phj-table(1),clear,this.parent.parent=>invisible">Bewaar</phj-button>
+        </div>
+    </phj-form>
+    <phj-form value="" events="load:this=>invisible" url="get:http://localhost:3000/specifications/id">
+        <div style="width: max-content">
+            <phj-button events="click:this.parent.parent=>invisible">Annuleren</phj-button>
+            <phj-button events="click:delete">Bewaar</phj-button>
+        </div>
+    </phj-form>
 <!--<phj-button>My button</phj-button>
 <phj-box>
     <phj-text text="mynewtitle"></phj-text>
@@ -219,4 +213,3 @@ div{
 </phj-content>-->
 </body>
 </html>
-

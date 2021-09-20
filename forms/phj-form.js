@@ -100,19 +100,22 @@ class PhjForm extends ComponentLogics {
                     if(children[j].nodeType === 1 && children[j].hasAttribute('prop')){
                         for (let i = 0; i < keys.length; i++) {
                             if (keys[i] === children[j].getAttribute('prop').trim()) {
+                                // todo fire prefill event to notify the children components with a prefill event listed on their events attribute
                                 if(children[j].nodeName.toLowerCase()==='phj-select'){
-                                    console.log('SELECT DETECTED')
                                     if(!values[i]){
                                         children[j]._setState('selected',0)
+                                        children[j].dispatchEvent(new CustomEvent('prefill',{detail:0}))
                                     } else{
-                                        console.log(values[i],'for select')
                                         children[j]._setState('selected',values[i])
+                                        children[j].dispatchEvent(new CustomEvent('prefill',{detail:values[i]}))
                                     }
                                 } else{
                                     if(!values[i]){
                                         children[j]._setState('text','')
+                                        children[j].dispatchEvent(new CustomEvent('prefill',{detail:''}))
                                     } else{
                                         children[j]._setState('text',values[i])
+                                        children[j].dispatchEvent(new CustomEvent('prefill',{detail:values[i]}))
                                     }
                                 }
                                 break
