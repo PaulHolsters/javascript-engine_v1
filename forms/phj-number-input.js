@@ -84,7 +84,7 @@ class PhjNumberInput extends ComponentLogics {
         // set HTML of the webcomponent
         this._setShadow(`
         <div id="text" style="display: none"><slot></slot></div>
-        <input type="number" id="text2">
+        <input type="number" id="text2" oninput="if(this.value.length===1)this.dispatchEvent(new CustomEvent('fill',{bubbles:true,composed:true,detail:this.value}))">
         `)
         // set innerhtml
         this._executeShadow()

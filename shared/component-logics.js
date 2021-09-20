@@ -19,6 +19,7 @@ class ComponentLogics extends HTMLElement {
         {eventName: 'blur',actions: []},
         {eventName: 'input',actions: []},
         {eventName: 'prefill',actions: []},
+        {eventName: 'fill',actions: []},
     ]
 
     _state
@@ -452,8 +453,20 @@ class ComponentLogics extends HTMLElement {
         }
     }
 
+    _replaceN(target) {
+        let index = 0
+        let startString = target
+        while (startString.indexOf('(', index) !== -1) {
+            const firstPart = startString.substring(0, startString.indexOf('(', index))
+            const lastPart = startString.substr(startString.indexOf(')', index) + 1)
+            const replacement = ':nth-of-type(' + startString.substring(startString.indexOf('(', index) + 1, startString.indexOf(')', index)) + ')'
+            startString = firstPart + replacement + lastPart
+            index = firstPart.length + replacement.length
+        }
+        return startString
+    }
+
     _checkConditions(eventName,actions,i){
-        console.log(eventName,this._events)
         const conditionStr = this._events.find(event=>{
             return event.eventName===eventName
         }).actions[i].conditions
@@ -477,7 +490,16 @@ class ComponentLogics extends HTMLElement {
             return conditionOK
         } else if(conditionStr==='selected!=1'){
             return (this._state.selected!==1)
-        } else if(conditionStr===''){
+        } else if(conditionStr.split('=').length>1){
+            let conditionOK=true
+            document.querySelectorAll(this._replaceN(conditionStr.split('=')[0])).forEach(el=>{
+                if(el._currentLayoutState===conditionStr.split('=')[1]){
+                    conditionOK = false
+                }
+            })
+            return conditionOK
+        }
+        else if(conditionStr===''){
             return true
         }else{
             throw new Error('unknown condition')
@@ -661,6 +683,9 @@ class ComponentLogics extends HTMLElement {
                             break
                         case 'prefill':
                             this.addEventListener('prefill', this._eventHandler)
+                            break
+                        case 'fill':
+                            this.addEventListener('fill', this._eventHandler)
                             break
                         case 'blur':
                             this.addEventListener('blur', this._eventHandler)
@@ -1009,6 +1034,24 @@ class ComponentLogics extends HTMLElement {
                                     for (const actionData of el.actions[i].actionStream) {
                                         actionData.status = 'running'
                                         await processAction('prefill',actionData.action, i)
+                                    }
+                                }
+                            }
+                        }
+                    }
+                    break
+                case 'fill':
+                    if(this.tagName.toLowerCase()==='phj-select'){
+                        // dit is altijd nodig om de conditions te laten werken
+                        this._state.selected = this._state.options.indexOf(eventProcess.detail)+1
+                    }
+                    for (const el of this._events ) {
+                        if (el.eventName==='fill' && el.actions.length > 0) {
+                            for (let i = 0; i < el.actions.length; i++) {
+                                if(this._checkConditions('fill',el.actions,i)){
+                                    for (const actionData of el.actions[i].actionStream) {
+                                        actionData.status = 'running'
+                                        await processAction('fill',actionData.action, i)
                                     }
                                 }
                             }
