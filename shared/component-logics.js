@@ -20,6 +20,7 @@ class ComponentLogics extends HTMLElement {
         {eventName: 'input',actions: []},
         {eventName: 'prefill',actions: []},
         {eventName: 'fill',actions: []},
+        {eventName: 'empty',actions: []},
     ]
 
     _state
@@ -490,10 +491,26 @@ class ComponentLogics extends HTMLElement {
             return conditionOK
         } else if(conditionStr==='selected!=1'){
             return (this._state.selected!==1)
-        } else if(conditionStr.split('=').length>1){
+        } else if(conditionStr.indexOf('&&')!==-1){
+            let conditionOK = true
+            const cond1 = conditionStr.split('&&')[0]
+            const cond2 = conditionStr.split('&&')[1]
+            if(cond1.split('=').length>1) {
+                document.querySelectorAll(this._replaceN(cond1.split('=')[0])).forEach(el => {
+                    if (el._currentLayoutState !== cond1.split('=')[1]) {
+                        conditionOK = false
+                    }
+                })
+            }
+            if(this._state[cond2.split('=')[0]]!==cond2.split('=')[1]){
+                conditionOK = false
+            }
+            return conditionOK
+        }
+        else if(conditionStr.split('=').length>1){
             let conditionOK=true
             document.querySelectorAll(this._replaceN(conditionStr.split('=')[0])).forEach(el=>{
-                if(el._currentLayoutState===conditionStr.split('=')[1]){
+                if(el._currentLayoutState!==conditionStr.split('=')[1]){
                     conditionOK = false
                 }
             })
@@ -686,6 +703,9 @@ class ComponentLogics extends HTMLElement {
                             break
                         case 'fill':
                             this.addEventListener('fill', this._eventHandler)
+                            break
+                        case 'empty':
+                            this.addEventListener('empty', this._eventHandler)
                             break
                         case 'blur':
                             this.addEventListener('blur', this._eventHandler)
@@ -952,11 +972,12 @@ class ComponentLogics extends HTMLElement {
                                         })
                                         parent._executeValidation(validationFailedFor)
                                     } else {
-                                        getActionObject().status = 'idle'
+                                        console.log('no error occured')
                                     }
                                 }).catch(err => {
                                     console.log(err)
                                 })
+                                getActionObject().status = 'idle'
                             }
                             break
                         case 'delete':
@@ -1044,6 +1065,8 @@ class ComponentLogics extends HTMLElement {
                     if(this.tagName.toLowerCase()==='phj-select'){
                         // dit is altijd nodig om de conditions te laten werken
                         this._state.selected = this._state.options.indexOf(eventProcess.detail)+1
+                    } else if(this.tagName.toLowerCase()==='phj-number-input' || this.tagName.toLowerCase()==='phj-text-input'){
+                        this._state.text = eventProcess.detail
                     }
                     for (const el of this._events ) {
                         if (el.eventName==='fill' && el.actions.length > 0) {
@@ -1052,6 +1075,29 @@ class ComponentLogics extends HTMLElement {
                                     for (const actionData of el.actions[i].actionStream) {
                                         actionData.status = 'running'
                                         await processAction('fill',actionData.action, i)
+                                    }
+                                }
+                            }
+                        }
+                    }
+                    break
+                case 'empty':
+                    console.log('empty detected')
+                    if(this.tagName.toLowerCase()==='phj-select'){
+                        // dit is altijd nodig om de conditions te laten werken
+                        this._state.selected = this._state.options.indexOf(eventProcess.detail)+1
+                    } else if(this.tagName.toLowerCase()==='phj-number-input' || this.tagName.toLowerCase()==='phj-text-input'){
+                        this._state.text = eventProcess.detail
+                    }
+                    for (const el of this._events ) {
+                        if (el.eventName==='empty' && el.actions.length > 0) {
+                            for (let i = 0; i < el.actions.length; i++) {
+                                console.log('action=',el.actions[i])
+                                if(this._checkConditions('empty',el.actions,i)){
+                                    console.log('passed the conditions')
+                                    for (const actionData of el.actions[i].actionStream) {
+                                        actionData.status = 'running'
+                                        await processAction('empty',actionData.action, i)
                                     }
                                 }
                             }
@@ -1101,6 +1147,22 @@ class ComponentLogics extends HTMLElement {
                         if (calcDcms() > this._state.showDecimals) {
                             const reduceWith = calcDcms() - this._state.showDecimals
                             this.shadowRoot.querySelector('input').value = this.shadowRoot.querySelector('input').value.substring(0, this.shadowRoot.querySelector('input').value.length - reduceWith)
+                        }
+                    } else{
+                        // handle normal blur event
+                        console.log('blur')
+                        for (const el of this._events ) {
+                            if (el.eventName==='blur' && el.actions.length > 0) {
+                                for (let i = 0; i < el.actions.length; i++) {
+                                    console.log(el.actions[i])
+                                    if(this._checkConditions('blur',el.actions,i)){
+                                        for (const actionData of el.actions[i].actionStream) {
+                                            actionData.status = 'running'
+                                            await processAction('blur',actionData.action, i)
+                                        }
+                                    }
+                                }
+                            }
                         }
                     }
                     break

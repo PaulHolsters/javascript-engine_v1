@@ -77,13 +77,14 @@ display: block;
         // set HTML of the webcomponent
         this._setShadow(`
         <div id="text" style="display: none"><slot></slot></div>
-        <input type="text" id="text2" oninput="if(this.value.length===1)this.dispatchEvent(new CustomEvent('fill',{bubbles:true,composed:true,detail:this.value}))">
+        <input type="text" id="text2" oninput="if(this.value.length===1){this.dispatchEvent(new CustomEvent('fill',{bubbles:true,composed:true,detail:this.value}))}
+        else if(this.value.length===0){this.dispatchEvent(new CustomEvent('empty',{bubbles:true,composed:true,detail:this.value}))}">
         `)
         // set innerhtml
         this._executeShadow()
         // set eventHandlers and handle attributes
-        // todo make the label attribute do its job
         this._setUpAttributes('text','events','label','prop')
+        this.addEventListener('empty',this._eventHandler)
     }
 }
 customElements.define('phj-text-input',PhjTextInput)
