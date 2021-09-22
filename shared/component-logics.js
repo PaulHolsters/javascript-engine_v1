@@ -335,6 +335,13 @@ class ComponentLogics extends HTMLElement {
                         this._url = this.getAttribute('url').substring(4)
                     }
                     break
+                case 'title':
+                    if (this.hasAttribute('title')) {
+                        this._state.title = this.getAttribute('title').trim()
+                        this._state.hasTitle = true
+                    }
+                    break
+
                 case 'options':
                     if (this.hasAttribute('options')) {
                         this._state.options = this.getAttribute('options').trim().split(',')
@@ -392,11 +399,6 @@ class ComponentLogics extends HTMLElement {
                         this._state.actions = this.getAttribute('actions')
                     }
                     break
-                case 'title':
-                    if (this.hasAttribute('title')) {
-                        this._state.title = this.getAttribute('title')
-                    }
-                    break
                 case 'type':
                     if (this.hasAttribute('type')) {
                         this._state.type = this.getAttribute('type')
@@ -407,7 +409,7 @@ class ComponentLogics extends HTMLElement {
                     if (this.hasAttribute('events')) {
                         this._eventHandler(this.getAttribute('events')).then().catch()
                     }
-                    break;
+                    break
                 case 'icon':
                     if (this.hasAttribute('icon')) {
                         const icon = this.getAttribute('icon').split(' ')
@@ -418,7 +420,18 @@ class ComponentLogics extends HTMLElement {
                             this.shadowRoot.querySelector('div').insertAdjacentElement('afterbegin', el);
                         }
                     }
-                    break;
+                    break
+                case 'create':
+                    if (this.hasAttribute('create')) {
+                        this._state.createBtn = this.getAttribute('create').trim()
+                        this._state.hasCreateBtn = true
+                    }
+                    break
+                case 'target':
+                    if (this.hasAttribute('target')) {
+                        this._state.targetStr = this.getAttribute('target').trim()
+                    }
+                    break
                 case 'text':
                     if (this.hasAttribute('text')) {
                         this._state.text = this.getAttribute('text').trim()

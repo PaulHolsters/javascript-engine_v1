@@ -27,8 +27,11 @@ class Button extends ComponentLogics {
         border-radius: 5px;
         color: aliceblue;
         margin: 2px;
-        width: fit-content;
+        width: max-content;
     } 
+    slot{
+    display: inline-block;
+    }
     div:hover{
         cursor:pointer;
     } 
@@ -51,8 +54,11 @@ class Button extends ComponentLogics {
         border-radius: 5px;
         color: aliceblue;
         margin: 2px;
-        width: fit-content;
+        width: max-content;
     } 
+        slot{
+    display: inline-block;
+    }
     div:hover{
         cursor:pointer;
     } 
@@ -75,11 +81,14 @@ class Button extends ComponentLogics {
         border-radius: 5px;
         color: aliceblue;
         margin: 2px;
-        width: fit-content;
+        width: max-content;
     }  
     div:hover{
         cursor:not-allowed;
     } 
+        slot{
+    display: inline-block;
+    }
     :host{
         display: inline-block;
     }                                
@@ -99,8 +108,11 @@ class Button extends ComponentLogics {
         border-radius: 5px;
         color: aliceblue;
         margin: 2px;
-        width: fit-content;
-    }  
+        width: max-content;
+    } 
+        slot{
+    display: inline-block;
+    } 
     div:hover{
         cursor:not-allowed;
     } 

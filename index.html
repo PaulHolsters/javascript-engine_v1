@@ -10,6 +10,7 @@
     <script src="box-elements/phj-box.js"></script>
     <script src="message-elements/phj-message.js"></script>
     <script src="icons/phj-dots.js"></script>
+    <script src="icons/phj-create.js"></script>
     <script src="buttons/phj-button.js"></script>
     <script src="cards/phj-card.js"></script>
     <script src="table-elements/phj-table.js"></script>
@@ -17,6 +18,7 @@
     <script src="crud-components/phj-action-pane.js"></script>
     <script src="content-elements/phj-content.js"></script>
     <script src="templates/phj-crud-template.js"></script>
+    <script src="title-elements/phj-title.js"></script>
     <script src="data-transmitters/phj-id.js"></script>
     <script src="text-elements/phj-text.js"></script>
     <script src="forms/phj-form.js"></script>
@@ -54,7 +56,16 @@ div{
 <!-- todo: don't show selected item in dropdown -->
 <!-- todo: don't show the text-option once a real item has been selected for the first time -->
 
-    <phj-table url="get:http://localhost:3000/specifications" column-layout="3:euro" actions="Acties" events="click:this .actions=>invisible,this .action-btn=>visible" value="false">
+    <phj-table
+            title="SPECIFICATIES"
+            url="get:http://localhost:3000/specifications"
+            column-layout="3:euro"
+            actions="Acties"
+            events="click:this .actions=>invisible,this .action-btn=>visible"
+            value="false"
+            create="specificatie"
+            target="phj-form(3)"
+    >
         <phj-box>
             <phj-button icon="phj-dots"
                         events="click/hover:this.parent.parent.parent.parent .action-btn=>visible,this.parent.parent.parent.parent .actions=>invisible,
@@ -78,6 +89,7 @@ div{
             </phj-box>
         </phj-box>
     </phj-table>
+<!--UPDATE-->
     <phj-form value="" events="load:this=>invisible" url="get:http://localhost:3000/specifications/id">
         <phj-text-input label="Specificatie"
                         prop="specification"
@@ -108,10 +120,43 @@ div{
             <phj-button events="click:patch;[click.patch.status=idle]click:refresh=>phj-table(1),clear,this.parent.parent=>invisible">Bewaar</phj-button>
         </div>
     </phj-form>
+<!--DELETE-->
     <phj-form value="" events="load:this=>invisible" url="get:http://localhost:3000/specifications/id">
         <div style="width: max-content">
             <phj-button events="click:this.parent.parent=>invisible">Annuleren</phj-button>
             <phj-button events="click:delete">Bewaar</phj-button>
+        </div>
+    </phj-form>
+<!--CREATE-->
+    <phj-form events="load:this=>invisible" url="post:http://localhost:3000/specifications">
+        <phj-text-input label="Specificatie"
+                        prop="specification"
+                        events="[phj-message(1)=error]fill:phj-message(1)=>invisible,this=>enabled;
+                                    [phj-message(1)=invisible&&text=]blur:phj-message(1)=>error,this=>invalid"></phj-text-input>
+        <phj-message events="load:this=>invisible"
+                     type="error:required">Specificatie is een verplicht veld.</phj-message>
+        <phj-select
+                text="Selecteer een type..."
+                prop="type"
+                label="Type"
+                options="basic,option,extra"
+                events="[selected=1]change:clear=>phj-number-input(1),phj-number-input(1)=>disabled,phj-message(2)=>invisible;
+                    [selected=1]prefill:phj-number-input(1)=>disabled,phj-message(2)=>invisible;
+                    [selected!=1]change:phj-number-input(1)=>enabled">
+        </phj-select>
+        <phj-number-input label="Prijs (excl.BTW)"
+                          prop="price"
+                          money="euro"
+                          decimals="2"
+                          events="[phj-message(2)=error]fill:phj-message(2)=>invisible,this=>enabled;
+                              [phj-message(2)=invisible&&text=]blur:phj-message(2)=>error,this=>invalid"></phj-number-input>
+        <phj-message events="load:this=>invisible"
+                     type="error:required">Prijs is een verplicht veld.</phj-message>
+        <div style="width: max-content">
+            <phj-button events="click:this.parent.parent=>invisible">Annuleren</phj-button>
+            <phj-button events="click:reset">Reset</phj-button>
+            <!-- todo don't use statuses as a condition use backend-error handling -->
+            <phj-button events="click:post;[click.post.status=idle]click:refresh=>phj-table(1),clear,this.parent.parent=>invisible">Bewaar</phj-button>
         </div>
     </phj-form>
 <!--<phj-button>My button</phj-button>
